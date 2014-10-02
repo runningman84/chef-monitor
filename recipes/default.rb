@@ -25,24 +25,54 @@ ip_type = node["monitor"]["use_local_ipv4"] ? "local_ipv4" : "public_ipv4"
 
 client_attributes = node["monitor"]["additional_client_attributes"].to_hash
 
+if node.has_key?("ec2")
+  %w[
+    ami_id
+    instance_id
+    instance_type
+    placement_availability_zone
+    kernel_id
+    profile
+  ].each do |id|
+    client_attributes["ec2_#{id}"] = node["ec2"][id]
+  end
+end
+
 sensu_client node.name do
   if node.has_key?("cloud")
     address node["cloud"][ip_type] || node["ipaddress"]
   else
     address node["ipaddress"]
   end
-  subscriptions node["roles"] + ["all"]
+  subscriptions node["roles"] + [node["os"],  "all"]
   additional client_attributes
 end
 
 %w[
-  check-procs.rb
   check-banner.rb
-  check-http.rb
-  check-log.rb
-  check-mtime.rb
-  check-tail.rb
+  check-chef-client.rb
+  check-disk.rb
   check-fs-writable.rb
+  check-haproxy.rb
+  check-http.rb
+  check-https-cert.rb
+  check-load.rb
+  check-log.rb
+  check-mem.rb
+  check-mtime.rb
+  check-procs.rb
+  check-tail.rb
+  disk-capacity-metrics.rb
+  disk-metrics.rb
+  disk-usage-metrics.rb
+  interface-metrics.rb
+  iostat-extended-metrics.rb
+  load-metrics.rb
+  memory-metrics.rb
+  nginx-metrics.rb
+  rabbitmq-overview-metrics.rb
+  redis-metrics.rb
+  vmstat-metrics.rb
 ].each do |default_plugin|
   cookbook_file "/etc/sensu/plugins/#{default_plugin}" do
     source "plugins/#{default_plugin}"
