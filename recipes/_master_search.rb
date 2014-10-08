@@ -35,6 +35,8 @@ when master_address.nil?
       search(:node, "recipes:monitor\\:\\:master").first
     end
 
+    raise "sensu server could not be found" if master_node.nil?
+
     master_address = case
     when master_node.has_key?("cloud")
       master_node["cloud"][ip_type] || master_node["ipaddress"]

@@ -29,10 +29,12 @@ when Chef::Config[:solo]
 when graphite_address.nil?
   graphite_node = case
   when node["monitor"]["environment_aware_search"]
-    search(:node, "chef_environment:#{node.chef_environment} AND recipes:graphite").first
+    search(:node, "chef_environment:#{node.chef_environment} AND recipes:graphite\\:\\:carbon").first
   else
-    search(:node, "recipes:graphite").first
+    search(:node, "recipes:graphite\\:\\:carbon").first
   end
+
+  raise "graphite server could not be found" if graphite_node.nil?
 
   graphite_address = case
   when graphite_node.has_key?("cloud")
@@ -41,7 +43,11 @@ when graphite_address.nil?
     graphite_node["ipaddress"]
   end
 
-  graphite_port = graphite_node["graphite"]["carbon"]["line_receiver_port"]
+  #if graphite_node["graphite"]["carbon"]["line_receiver_port"]
+  #  graphite_port = graphite_node["graphite"]["carbon"]["line_receiver_port"]
+  #else
+    graphite_port = 2003
+  #end
 end
 
 sensu_handler "graphite" do

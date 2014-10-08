@@ -25,6 +25,8 @@ ip_type = node["monitor"]["use_local_ipv4"] ? "local_ipv4" : "public_ipv4"
 
 client_attributes = node["monitor"]["additional_client_attributes"].to_hash
 
+client_name = node.name
+
 if node.has_key?("ec2")
   %w[
     ami_id
@@ -36,9 +38,20 @@ if node.has_key?("ec2")
   ].each do |id|
     client_attributes["ec2_#{id}"] = node["ec2"][id]
   end
+
+  client_name = node["ec2"]["instance_id"]
+
 end
 
-sensu_client node.name do
+client_attributes["chef_environment"] = "#{node.chef_environment}"
+client_attributes["platform"] = "#{node.platform}"
+client_attributes["platform_version"] = "#{node.platform_version}"
+client_attributes["platform_family"] = "#{node.platform_family}"
+
+client_attributes["scheme_prefix"] = "#{node.monitor.scheme_prefix}"
+
+
+sensu_client client_name do
   if node.has_key?("cloud")
     address node["cloud"][ip_type] || node["ipaddress"]
   else
@@ -62,6 +75,7 @@ end
   check-mtime.rb
   check-procs.rb
   check-tail.rb
+  cpu-metrics.rb
   disk-capacity-metrics.rb
   disk-metrics.rb
   disk-usage-metrics.rb
