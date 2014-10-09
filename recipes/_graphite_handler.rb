@@ -17,44 +17,13 @@
 # limitations under the License.
 #
 
-graphite_address = node["monitor"]["graphite_address"]
-graphite_port = node["monitor"]["graphite_port"]
-
-ip_type = node["monitor"]["use_local_ipv4"] ? "local_ipv4" : "public_ipv4"
-
-case
-when Chef::Config[:solo]
-  graphite_address ||= "localhost"
-  graphite_port ||= 2003
-when graphite_address.nil?
-  graphite_node = case
-  when node["monitor"]["environment_aware_search"]
-    search(:node, "chef_environment:#{node.chef_environment} AND recipes:graphite\\:\\:carbon").first
-  else
-    search(:node, "recipes:graphite\\:\\:carbon").first
-  end
-
-  raise "graphite server could not be found" if graphite_node.nil?
-
-  graphite_address = case
-  when graphite_node.has_key?("cloud")
-    graphite_node["cloud"][ip_type] || graphite_node["ipaddress"]
-  else
-    graphite_node["ipaddress"]
-  end
-
-  #if graphite_node["graphite"]["carbon"]["line_receiver_port"]
-  #  graphite_port = graphite_node["graphite"]["carbon"]["line_receiver_port"]
-  #else
-    graphite_port = 2003
-  #end
-end
+include_recipe "monitor::_graphite_search"
 
 sensu_handler "graphite" do
   type "tcp"
   socket(
-    :host => graphite_address,
-    :port => graphite_port
+    :host => node["sensu"]["graphite"]["host"],
+    :port => node["sensu"]["graphite"]["port"]
   )
   mutator "only_check_output"
 end
@@ -65,8 +34,8 @@ if node["monitor"]["use_nagios_plugins"]
   sensu_handler "graphite_perfdata" do
     type "tcp"
     socket(
-      :host => graphite_address,
-      :port => graphite_port
+    :host => node["sensu"]["graphite"]["host"],
+    :port => node["sensu"]["graphite"]["port"]
     )
     mutator "nagios_perfdata"
   end

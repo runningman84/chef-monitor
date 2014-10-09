@@ -67,7 +67,15 @@ end
 sensu_check "load_metrics" do
   type "metric"
   command "load-metrics.rb --scheme :::scheme_prefix::::::name:::.load"
-  handlers ["graphite"]
+  handlers ["relay"]
+  interval 60
+  subscribers ['linux']
+end
+
+sensu_check "cpu_metrics" do
+  type "metric"
+  command "cpu-metrics.rb --scheme :::scheme_prefix::::::name:::.cpu"
+  handlers ["relay"]
   interval 60
   subscribers ['linux']
 end
@@ -75,7 +83,7 @@ end
 sensu_check "memory_metrics" do
   type "metric"
   command "memory-metrics.rb --scheme :::scheme_prefix::::::name:::.memory"
-  handlers ["graphite"]
+  handlers ["relay"]
   interval 60
   subscribers ['linux']
 end
@@ -83,7 +91,7 @@ end
 sensu_check "interface_metrics" do
   type "metric"
   command "interface-metrics.rb --scheme :::scheme_prefix::::::name:::.interface"
-  handlers ["graphite"]
+  handlers ["relay"]
   interval 60
   subscribers ['linux']
 end
@@ -91,7 +99,7 @@ end
 sensu_check "disk_metrics" do
   type "metric"
   command "disk-metrics.rb --scheme :::scheme_prefix::::::name:::.disk"
-  handlers ["graphite"]
+  handlers ["relay"]
   interval 60
   subscribers ['linux']
 end
@@ -99,7 +107,7 @@ end
 sensu_check "disk_usage_metrics" do
   type "metric"
   command "disk-usage-metrics.rb -l --scheme :::scheme_prefix::::::name:::.disk_usage"
-  handlers ["graphite"]
+  handlers ["relay"]
   interval 60
   subscribers ['linux']
 end

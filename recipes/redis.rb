@@ -28,8 +28,8 @@ end
 
 sensu_check "redis_metrics" do
   type "metric"
-  command "redis-metrics.rb"
-  handlers ["metrics"]
+  command "redis-metrics.rb --scheme :::scheme_prefix::::::name:::.redis"
+  handlers ["relay"]
   standalone true
   interval 30
 end
