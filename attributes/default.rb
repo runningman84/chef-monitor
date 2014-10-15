@@ -21,4 +21,8 @@ default["monitor"]["metric_handlers"] = ["debug"]
 default["monitor"]["client_extension_dir"] = "/etc/sensu/extensions/client"
 default["monitor"]["server_extension_dir"] = "/etc/sensu/extensions/server"
 
+# grpahite scheme
 default["monitor"]["scheme_prefix"] = ""
+# remedy defaults
+dafault["monitor"]["remedy_app"] = ""
+dafault["monitor"]["remedy_group"] = ""
