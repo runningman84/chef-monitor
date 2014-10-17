@@ -24,5 +24,16 @@ default["monitor"]["server_extension_dir"] = "/etc/sensu/extensions/server"
 # grpahite scheme
 default["monitor"]["scheme_prefix"] = ""
 # remedy defaults
-dafault["monitor"]["remedy_app"] = ""
-dafault["monitor"]["remedy_group"] = ""
+default["monitor"]["remedy_app"] = ""
+default["monitor"]["remedy_group"] = ""
+
+# mailer
+default["monitor"]["mail_from"] = "sensu"
+default["monitor"]["delivery_method"] = "smtp"
+default["monitor"]["smtp_address"] = "localhost"
+default["monitor"]["smtp_port"] = 25
+default["monitor"]["smtp_domain"] = "localhost.localdomain"
+default["monitor"]["smtp_username"] = nil
+default["monitor"]["smtp_password"] = nil
+default["monitor"]["smtp_authentication"] = nil
+default["monitor"]["smtp_enable_starttls_auto"] = true

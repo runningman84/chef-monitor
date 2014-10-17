@@ -50,6 +50,10 @@ client_attributes["platform_family"] = "#{node.platform_family}"
 
 client_attributes["scheme_prefix"] = "#{node.monitor.scheme_prefix}"
 
+client_attributes["remedy_app"] = "#{node.monitor.remedy_app}"
+client_attributes["remedy_group"] = "#{node.monitor.remedy_group}"
+
+node.override["sensu"]["name"] = client_name
 
 sensu_client client_name do
   if node.has_key?("cloud")

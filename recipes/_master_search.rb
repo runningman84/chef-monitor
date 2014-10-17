@@ -30,9 +30,9 @@ when master_address.nil?
   else
     master_node = case
     when node["monitor"]["environment_aware_search"]
-      search(:node, "chef_environment:#{node.chef_environment} AND recipes:monitor\\:\\:master").first
+      search(:node, "chef_environment:#{node.chef_environment} AND recipes:monitor\\:\\:master").sort_by{ |a| -a[:uptime_seconds] }.first
     else
-      search(:node, "recipes:monitor\\:\\:master").first
+      search(:node, "recipes:monitor\\:\\:master").sort_by{ |a| -a[:uptime_seconds] }.first
     end
 
     raise "sensu server could not be found" if master_node.nil?

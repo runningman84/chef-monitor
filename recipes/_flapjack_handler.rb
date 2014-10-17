@@ -28,7 +28,7 @@ end
 json = {
   :flapjack => {
        :host => node["sensu"]["flapjack"]["host"],
-       :port => node["sensu"]["flapjack"]["port"]
+       :port => node["sensu"]["flapjack"]["port"],
        :db => "0"
   }
 }

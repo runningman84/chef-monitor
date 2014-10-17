@@ -29,7 +29,7 @@ end
 sensu_check "redis_metrics" do
   type "metric"
   command "redis-metrics.rb --scheme :::scheme_prefix::::::name:::.redis"
-  handlers ["relay"]
+  handlers ["metrics"]
   standalone true
-  interval 30
+  interval 60
 end

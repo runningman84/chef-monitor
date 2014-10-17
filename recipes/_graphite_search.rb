@@ -28,9 +28,9 @@ when Chef::Config[:solo]
 when graphite_address.nil?
   graphite_node = case
   when node["monitor"]["environment_aware_search"]
-    search(:node, "chef_environment:#{node.chef_environment} AND recipes:graphite\\:\\:carbon").first
+    search(:node, "chef_environment:#{node.chef_environment} AND recipes:graphite\\:\\:carbon").sort_by{ |a| -a[:uptime_seconds] }.first
   else
-    search(:node, "recipes:graphite\\:\\:carbon").first
+    search(:node, "recipes:graphite\\:\\:carbon").sort_by{ |a| -a[:uptime_seconds] }.first
   end
 
   raise "graphite server could not be found" if graphite_node.nil?

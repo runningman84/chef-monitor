@@ -1,5 +1,7 @@
 sensu_gem 'ohai'
 
+### Checks
+
 sensu_check 'disk_usage' do
   #file '/system/check-disk.rb'
   command 'check-disk.rb -w 80 -c 90 -x nfs,tmpfs,fuse'
@@ -64,50 +66,77 @@ sensu_check "chef_client" do
   })
 end
 
+#sensu_check "chef_client_log" do
+#  command "check-log.rb -f /var/log/chef/client.log -q \"FATAL\" -E \"Chef is already running\""
+#  handlers ["default"]
+#  interval 30
+#  subscribers ['linux']
+#end
+
+### Metrics
+
 sensu_check "load_metrics" do
   type "metric"
   command "load-metrics.rb --scheme :::scheme_prefix::::::name:::.load"
-  handlers ["relay"]
+  handlers ["metrics"]
   interval 60
   subscribers ['linux']
+  additional({
+    :occurrences => 2
+  })
 end
 
 sensu_check "cpu_metrics" do
   type "metric"
   command "cpu-metrics.rb --scheme :::scheme_prefix::::::name:::.cpu"
-  handlers ["relay"]
+  handlers ["metrics"]
   interval 60
   subscribers ['linux']
+  additional({
+    :occurrences => 2
+  })
 end
 
 sensu_check "memory_metrics" do
   type "metric"
   command "memory-metrics.rb --scheme :::scheme_prefix::::::name:::.memory"
-  handlers ["relay"]
+  handlers ["metrics"]
   interval 60
   subscribers ['linux']
+  additional({
+    :occurrences => 2
+  })
 end
 
 sensu_check "interface_metrics" do
   type "metric"
   command "interface-metrics.rb --scheme :::scheme_prefix::::::name:::.interface"
-  handlers ["relay"]
+  handlers ["metrics"]
   interval 60
   subscribers ['linux']
+  additional({
+    :occurrences => 2
+  })
 end
 
 sensu_check "disk_metrics" do
   type "metric"
   command "disk-metrics.rb --scheme :::scheme_prefix::::::name:::.disk"
-  handlers ["relay"]
+  handlers ["metrics"]
   interval 60
   subscribers ['linux']
+  additional({
+    :occurrences => 2
+  })
 end
 
 sensu_check "disk_usage_metrics" do
   type "metric"
   command "disk-usage-metrics.rb -l --scheme :::scheme_prefix::::::name:::.disk_usage"
-  handlers ["relay"]
+  handlers ["metrics"]
   interval 60
   subscribers ['linux']
+  additional({
+    :occurrences => 2
+  })
 end
