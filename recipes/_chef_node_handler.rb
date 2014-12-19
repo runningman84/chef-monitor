@@ -17,11 +17,9 @@
 # limitations under the License.
 #
 
-sensu_gem "spice" do
-  version "1.0.6"
-end
+sensu_gem "ridley" do
 
-sensu_gem "rest-client"
+end
 
 handler_path = "/etc/sensu/handlers/chef_node.rb"
 
