@@ -1,6 +1,6 @@
 override["sensu"]["use_embedded_ruby"] = true
 override["sensu"]["version"] = "0.16.0-1"
-override["uchiwa"]["version"] = "0.3.2-1"
+override["uchiwa"]["version"] = "0.4.0-1"
 
 default["monitor"]["master_address"] = nil
 
@@ -22,10 +22,11 @@ default["monitor"]["client_extension_dir"] = "/etc/sensu/extensions/client"
 default["monitor"]["server_extension_dir"] = "/etc/sensu/extensions/server"
 
 # grpahite scheme
-default["monitor"]["scheme_prefix"] = ""
+default["monitor"]["scheme_prefix"] = "sensu.default."
 # remedy defaults
 default["monitor"]["remedy_app"] = ""
 default["monitor"]["remedy_group"] = ""
+default["monitor"]["remedy_component"] = ""
 
 # mailer
 default["monitor"]["mail_from"] = "sensu"

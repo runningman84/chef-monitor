@@ -25,7 +25,7 @@ case
 when Chef::Config[:solo]
   master_address ||= "localhost"
 when master_address.nil?
-  if node["recipes"].include?("monitor::master")
+  if node.recipes.include?("monitor::master")
     master_address = "localhost"
   else
     master_node = case
@@ -35,17 +35,23 @@ when master_address.nil?
       search(:node, "recipes:monitor\\:\\:master").sort_by{ |a| -a[:uptime_seconds] }.first
     end
 
-    raise "sensu server could not be found" if master_node.nil?
 
-    master_address = case
-    when master_node.has_key?("cloud")
-      master_node["cloud"][ip_type] || master_node["ipaddress"]
-    else
-      master_node["ipaddress"]
+    unless master_node.nil? or master_node["ipaddress"] == node["ipaddress"]
+
+      master_address = case
+      when master_node.has_key?("cloud")
+        master_node["cloud"][ip_type] || master_node["ipaddress"]
+      else
+        master_node["ipaddress"]
+      end
     end
+
   end
+
 end
 
-node.override["sensu"]["rabbitmq"]["host"] = master_address
-node.override["sensu"]["redis"]["host"] = master_address
-node.override["sensu"]["api"]["host"] = master_address
+unless master_address.nil?
+  node.override["sensu"]["rabbitmq"]["host"] = master_address
+  node.override["sensu"]["redis"]["host"] = master_address
+  node.override["sensu"]["api"]["host"] = master_address
+end

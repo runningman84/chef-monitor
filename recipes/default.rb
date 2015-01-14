@@ -36,10 +36,13 @@ if node.has_key?("ec2")
     kernel_id
     profile
   ].each do |id|
-    client_attributes["ec2_#{id}"] = node["ec2"][id]
-  end
+    key = "ec2_#{id}"
+    if id == "placement_availability_zone"
+      key = "ec2_av_zone"
+    end
 
-  client_name = node["ec2"]["instance_id"]
+    client_attributes[key] = node["ec2"][id]
+  end
 
 end
 
@@ -52,6 +55,7 @@ client_attributes["scheme_prefix"] = "#{node.monitor.scheme_prefix}"
 
 client_attributes["remedy_app"] = "#{node.monitor.remedy_app}"
 client_attributes["remedy_group"] = "#{node.monitor.remedy_group}"
+client_attributes["remedy_component"] = "#{node.monitor.remedy_component}"
 
 node.override["sensu"]["name"] = client_name
 

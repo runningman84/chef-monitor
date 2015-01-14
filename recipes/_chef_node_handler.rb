@@ -48,4 +48,5 @@ sensu_handler "chef_node" do
   type "pipe"
   command "sudo chef_node.rb"
   filters ["keepalives"]
+  severities ["warning", "critical"]
 end

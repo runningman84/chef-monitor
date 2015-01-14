@@ -33,21 +33,24 @@ when graphite_address.nil?
     search(:node, "recipes:graphite\\:\\:carbon").sort_by{ |a| -a[:uptime_seconds] }.first
   end
 
-  raise "graphite server could not be found" if graphite_node.nil?
+  unless graphite_node.nil?
 
-  graphite_address = case
-  when graphite_node.has_key?("cloud")
-    graphite_node["cloud"][ip_type] || graphite_node["ipaddress"]
-  else
-    graphite_node["ipaddress"]
+    graphite_address = case
+    when graphite_node.has_key?("cloud")
+      graphite_node["cloud"][ip_type] || graphite_node["ipaddress"]
+    else
+      graphite_node["ipaddress"]
+    end
+
+    graphite_port = 2003
+
   end
 
-  #if graphite_node["graphite"]["carbon"]["line_receiver_port"]
-  #  graphite_port = graphite_node["graphite"]["carbon"]["line_receiver_port"]
-  #else
-    graphite_port = 2003
-  #end
 end
 
-node.override["sensu"]["graphite"]["host"] = graphite_address
-node.override["sensu"]["graphite"]["port"] = graphite_port
+unless graphite_address.nil?
+  node.override["sensu"]["graphite"]["host"] = graphite_address
+end
+unless graphite_port.nil?
+  node.override["sensu"]["graphite"]["port"] = graphite_port
+end
