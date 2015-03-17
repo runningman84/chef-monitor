@@ -46,6 +46,19 @@ if node.has_key?("ec2")
 
 end
 
+if node.has_key?("cloud")
+  %w[
+    local_ipv4
+    public_ipv4
+    provider
+  ].each do |id|
+    key = "cloud_#{id}"
+
+    client_attributes[key] = node["cloud"][id]
+  end
+
+end
+
 client_attributes["chef_environment"] = "#{node.chef_environment}"
 client_attributes["platform"] = "#{node.platform}"
 client_attributes["platform_version"] = "#{node.platform_version}"

@@ -48,9 +48,6 @@ when graphite_address.nil?
 
 end
 
-unless graphite_address.nil?
-  node.override["sensu"]["graphite"]["host"] = graphite_address
-end
-unless graphite_port.nil?
-  node.override["sensu"]["graphite"]["port"] = graphite_port
-end
+
+node.override["sensu"]["graphite"]["host"] = graphite_address
+node.override["sensu"]["graphite"]["port"] = graphite_port
