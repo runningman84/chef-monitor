@@ -19,10 +19,24 @@
 
 include_recipe "monitor::_rabbitmq"
 
+sensu_check "rabbitmq_process" do
+  command "check-procs.rb -p /usr/sbin/rabbitmq-server -w 2 -c 3 -C 1"
+  handlers ["default"]
+  standalone true
+  interval node['monitor']['default_interval']
+  additional({
+    :occurrences => node['monitor']['default_occurrences']
+  })
+end
+
 sensu_check "rabbitmq_overview_metrics" do
   type "metric"
   command "rabbitmq-overview-metrics.rb --scheme :::scheme_prefix::::::name:::.rabbitmq"
   handlers ["metrics"]
   standalone true
-  interval 60
+  interval node['monitor']['metric_interval']
+  additional({
+    :dependencies => ["rabbitmq_process"],
+    :occurrences => node['monitor']['metric_occurrences']
+  })
 end

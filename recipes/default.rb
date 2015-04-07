@@ -108,6 +108,7 @@ end
   rabbitmq-overview-metrics.rb
   redis-metrics.rb
   vmstat-metrics.rb
+  metrics-curl.rb
 ].each do |default_plugin|
   cookbook_file "/etc/sensu/plugins/#{default_plugin}" do
     source "plugins/#{default_plugin}"

@@ -23,7 +23,7 @@ sensu_check "redis_process" do
   command "check-procs.rb -p redis-server -w 2 -c 3 -C 1"
   handlers ["default"]
   standalone true
-  interval 30
+  interval node['monitor']['default_interval']
 end
 
 sensu_check "redis_metrics" do
@@ -31,5 +31,9 @@ sensu_check "redis_metrics" do
   command "redis-metrics.rb --scheme :::scheme_prefix::::::name:::.redis"
   handlers ["metrics"]
   standalone true
-  interval 60
+  interval node['monitor']['default_interval']
+  additional({
+    :dependencies => ["redis_process"],
+    :occurrences => node['monitor']['default_occurrences']
+  })
 end
