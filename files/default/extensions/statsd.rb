@@ -53,13 +53,13 @@ module Sensu
       def options
         return @options if @options
         @options = {
-          :bind => '127.0.0.1',
-          :port => 8125,
-          :flush_interval => 10,
-          :send_interval => 30,
-          :percentile => 90,
-          :add_client_prefix => true,
-          :path_prefix => 'statsd'
+          bind: '127.0.0.1',
+          port: 8125,
+          flush_interval: 10,
+          send_interval: 30,
+          percentile: 90,
+          add_client_prefix: true,
+          path_prefix: 'statsd'
         }
         if @settings[:statsd].is_a?(Hash)
           @options.merge!(@settings[:statsd])
@@ -69,9 +69,7 @@ module Sensu
 
       def stop
         flush!
-        @flush_timers.each do |timer|
-          timer.cancel
-        end
+        @flush_timers.each(&:cancel)
         yield
       end
 
@@ -91,16 +89,16 @@ module Sensu
         path << options[:path_prefix]
         path = (path + args).join('.')
         if path !~ /^[A-Za-z0-9\._-]*$/
-          @logger.info('invalid statsd metric', {
-            :reason => 'metric path must only consist of alpha-numeric characters, periods, underscores, and dashes',
-            :path => path,
-            :value => value
-          })
+          @logger.info('invalid statsd metric',
+                       reason: 'metric path must only consist of alpha-numeric characters, periods, underscores, and dashes',
+                       path: path,
+                       value: value
+          )
         else
-          @logger.debug('adding statsd metric', {
-            :path => path,
-            :value => value
-          })
+          @logger.debug('adding statsd metric',
+                        path: path,
+                        value: value
+          )
           @metrics << [path, value, Time.now.to_i].join(' ')
         end
       end
@@ -143,18 +141,18 @@ module Sensu
       def send!
         unless @metrics.empty?
           payload = {
-            :client => @settings[:client][:name],
-            :check => {
-              :name => 'statsd',
-              :type => 'metric',
-              :status => 0,
-              :output => @metrics.join("\n") + "\n",
-              :handler => 'graphite'
+            client: @settings[:client][:name],
+            check: {
+              name: 'statsd',
+              type: 'metric',
+              status: 0,
+              output: @metrics.join("\n") + "\n",
+              handler: 'graphite'
             }
           }
-          @logger.info('sending statsd metrics to graphite', {
-            :count => @metrics.count
-          })
+          @logger.info('sending statsd metrics to graphite',
+                       count: @metrics.count
+          )
           @metrics = []
           @amq.direct('results').publish(Oj.dump(payload))
         end
@@ -170,7 +168,7 @@ module Sensu
       end
 
       def setup_parser
-        parser = Proc.new do |data|
+        parser = proc do |data|
           begin
             nv, type = data.strip.split('|')
             name, value = nv.split(':')
@@ -185,11 +183,11 @@ module Sensu
               @timers[name] << Float(value)
             end
           rescue => error
-            @logger.error('statsd parser error', {
-              :error => error.to_s
-            })
+            @logger.error('statsd parser error',
+                          error: error.to_s
+            )
           end
-          EM::next_tick do
+          EM.next_tick do
             @data.pop(&parser)
           end
         end
@@ -197,15 +195,15 @@ module Sensu
       end
 
       def setup_statsd_socket
-        @logger.debug('binding statsd tcp and udp sockets', {
-         :options => options
-        })
+        @logger.debug('binding statsd tcp and udp sockets',
+                      options: options
+        )
         bind = options[:bind]
         port = options[:port]
-        EM::start_server(bind, port, SimpleSocket) do |socket|
+        EM.start_server(bind, port, SimpleSocket) do |socket|
           socket.data = @data
         end
-        EM::open_datagram_socket(bind, port, SimpleSocket) do |socket|
+        EM.open_datagram_socket(bind, port, SimpleSocket) do |socket|
           socket.data = @data
         end
       end

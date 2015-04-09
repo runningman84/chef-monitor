@@ -17,10 +17,10 @@
 # limitations under the License.
 #
 
-include_recipe "monitor::_extensions"
+include_recipe 'monitor::_extensions'
 
-cookbook_file File.join(node["monitor"]["client_extension_dir"], "system_profile.rb") do
-  source "extensions/system_profile.rb"
+cookbook_file File.join(node['monitor']['client_extension_dir'], 'system_profile.rb') do
+  source 'extensions/system_profile.rb'
   mode 0755
-  notifies :create, "ruby_block[sensu_service_trigger]", :immediately
+  notifies :create, 'ruby_block[sensu_service_trigger]', :immediately
 end

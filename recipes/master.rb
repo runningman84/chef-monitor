@@ -17,35 +17,35 @@
 # limitations under the License.
 #
 
-include_recipe "sensu::rabbitmq"
+include_recipe 'sensu::rabbitmq'
 
-if node["platform"] == "ubuntu"
+if node['platform'] == 'ubuntu'
   # will be reverted once the upstream redis package supports package installation
-  package "redis-server" do
+  package 'redis-server' do
     action :install
   end
 
-  service "redis-server" do
-    action [ :enable, :start ]
+  service 'redis-server' do
+    action [:enable, :start]
   end
-elsif node["platform"] == "centos"
-  include_recipe "yum-epel"
+elsif node['platform'] == 'centos'
+  include_recipe 'yum-epel'
 
   # will be reverted once the upstream redis package supports package installation
-  package "redis" do
+  package 'redis' do
     action :install
   end
 
-  service "redis" do
-    action [ :enable, :start ]
+  service 'redis' do
+    action [:enable, :start]
   end
 else
-  include_recipe "sensu::redis"
+  include_recipe 'sensu::redis'
 end
 
-include_recipe "monitor::_worker"
+include_recipe 'monitor::_worker'
 
-include_recipe "sensu::api_service"
-include_recipe "uchiwa"
+include_recipe 'sensu::api_service'
+include_recipe 'uchiwa'
 
-include_recipe "monitor::default"
+include_recipe 'monitor::default'

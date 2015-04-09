@@ -39,7 +39,7 @@ module Sensu::Extension
       @endpoints = {}
       @mutators = {
         graphite: method(:graphite),
-        opentsdb: method(:opentsdb),
+        opentsdb: method(:opentsdb)
       }
       @event = nil
     end
@@ -47,7 +47,7 @@ module Sensu::Extension
     def definition
       {
         type: 'extension',
-        name: 'metrics',
+        name: 'metrics'
       }
     end
 
@@ -119,7 +119,7 @@ module Sensu::Extension
       out << " check_name=#{check[:name]}" unless check[:name].nil?
       out << " host=#{@event[:client][:name]}" unless check[:auto_tag_host] == 'no'
       metric['tags'].each do |tag, value|
-        out << " " << [tag, value].join('=')
+        out << ' ' << [tag, value].join('=')
       end if metric.key?('tags')
       out << "\n"
     end
@@ -146,6 +146,5 @@ module Sensu::Extension
     def logger
       Sensu::Logger.get
     end
-
   end # Metrics
 end # Sensu::Extension

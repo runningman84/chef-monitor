@@ -17,14 +17,14 @@
 # limitations under the License.
 #
 
-sensu_filter "actions" do
-  attributes(:action => "eval: %w[create resolve].include? value.to_s")
+sensu_filter 'actions' do
+  attributes(action: 'eval: %w[create resolve].include? value.to_s')
 end
 
-sensu_filter "keepalives" do
+sensu_filter 'keepalives' do
   attributes(
-    :check => {
-      :name => "keepalive"
+    check: {
+      name: 'keepalive'
     }
   )
 end

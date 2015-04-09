@@ -17,11 +17,11 @@
 # limitations under the License.
 #
 
-include_recipe "monitor::_haproxy"
+include_recipe 'monitor::_haproxy'
 
-sensu_check "haproxy_services" do
-  command "sudo check-haproxy.rb -s :::haproxy_services::: -w :::haproxy_warning|75::: -c :::haproxy_critical|50:::"
-  handlers ["default"]
+sensu_check 'haproxy_services' do
+  command 'sudo check-haproxy.rb -s :::haproxy_services::: -w :::haproxy_warning|75::: -c :::haproxy_critical|50:::'
+  handlers ['default']
   standalone true
   interval 30
 end

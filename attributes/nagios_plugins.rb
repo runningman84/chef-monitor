@@ -1,1 +1,1 @@
-default["monitor"]["nagios_plugin_packages"] = ["nagios-plugins"]
+default['monitor']['nagios_plugin_packages'] = ['nagios-plugins']

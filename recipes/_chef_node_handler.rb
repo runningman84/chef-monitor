@@ -17,36 +17,35 @@
 # limitations under the License.
 #
 
-sensu_gem "ridley" do
-
+sensu_gem 'ridley' do
 end
 
-handler_path = "/etc/sensu/handlers/chef_node.rb"
+handler_path = '/etc/sensu/handlers/chef_node.rb'
 
 cookbook_file handler_path do
-  source "handlers/chef_node.rb"
+  source 'handlers/chef_node.rb'
   mode 0755
 end
 
 node.override['monitor']['sudo_commands'] =
   node['monitor']['sudo_commands'] + [handler_path]
 
-include_recipe "monitor::_sudo"
+include_recipe 'monitor::_sudo'
 
-sensu_snippet "chef" do
+sensu_snippet 'chef' do
   content(
-    :server_url => Chef::Config[:chef_server_url],
-    :client_name => Chef::Config[:node_name],
-    :client_key => Chef::Config[:client_key],
-    :verify_ssl => false
+    server_url: Chef::Config[:chef_server_url],
+    client_name: Chef::Config[:node_name],
+    client_key: Chef::Config[:client_key],
+    verify_ssl: false
   )
 end
 
-include_recipe "monitor::_filters"
+include_recipe 'monitor::_filters'
 
-sensu_handler "chef_node" do
-  type "pipe"
-  command "sudo chef_node.rb"
-  filters ["keepalives"]
-  severities ["warning", "critical"]
+sensu_handler 'chef_node' do
+  type 'pipe'
+  command 'sudo chef_node.rb'
+  filters ['keepalives']
+  severities %w(warning critical)
 end

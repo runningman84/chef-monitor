@@ -17,26 +17,26 @@
 # limitations under the License.
 #
 
-include_recipe "monitor::_graphite_search"
+include_recipe 'monitor::_graphite_search'
 
-sensu_handler "graphite" do
-  type "tcp"
+sensu_handler 'graphite' do
+  type 'tcp'
   socket(
-    :host => node["sensu"]["graphite"]["host"],
-    :port => node["sensu"]["graphite"]["port"]
+    host: node['sensu']['graphite']['host'],
+    port: node['sensu']['graphite']['port']
   )
-  mutator "only_check_output"
+  mutator 'only_check_output'
 end
 
-if node["monitor"]["use_nagios_plugins"]
-  include_recipe "monitor::_nagios_perfdata"
+if node['monitor']['use_nagios_plugins']
+  include_recipe 'monitor::_nagios_perfdata'
 
-  sensu_handler "graphite_perfdata" do
-    type "tcp"
+  sensu_handler 'graphite_perfdata' do
+    type 'tcp'
     socket(
-    :host => node["sensu"]["graphite"]["host"],
-    :port => node["sensu"]["graphite"]["port"]
+    host: node['sensu']['graphite']['host'],
+    port: node['sensu']['graphite']['port']
     )
-    mutator "nagios_perfdata"
+    mutator 'nagios_perfdata'
   end
 end

@@ -17,26 +17,26 @@
 # limitations under the License.
 #
 
-include_recipe "monitor::_redis"
+include_recipe 'monitor::_redis'
 
-sensu_check "redis_process" do
-  command "check-procs.rb -p redis-server -w 2 -c 3 -C 1"
-  handlers ["default"]
+sensu_check 'redis_process' do
+  command 'check-procs.rb -p redis-server -w 2 -c 3 -C 1'
+  handlers ['default']
   standalone true
   interval node['monitor']['default_interval']
-  additional({
-    :occurrences => node['monitor']['default_occurrences']
-  })
+  additional(
+    occurrences: node['monitor']['default_occurrences']
+  )
 end
 
-sensu_check "redis_metrics" do
-  type "metric"
-  command "redis-metrics.rb --scheme :::scheme_prefix::::::name:::.redis"
-  handlers ["metrics"]
+sensu_check 'redis_metrics' do
+  type 'metric'
+  command 'redis-metrics.rb --scheme :::scheme_prefix::::::name:::.redis'
+  handlers ['metrics']
   standalone true
   interval node['monitor']['metric_interval']
-  additional({
-    :dependencies => ["redis_process"],
-    :occurrences => node['monitor']['metric_occurrences']
-  })
+  additional(
+    dependencies: ['redis_process'],
+    occurrences: node['monitor']['metric_occurrences']
+  )
 end

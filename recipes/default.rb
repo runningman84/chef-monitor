@@ -17,85 +17,78 @@
 # limitations under the License.
 #
 
-include_recipe "monitor::_master_search"
+include_recipe 'monitor::_master_search'
 
-include_recipe "sensu::default"
+include_recipe 'sensu::default'
 
-ip_type = node["monitor"]["use_local_ipv4"] ? "local_ipv4" : "public_ipv4"
+ip_type = node['monitor']['use_local_ipv4'] ? 'local_ipv4' : 'public_ipv4'
 
-client_attributes = node["monitor"]["additional_client_attributes"].to_hash
+client_attributes = node['monitor']['additional_client_attributes'].to_hash
 
 client_name = node.name
 
-if node.has_key?("ec2")
-  %w[
+if node.key?('ec2')
+  %w(
     ami_id
     instance_id
     instance_type
     placement_availability_zone
     kernel_id
     profile
-  ].each do |id|
+  ).each do |id|
     key = "ec2_#{id}"
-    if id == "placement_availability_zone"
-      key = "ec2_av_zone"
-    end
+    key = 'ec2_av_zone' if id == 'placement_availability_zone'
 
-    client_attributes[key] = node["ec2"][id]
+    client_attributes[key] = node['ec2'][id]
   end
 
 end
 
-if node.has_key?("cloud")
-  %w[
+if node.key?('cloud')
+  %w(
     local_ipv4
     public_ipv4
     provider
-  ].each do |id|
+  ).each do |id|
     key = "cloud_#{id}"
 
-    client_attributes[key] = node["cloud"][id]
+    client_attributes[key] = node['cloud'][id]
   end
 
 end
 
-%w[
+%w(
   chef_environment
   platform
   platform_version
   platform_family
-].each do |key|
-  if node.has_key?(key)
-    client_attributes[key] = node[key]
-  end
+).each do |key|
+  client_attributes[key] = node[key] if node.key?(key)
 end
 
-%w[
+%w(
   scheme_prefix
   remedy_app
   remedy_group
   remedy_component
-].each do |key|
-  if node["monitor"].has_key?(key)
-    if node["monitor"][key]
-      client_attributes[key] = node["monitor"][key]
-    end
-  end
+).each do |key|
+  next unless node['monitor'].key?(key)
+  client_attributes[key] = node['monitor'][key] if node['monitor'][key]
 end
 
-node.override["sensu"]["name"] = client_name
+node.override['sensu']['name'] = client_name
 
 sensu_client client_name do
-  if node.has_key?("cloud")
-    address node["cloud"][ip_type] || node["ipaddress"]
+  if node.key?('cloud')
+    address node['cloud'][ip_type] || node['ipaddress']
   else
-    address node["ipaddress"]
+    address node['ipaddress']
   end
-  subscriptions node["roles"] + [node["os"],  "all"]
+  subscriptions node['roles'] + [node['os'],  'all']
   additional client_attributes
 end
 
-%w[
+%w(
   check-banner.rb
   check-chef-client.rb
   check-disk.rb
@@ -122,23 +115,15 @@ end
   redis-metrics.rb
   vmstat-metrics.rb
   metrics-curl.rb
-].each do |default_plugin|
+).each do |default_plugin|
   cookbook_file "/etc/sensu/plugins/#{default_plugin}" do
     source "plugins/#{default_plugin}"
     mode 0755
   end
 end
 
-if node["monitor"]["use_nagios_plugins"]
-  include_recipe "monitor::_nagios_plugins"
-end
+include_recipe 'monitor::_nagios_plugins' if node['monitor']['use_nagios_plugins']
+include_recipe 'monitor::_system_profile' if node['monitor']['use_system_profile']
+include_recipe 'monitor::_statsd' if node['monitor']['use_statsd_input']
 
-if node["monitor"]["use_system_profile"]
-  include_recipe "monitor::_system_profile"
-end
-
-if node["monitor"]["use_statsd_input"]
-  include_recipe "monitor::_statsd"
-end
-
-include_recipe "sensu::client_service"
+include_recipe 'sensu::client_service'

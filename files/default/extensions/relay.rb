@@ -27,7 +27,6 @@ module Sensu::Extension
   # Setup some basic error handling and connection management. Climb on top
   # of Sensu logging capability to log error states.
   class RelayConnectionHandler < EM::Connection
-
     # XXX: These should be runtime configurable.
     MAX_RECONNECT_ATTEMPTS = 10
     MAX_RECONNECT_TIME = 300 # seconds
@@ -75,7 +74,7 @@ module Sensu::Extension
 
     # Override EM::Connection.receive_data to prevent it from calling
     # puts and randomly logging non-sense to sensu-server.log
-    def receive_data(data)
+    def receive_data(_data)
     end
 
     # Reconnect normally attempts to connect at the end of the tick
@@ -107,7 +106,6 @@ module Sensu::Extension
     def logger
       Sensu::Logger.get
     end
-
   end # RelayConnectionHandler
 
   # EndPoint
@@ -115,11 +113,10 @@ module Sensu::Extension
   # An endpoint is a backend metric store. This is a compositional object
   # to help keep the rest of the code sane.
   class Endpoint
-
     # EM::Connection.send_data batches network connection writes in 16KB
     # We should start out by having all data in the queue flush in the
     # space of a single loop tick.
-    MAX_QUEUE_SIZE = 16384
+    MAX_QUEUE_SIZE = 16_384
 
     attr_accessor :connection, :queue
 
@@ -162,7 +159,6 @@ module Sensu::Extension
         @connection.close_connection_after_writing
       end
     end
-
   end
 
   # The Relay handler expects to be called from a mutator that has prepared
@@ -172,10 +168,9 @@ module Sensu::Extension
   #   :metric => 'formatted metric as a string'
   # }
   class Relay < Handler
-
     def initialize
       super
-      @endpoints = { }
+      @endpoints = {}
       @initialized = false
     end
 
@@ -196,7 +191,7 @@ module Sensu::Extension
       {
         type: 'extension',
         name: 'relay',
-        mutator: 'metrics',
+        mutator: 'metrics'
       }
     end
 
@@ -222,15 +217,12 @@ module Sensu::Extension
     end
 
     def stop
-      @endpoints.each_value do |ep|
-        ep.stop
-      end
+      @endpoints.each_value(&:stop)
       yield if block_given?
     end
 
     def logger
       Sensu::Logger.get
     end
-
   end # Relay
 end # Sensu::Extension

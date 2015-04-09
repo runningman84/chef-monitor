@@ -17,11 +17,11 @@
 # limitations under the License.
 #
 
-include_recipe "monitor::default"
+include_recipe 'monitor::default'
 
-sensu_gem "carrot-top"
+sensu_gem 'carrot-top'
 
-cookbook_file "/etc/sensu/plugins/rabbitmq-overview-metrics.rb" do
-  source "plugins/rabbitmq-overview-metrics.rb"
+cookbook_file '/etc/sensu/plugins/rabbitmq-overview-metrics.rb' do
+  source 'plugins/rabbitmq-overview-metrics.rb'
   mode 0755
 end

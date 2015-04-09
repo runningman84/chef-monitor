@@ -17,6 +17,6 @@
 # limitations under the License.
 #
 
-node["monitor"]["nagios_plugin_packages"].each do |package_name|
+node['monitor']['nagios_plugin_packages'].each do |package_name|
   package package_name
 end

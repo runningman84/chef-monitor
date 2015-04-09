@@ -16,31 +16,31 @@
 # limitations under the License.
 #
 
-graphite_address = node["monitor"]["graphite_address"]
-graphite_port = node["monitor"]["graphite_port"]
+graphite_address = node['monitor']['graphite_address']
+graphite_port = node['monitor']['graphite_port']
 
-ip_type = node["monitor"]["use_local_ipv4"] ? "local_ipv4" : "public_ipv4"
+ip_type = node['monitor']['use_local_ipv4'] ? 'local_ipv4' : 'public_ipv4'
 
 case
 when Chef::Config[:solo]
-  graphite_address ||= "localhost"
+  graphite_address ||= 'localhost'
   graphite_port ||= 2003
 when graphite_address.nil?
   graphite_node = case
-  when node["monitor"]["environment_aware_search"]
-    search(:node, "chef_environment:#{node.chef_environment} AND recipes:graphite\\:\\:carbon").sort_by{ |a| -a[:uptime_seconds] }.first
-  else
-    search(:node, "recipes:graphite\\:\\:carbon").sort_by{ |a| -a[:uptime_seconds] }.first
-  end
+                  when node['monitor']['environment_aware_search']
+                    search(:node, "chef_environment:#{node.chef_environment} AND recipes:graphite\\:\\:carbon").sort_by { |a| -a[:uptime_seconds] }.first
+                  else
+                    search(:node, 'recipes:graphite\\:\\:carbon').sort_by { |a| -a[:uptime_seconds] }.first
+                  end
 
   unless graphite_node.nil?
 
-    graphite_address = case
-    when graphite_node.has_key?("cloud")
-      graphite_node["cloud"][ip_type] || graphite_node["ipaddress"]
-    else
-      graphite_node["ipaddress"]
-    end
+    graphite_address =  case
+                        when graphite_node.key?('cloud')
+                          graphite_node['cloud'][ip_type] || graphite_node['ipaddress']
+                        else
+                          graphite_node['ipaddress']
+                        end
 
     graphite_port = 2003
 
@@ -48,6 +48,5 @@ when graphite_address.nil?
 
 end
 
-
-node.override["sensu"]["graphite"]["host"] = graphite_address
-node.override["sensu"]["graphite"]["port"] = graphite_port
+node.override['sensu']['graphite']['host'] = graphite_address
+node.override['sensu']['graphite']['port'] = graphite_port

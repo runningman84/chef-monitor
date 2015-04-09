@@ -1,31 +1,31 @@
 
-include_recipe "monitor::_extensions"
-include_recipe "monitor::_graphite_search"
+include_recipe 'monitor::_extensions'
+include_recipe 'monitor::_graphite_search'
 
-if node["sensu"].has_key?("graphite")
+if node['sensu'].key?('graphite')
 
-  unless node["sensu"]["graphite"]["host"].nil?
+  unless node['sensu']['graphite']['host'].nil?
 
-    cookbook_file File.join(node["monitor"]["server_extension_dir"], "relay.rb") do
-      source "extensions/relay.rb"
+    cookbook_file File.join(node['monitor']['server_extension_dir'], 'relay.rb') do
+      source 'extensions/relay.rb'
       mode 0755
-      notifies :create, "ruby_block[sensu_service_trigger]", :immediately
+      notifies :create, 'ruby_block[sensu_service_trigger]', :immediately
     end
 
-    cookbook_file File.join(node["monitor"]["server_extension_dir"], "metrics.rb") do
-      source "extensions/metrics.rb"
+    cookbook_file File.join(node['monitor']['server_extension_dir'], 'metrics.rb') do
+      source 'extensions/metrics.rb'
       mode 0755
-      notifies :create, "ruby_block[sensu_service_trigger]", :immediately
+      notifies :create, 'ruby_block[sensu_service_trigger]', :immediately
     end
 
     json = {
-      :graphite => {
-           :host => node["sensu"]["graphite"]["host"],
-           :port => node["sensu"]["graphite"]["port"]
+      graphite: {
+        host: node['sensu']['graphite']['host'],
+        port: node['sensu']['graphite']['port']
       }
     }
 
-    sensu_snippet "relay" do
+    sensu_snippet 'relay' do
       content(
        json
       )

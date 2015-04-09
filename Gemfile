@@ -1,4 +1,4 @@
-source "https://rubygems.org"
+source 'https://rubygems.org'
 
 gem 'berkshelf', '~> 3.1'
 gem 'rake'
@@ -15,4 +15,3 @@ group :integration do
   gem 'test-kitchen'
   gem 'kitchen-vagrant'
 end
-

@@ -17,12 +17,12 @@
 # limitations under the License.
 #
 
-include_recipe "sudo"
+include_recipe 'sudo'
 
-sudo "sensu" do
-  user "sensu"
-  runas "root"
-  commands node["monitor"]["sudo_commands"]
-  host "ALL"
+sudo 'sensu' do
+  user 'sensu'
+  runas 'root'
+  commands node['monitor']['sudo_commands']
+  host 'ALL'
   nopasswd true
 end

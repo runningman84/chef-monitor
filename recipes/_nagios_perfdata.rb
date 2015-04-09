@@ -17,10 +17,10 @@
 # limitations under the License.
 #
 
-include_recipe "monitor::_extensions"
+include_recipe 'monitor::_extensions'
 
-cookbook_file File.join(node["monitor"]["server_extension_dir"], "nagios_perfdata.rb") do
-  source "extensions/nagios_perfdata.rb"
+cookbook_file File.join(node['monitor']['server_extension_dir'], 'nagios_perfdata.rb') do
+  source 'extensions/nagios_perfdata.rb'
   mode 0755
-  notifies :create, "ruby_block[sensu_service_trigger]", :immediately
+  notifies :create, 'ruby_block[sensu_service_trigger]', :immediately
 end
