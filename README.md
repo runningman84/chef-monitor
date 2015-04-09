@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/runningman84/chef-monitor.svg?branch=master)](https://travis-ci.org/runningman84/chef-monitor)
+
 Description
 ===========
 
