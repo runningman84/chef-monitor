@@ -1,11 +1,18 @@
 source "https://rubygems.org"
 
-gem "test-kitchen", ">= 1.0.0"
+gem 'berkshelf', '~> 3.1'
+gem 'rake'
+gem 'emeril'
 
-#group :docker do
-#  gem "kitchen-docker", ">= 0.8.0"
-#end
-
-group :vagrant do
-  gem "kitchen-vagrant"
+group :test do
+  gem 'chefspec', '~> 4.0'
+  gem 'foodcritic', '~> 4.0.0'
+  gem 'rubocop', '= 0.25'
+  gem 'strainer'
 end
+
+group :integration do
+  gem 'test-kitchen'
+  gem 'kitchen-vagrant'
+end
+
