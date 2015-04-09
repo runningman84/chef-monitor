@@ -28,8 +28,8 @@
   [ "$(ps aux | grep sensu-api | grep -v grep)" ]
 }
 
-@test "should have sensu dashboard running" {
-  [ "$(ps aux | grep sensu-dashboard | grep -v grep)" ]
+@test "should have sensu uchiwa running" {
+  [ "$(ps aux | grep uchiwa | grep -v grep)" ]
 }
 
 @test "should have sensu client running" {

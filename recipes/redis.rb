@@ -24,6 +24,9 @@ sensu_check "redis_process" do
   handlers ["default"]
   standalone true
   interval node['monitor']['default_interval']
+  additional({
+    :occurrences => node['monitor']['default_occurrences']
+  })
 end
 
 sensu_check "redis_metrics" do
@@ -31,9 +34,9 @@ sensu_check "redis_metrics" do
   command "redis-metrics.rb --scheme :::scheme_prefix::::::name:::.redis"
   handlers ["metrics"]
   standalone true
-  interval node['monitor']['default_interval']
+  interval node['monitor']['metric_interval']
   additional({
     :dependencies => ["redis_process"],
-    :occurrences => node['monitor']['default_occurrences']
+    :occurrences => node['monitor']['metric_occurrences']
   })
 end

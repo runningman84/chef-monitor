@@ -59,16 +59,29 @@ if node.has_key?("cloud")
 
 end
 
-client_attributes["chef_environment"] = "#{node.chef_environment}"
-client_attributes["platform"] = "#{node.platform}"
-client_attributes["platform_version"] = "#{node.platform_version}"
-client_attributes["platform_family"] = "#{node.platform_family}"
+%w[
+  chef_environment
+  platform
+  platform_version
+  platform_family
+].each do |key|
+  if node.has_key?(key)
+    client_attributes[key] = node[key]
+  end
+end
 
-client_attributes["scheme_prefix"] = "#{node.monitor.scheme_prefix}"
-
-client_attributes["remedy_app"] = "#{node.monitor.remedy_app}"
-client_attributes["remedy_group"] = "#{node.monitor.remedy_group}"
-client_attributes["remedy_component"] = "#{node.monitor.remedy_component}"
+%w[
+  scheme_prefix
+  remedy_app
+  remedy_group
+  remedy_component
+].each do |key|
+  if node["monitor"].has_key?(key)
+    if node["monitor"][key]
+      client_attributes[key] = node["monitor"][key]
+    end
+  end
+end
 
 node.override["sensu"]["name"] = client_name
 

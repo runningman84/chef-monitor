@@ -30,9 +30,9 @@ default["monitor"]["server_extension_dir"] = "/etc/sensu/extensions/server"
 # grpahite scheme
 default["monitor"]["scheme_prefix"] = "sensu.default."
 # remedy defaults
-default["monitor"]["remedy_app"] = ""
-default["monitor"]["remedy_group"] = ""
-default["monitor"]["remedy_component"] = ""
+default["monitor"]["remedy_app"] = nil
+default["monitor"]["remedy_group"] = nil
+default["monitor"]["remedy_component"] = nil
 
 # mailer
 default["monitor"]["mail_from"] = "sensu"

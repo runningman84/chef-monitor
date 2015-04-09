@@ -17,5 +17,6 @@ version          "0.0.6"
 end
 
 depends "sudo"
+depends "yum-epel"
 depends "sensu"
 depends "uchiwa"

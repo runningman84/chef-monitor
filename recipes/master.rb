@@ -18,7 +18,30 @@
 #
 
 include_recipe "sensu::rabbitmq"
-include_recipe "sensu::redis"
+
+if node["platform"] == "ubuntu"
+  # will be reverted once the upstream redis package supports package installation
+  package "redis-server" do
+    action :install
+  end
+
+  service "redis-server" do
+    action [ :enable, :start ]
+  end
+elsif node["platform"] == "centos"
+  include_recipe "yum-epel"
+
+  # will be reverted once the upstream redis package supports package installation
+  package "redis" do
+    action :install
+  end
+
+  service "redis" do
+    action [ :enable, :start ]
+  end
+else
+  include_recipe "sensu::redis"
+end
 
 include_recipe "monitor::_worker"
 

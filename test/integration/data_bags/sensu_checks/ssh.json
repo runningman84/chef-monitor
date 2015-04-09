@@ -1,8 +1,0 @@
-{
-  "id": "ssh",
-  "command": "check-banner.rb",
-  "subscribers": [
-    "all"
-  ],
-  "interval": 60
-}

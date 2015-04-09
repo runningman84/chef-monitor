@@ -1,40 +1,35 @@
 ---
-driver_plugin: vagrant
-driver_config:
-  require_chef_omnibus: true
+driver:
+  name: vagrant
+
+provisioner:
+  name: chef_solo
 
 platforms:
-- name: ubuntu-13.04
-  driver_config:
-    box: opscode-ubuntu-13.04
-    box_url: https://opscode-vm-bento.s3.amazonaws.com/vagrant/opscode_ubuntu-13.04_provisionerless.box
-    customize:
-      memory: 1024
-    network:
-      - ["forwarded_port", {guest: 80, host: 8080}]
-      - ["forwarded_port", {guest: 8080, host: 8081}]
-  run_list:
-  - recipe[apt]
-
-- name: centos-6.4
-  driver_config:
-    box: opscode-centos-6.4
-    box_url: https://opscode-vm-bento.s3.amazonaws.com/vagrant/opscode_centos-6.4_provisionerless.box
-    customize:
-      memory: 1024
-    network:
-      - ["forwarded_port", {guest: 80, host: 8080}]
-      - ["forwarded_port", {guest: 8080, host: 8081}]
-  run_list:
-  - recipe[yum]
+  - name: ubuntu-14.04
+    driver:
+      box: fgrehm/trusty64-lxc
+      provider: lxc
+    run_list:
+      - recipe[apt]
+  - name: ubuntu-12.04
+    driver:
+      box: fgrehm/precise64-lxc
+      provider: lxc
+    run_list:
+      - recipe[apt]
+  - name: centos-6.4
+    driver:
+      box: fgrehm/centos-6-64-lxc
+      provider: lxc
+    run_list:
+      - recipe[yum]
 
 suites:
 - name: default
   run_list:
-    - recipe[haproxy]
-    - recipe[graphite]
     - recipe[monitor::master]
-    - recipe[monitor::haproxy]
+    - recipe[monitor::linux]
     - recipe[monitor::redis]
     - recipe[monitor::rabbitmq]
   attributes:
@@ -43,21 +38,7 @@ suites:
         users: ["vagrant", "kitchen"]
         passwordless: true
         include_sudoers_d: true
-    haproxy:
-      enable_stats_socket: true
-    apache:
-      listen_ports: [8080]
-    graphite:
-      listen_port: 8080
-      carbon:
-        service_type: "init"
-    sensu:
-      dashboard:
-        port: 4000
     monitor:
-      use_nagios_plugins: true
+      use_nagios_plugins: false
       use_system_profile: true
       use_statsd_input: true
-      metric_handlers: ["graphite"]
-      additional_client_attributes:
-        haproxy_services: "servers-http"

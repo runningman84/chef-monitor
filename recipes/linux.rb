@@ -2,6 +2,18 @@ sensu_gem 'ohai'
 
 ### Checks
 
+
+sensu_check 'ssh' do
+  #file '/system/check-disk.rb'
+  command 'check-banner.rb'
+  handlers ['default']
+  interval node['monitor']['default_interval']
+  subscribers ['linux']
+  additional({
+    :occurrences => node['monitor']['default_occurrences']
+  })
+end
+
 sensu_check 'disk_usage' do
   #file '/system/check-disk.rb'
   command 'check-disk.rb -w 80 -c 90 -x nfs,tmpfs,fuse'
@@ -87,6 +99,7 @@ sensu_check "load_metrics" do
   additional({
     :occurrences => node['monitor']['metric_occurrences']
   })
+  not_if { node['monitor']['use_system_profile'] }
 end
 
 sensu_check "cpu_metrics" do
@@ -98,6 +111,7 @@ sensu_check "cpu_metrics" do
   additional({
     :occurrences => node['monitor']['metric_occurrences']
   })
+  not_if { node['monitor']['use_system_profile'] }
 end
 
 sensu_check "memory_metrics" do
@@ -109,6 +123,7 @@ sensu_check "memory_metrics" do
   additional({
     :occurrences => node['monitor']['metric_occurrences']
   })
+  not_if { node['monitor']['use_system_profile'] }
 end
 
 sensu_check "interface_metrics" do
@@ -120,6 +135,7 @@ sensu_check "interface_metrics" do
   additional({
     :occurrences => node['monitor']['metric_occurrences']
   })
+  not_if { node['monitor']['use_system_profile'] }
 end
 
 sensu_check "disk_metrics" do
@@ -131,6 +147,7 @@ sensu_check "disk_metrics" do
   additional({
     :occurrences => node['monitor']['metric_occurrences']
   })
+  not_if { node['monitor']['use_system_profile'] }
 end
 
 sensu_check "disk_usage_metrics" do
