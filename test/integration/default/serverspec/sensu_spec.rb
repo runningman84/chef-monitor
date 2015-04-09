@@ -22,12 +22,12 @@ end
 
 describe file('/etc/sensu/conf.d') do
   it { should be_directory }
-#  it { should be_owned_by 'sensu' }
+  #  it { should be_owned_by 'sensu' }
 end
 
 describe file('/etc/sensu/conf.d/checks') do
   it { should be_directory }
-#  it { should be_owned_by 'sensu' }
+  #  it { should be_owned_by 'sensu' }
 end
 describe file('/var/log/sensu') do
   it { should be_directory }
@@ -54,72 +54,62 @@ describe file('/etc/logrotate.d/sensu') do
   it { should be_owned_by 'root' }
 end
 
-describe "sensu client" do
-
-  it "is listening on port 3030" do
+describe 'sensu client' do
+  it 'is listening on port 3030' do
     expect(port(3030)).to be_listening
   end
 
-  it "has a running service of sensu-client" do
-    expect(service("sensu-client")).to be_running
+  it 'has a running service of sensu-client' do
+    expect(service('sensu-client')).to be_running
   end
 
-  it "has a enabled service of sensu-client" do
-    expect(service("sensu-client")).to be_enabled
+  it 'has a enabled service of sensu-client' do
+    expect(service('sensu-client')).to be_enabled
   end
-
 end
 
-describe "sensu api" do
-
-  it "is listening on port 4567" do
+describe 'sensu api' do
+  it 'is listening on port 4567' do
     expect(port(4567)).to be_listening
   end
 
-  it "has a running service of sensu-api" do
-    expect(service("sensu-api")).to be_running
+  it 'has a running service of sensu-api' do
+    expect(service('sensu-api')).to be_running
   end
 
-  it "has a enabled service of sensu-api" do
-    expect(service("sensu-api")).to be_enabled
+  it 'has a enabled service of sensu-api' do
+    expect(service('sensu-api')).to be_enabled
   end
-
 end
 
-describe "sensu server" do
-
-  it "has a running service of sensu-server" do
-    expect(service("sensu-server")).to be_running
+describe 'sensu server' do
+  it 'has a running service of sensu-server' do
+    expect(service('sensu-server')).to be_running
   end
 
-  it "has a enabled service of sensu-server" do
-    expect(service("sensu-server")).to be_enabled
+  it 'has a enabled service of sensu-server' do
+    expect(service('sensu-server')).to be_enabled
   end
-
 end
 
-describe "uchiwa" do
-
-  it "is listening on port 3000" do
+describe 'uchiwa' do
+  it 'is listening on port 3000' do
     expect(port(3000)).to be_listening
   end
 
-  it "has a running service of uchiwa" do
-    expect(service("uchiwa")).to be_running
+  it 'has a running service of uchiwa' do
+    expect(service('uchiwa')).to be_running
   end
 
-  it "has a enabled service of uchiwa" do
-    expect(service("uchiwa")).to be_enabled
+  it 'has a enabled service of uchiwa' do
+    expect(service('uchiwa')).to be_enabled
   end
-
 end
-
 
 describe command('curl -s http://localhost:3000/') do
   # test uchiwa login page
   its(:stdout) { should contain('uchiwa').after('ng-app=') }
 end
-
 
 describe command('curl -s -I "http://localhost:4567/health?consumers=1&messages=1"') do
   # test output
@@ -135,21 +125,18 @@ describe command('curl -s http://localhost:4567/info') do
 
   # test redis connect
   its(:stdout) { should contain('connected":true').after('redis') }
-
 end
 
 describe command('curl -s http://localhost:4567/checks') do
-
-  %w{check-banner.rb check-disk.rb check-mem.rb check-load.rb check-fs-writable.rb check-chef-client.rb}.each do |check|
+  %w(check-banner.rb check-disk.rb check-mem.rb check-load.rb check-fs-writable.rb check-chef-client.rb).each do |check|
     # test check
     its(:stdout) { should contain(check).after('command') }
   end
 
-  %w{disk-usage-metrics.rb redis-metrics.rb rabbitmq-overview-metrics.rb}.each do |check|
+  %w(disk-usage-metrics.rb redis-metrics.rb rabbitmq-overview-metrics.rb).each do |check|
     # test metric
     its(:stdout) { should contain(check).after('command') }
   end
-
 end
 
 describe command('curl -s http://localhost:4567/clients') do
@@ -161,13 +148,12 @@ describe command('curl -s http://localhost:4567/clients') do
 
   # test subscriptions
   its(:stdout) { should contain('all').after('subscriptions') }
-
 end
 
 describe command('curl -s http://localhost:4567/events') do
-  its(:stdout) { should match /\[\]/ }
+  its(:stdout) { should eq('[]') }
 end
 
 describe command('curl -s http://localhost:4567/stashes') do
-  its(:stdout) { should match /\[\]/ }
+  its(:stdout) { should eq('[]') }
 end
