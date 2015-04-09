@@ -17,6 +17,8 @@
 # limitations under the License.
 #
 
+include_recipe 'build-essential'
+
 sensu_gem 'ridley' do
 end
 

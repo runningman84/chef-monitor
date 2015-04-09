@@ -18,5 +18,6 @@ end
 
 depends 'sudo'
 depends 'yum-epel'
+depends 'build-essential'
 depends 'sensu'
 depends 'uchiwa'
