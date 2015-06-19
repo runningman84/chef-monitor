@@ -1,8 +1,8 @@
 include_attribute 'sensu'
 
 override['sensu']['use_embedded_ruby'] = true
-override['sensu']['version'] = '0.17.1-1'
-override['uchiwa']['version'] = '0.7.0-1'
+override['sensu']['version'] = '0.18.1-1'
+override['uchiwa']['version'] = '0.9.0-1'
 
 default['monitor']['master_address'] = nil
 
