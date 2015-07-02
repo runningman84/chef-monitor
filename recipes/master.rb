@@ -18,6 +18,7 @@
 #
 
 include_recipe 'sensu::rabbitmq'
+include_recipe 'monitor::rabbitmq'
 
 if node['platform'] == 'ubuntu'
   # will be reverted once the upstream redis package supports package installation
@@ -43,6 +44,7 @@ else
   include_recipe 'sensu::redis'
 end
 
+include_recipe 'monitor::redis'
 include_recipe 'monitor::_worker'
 
 include_recipe 'sensu::api_service'
