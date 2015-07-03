@@ -17,17 +17,13 @@
 # limitations under the License.
 #
 
-include_recipe 'build-essential'
+include_recipe 'build-essential::default'
 
-sensu_gem 'ridley' do
+sensu_gem 'sensu-plugins-chef' do
+  version '0.0.2'
 end
 
-handler_path = '/etc/sensu/handlers/chef_node.rb'
-
-cookbook_file handler_path do
-  source 'handlers/chef_node.rb'
-  mode 0755
-end
+handler_path = '/opt/sensu/embedded/bin/handler-chef-node.rb'
 
 node.override['monitor']['sudo_commands'] =
   node['monitor']['sudo_commands'] + [handler_path]
@@ -47,7 +43,7 @@ include_recipe 'monitor::_filters'
 
 sensu_handler 'chef_node' do
   type 'pipe'
-  command 'sudo chef_node.rb'
+  command 'sudo handler-chef-node.rb'
   filters ['keepalives']
   severities %w(warning critical)
 end

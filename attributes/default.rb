@@ -1,8 +1,8 @@
 include_attribute 'sensu'
 
 override['sensu']['use_embedded_ruby'] = true
-override['sensu']['version'] = '0.18.1-1'
-override['uchiwa']['version'] = '0.9.0-1'
+override['sensu']['version'] = '0.19.2-1'
+override['uchiwa']['version'] = '0.9.1-1'
 
 default['monitor']['master_address'] = nil
 
@@ -44,3 +44,6 @@ default['monitor']['smtp_username'] = nil
 default['monitor']['smtp_password'] = nil
 default['monitor']['smtp_authentication'] = nil
 default['monitor']['smtp_enable_starttls_auto'] = true
+
+# build-essential
+normal['build-essential']['compile_time'] = true

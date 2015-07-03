@@ -20,7 +20,7 @@
 include_recipe 'monitor::_redis'
 
 sensu_check 'redis_process' do
-  command 'check-procs.rb -p redis-server -w 2 -c 3 -C 1'
+  command 'check-process.rb -p redis-server -w 2 -c 3 -C 1'
   handlers ['default']
   standalone true
   interval node['monitor']['default_interval']
@@ -31,7 +31,7 @@ end
 
 sensu_check 'redis_metrics' do
   type 'metric'
-  command 'redis-metrics.rb --scheme :::scheme_prefix::::::name:::.redis'
+  command 'metrics-redis-graphite.rb --scheme :::scheme_prefix::::::name:::.redis'
   handlers ['metrics']
   standalone true
   interval node['monitor']['metric_interval']

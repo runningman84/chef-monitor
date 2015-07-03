@@ -15,7 +15,7 @@ end
 
 sensu_check 'disk_usage' do
   # file '/system/check-disk.rb'
-  command 'check-disk.rb -w 80 -c 90 -x nfs,tmpfs,fuse'
+  command 'check-disk-usage.rb -w 80 -c 90 -x nfs,tmpfs,fuse'
   handlers ['default']
   interval node['monitor']['default_interval']
   subscribers ['linux']
@@ -37,7 +37,7 @@ end
 
 sensu_check 'swap' do
   # file '/system/check-mem.rb'
-  command 'check-mem.rb --swap -w 60 -c 50'
+  command 'check-swap.rb -w 60 -c 50'
   handlers ['default']
   interval node['monitor']['default_interval']
   subscribers ['linux']
@@ -91,7 +91,7 @@ end
 
 sensu_check 'load_metrics' do
   type 'metric'
-  command 'load-metrics.rb --scheme :::scheme_prefix::::::name:::.load'
+  command 'metrics-load.rb --scheme :::scheme_prefix::::::name:::.load'
   handlers ['metrics']
   interval node['monitor']['metric_interval']
   subscribers ['linux']
@@ -103,7 +103,7 @@ end
 
 sensu_check 'cpu_metrics' do
   type 'metric'
-  command 'cpu-metrics.rb --scheme :::scheme_prefix::::::name:::.cpu'
+  command 'metrics-cpu.rb --scheme :::scheme_prefix::::::name:::.cpu'
   handlers ['metrics']
   interval node['monitor']['metric_interval']
   subscribers ['linux']
@@ -115,7 +115,7 @@ end
 
 sensu_check 'memory_metrics' do
   type 'metric'
-  command 'memory-metrics.rb --scheme :::scheme_prefix::::::name:::.memory'
+  command 'metrics-memory.rb --scheme :::scheme_prefix::::::name:::.memory'
   handlers ['metrics']
   interval node['monitor']['metric_interval']
   subscribers ['linux']
@@ -127,7 +127,7 @@ end
 
 sensu_check 'interface_metrics' do
   type 'metric'
-  command 'interface-metrics.rb --scheme :::scheme_prefix::::::name:::.interface'
+  command 'metrics-interface.rb --scheme :::scheme_prefix::::::name:::.interface'
   handlers ['metrics']
   interval node['monitor']['metric_interval']
   subscribers ['linux']
@@ -139,7 +139,7 @@ end
 
 sensu_check 'disk_metrics' do
   type 'metric'
-  command 'disk-metrics.rb --scheme :::scheme_prefix::::::name:::.disk'
+  command 'metrics-disk.rb --scheme :::scheme_prefix::::::name:::.disk'
   handlers ['metrics']
   interval node['monitor']['metric_interval']
   subscribers ['linux']

@@ -17,11 +17,8 @@
 # limitations under the License.
 #
 
-sensu_gem 'redphone'
-
-cookbook_file '/etc/sensu/handlers/pagerduty.rb' do
-  source 'handlers/pagerduty.rb'
-  mode 0755
+sensu_gem 'sensu-plugins-pagerduty' do
+  version '0.0.3'
 end
 
 sensu_snippet 'pagerduty' do
@@ -32,6 +29,6 @@ include_recipe 'monitor::_filters'
 
 sensu_handler 'pagerduty' do
   type 'pipe'
-  command 'pagerduty.rb'
+  command 'handler-pagerduty.rb'
   filters ['actions']
 end

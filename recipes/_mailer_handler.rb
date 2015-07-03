@@ -1,13 +1,7 @@
 
-sensu_gem 'mail' do
-  version '~> 2.5.4'
-end
 
-handler_path = '/etc/sensu/handlers/mailer.rb'
-
-cookbook_file handler_path do
-  source 'handlers/mailer.rb'
-  mode 0755
+sensu_gem 'sensu-plugins-mailer' do
+  version '0.0.1'
 end
 
 sensu_snippet 'mailer' do
@@ -26,5 +20,5 @@ end
 
 sensu_handler 'mailer' do
   type 'pipe'
-  command 'mailer.rb'
+  command 'handler-mailer.rb'
 end

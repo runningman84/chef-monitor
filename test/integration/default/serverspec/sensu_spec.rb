@@ -118,7 +118,7 @@ end
 
 describe command('curl -s http://localhost:4567/info') do
   # test version
-  its(:stdout) { should contain('0.18.1').after('version') }
+  its(:stdout) { should contain('0.19.2').after('version') }
 
   # test rabbitmq connect
   its(:stdout) { should contain('connected":true').after('transport') }
@@ -128,12 +128,12 @@ describe command('curl -s http://localhost:4567/info') do
 end
 
 describe command('curl -s http://localhost:4567/checks') do
-  %w(check-banner.rb check-disk.rb check-mem.rb check-load.rb check-fs-writable.rb check-chef-client.rb).each do |check|
+  %w(check-banner.rb check-disk-usage.rb check-mem.rb check-load.rb check-fs-writable.rb check-chef-client.rb).each do |check|
     # test check
     its(:stdout) { should contain(check).after('command') }
   end
 
-  %w(disk-usage-metrics.rb redis-metrics.rb rabbitmq-overview-metrics.rb).each do |check|
+  %w(disk-usage-metrics.rb metrics-redis.rb metrics-rabbitmq-overview.rb).each do |check|
     # test metric
     its(:stdout) { should contain(check).after('command') }
   end

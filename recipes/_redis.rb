@@ -19,9 +19,6 @@
 
 include_recipe 'monitor::default'
 
-sensu_gem 'redis'
-
-cookbook_file '/etc/sensu/plugins/redis-metrics.rb' do
-  source 'plugins/redis-metrics.rb'
-  mode 0755
+sensu_gem 'sensu-plugins-redis' do
+  version '0.0.2'
 end

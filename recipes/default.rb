@@ -88,38 +88,40 @@ sensu_client client_name do
   additional client_attributes
 end
 
-%w(
-  check-banner.rb
-  check-chef-client.rb
-  check-disk.rb
-  check-fs-writable.rb
-  check-haproxy.rb
-  check-http.rb
-  check-https-cert.rb
-  check-load.rb
-  check-log.rb
-  check-mem.rb
-  check-mtime.rb
-  check-procs.rb
-  check-tail.rb
-  cpu-metrics.rb
-  disk-capacity-metrics.rb
-  disk-metrics.rb
-  disk-usage-metrics.rb
-  interface-metrics.rb
-  iostat-extended-metrics.rb
-  load-metrics.rb
-  memory-metrics.rb
-  nginx-metrics.rb
-  rabbitmq-overview-metrics.rb
-  redis-metrics.rb
-  vmstat-metrics.rb
-  metrics-curl.rb
-).each do |default_plugin|
-  cookbook_file "/etc/sensu/plugins/#{default_plugin}" do
-    source "plugins/#{default_plugin}"
-    mode 0755
-  end
+sensu_gem 'sensu-plugins-network-checks' do
+  version '0.0.2'
+end
+
+sensu_gem 'sensu-plugins-load-checks' do
+  version '0.0.2'
+end
+
+sensu_gem 'sensu-plugins-process-checks' do
+  version '0.0.2'
+end
+
+sensu_gem 'sensu-plugins-memory-checks' do
+  version '0.0.3'
+end
+
+sensu_gem 'sensu-plugins-disk-checks' do
+  version '0.0.4'
+end
+
+sensu_gem 'sensu-plugins-filesystem-checks' do
+  version '0.0.2'
+end
+
+sensu_gem 'sensu-plugins-http' do
+  version '0.0.1'
+end
+
+sensu_gem 'sensu-plugins-vmstats' do
+  version '0.0.2'
+end
+
+sensu_gem 'sensu-plugins-io-checks' do
+  version '0.0.1'
 end
 
 include_recipe 'monitor::_nagios_plugins' if node['monitor']['use_nagios_plugins']

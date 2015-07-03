@@ -19,9 +19,10 @@
 
 include_recipe 'monitor::default'
 
-sensu_gem 'carrot-top'
+include_recipe 'build-essential::default'
 
-cookbook_file '/etc/sensu/plugins/rabbitmq-overview-metrics.rb' do
-  source 'plugins/rabbitmq-overview-metrics.rb'
-  mode 0755
+# sensu_gem 'carrot-top'
+
+sensu_gem 'sensu-plugins-rabbitmq' do
+  version '0.0.2'
 end

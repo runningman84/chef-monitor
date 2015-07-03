@@ -19,8 +19,7 @@
 
 include_recipe 'monitor::_extensions'
 
-cookbook_file File.join(node['monitor']['client_extension_dir'], 'statsd.rb') do
-  source 'extensions/statsd.rb'
-  mode 0755
-  notifies :create, 'ruby_block[sensu_service_trigger]', :immediately
-end
+#sensu_gem 'sensu-plugins-statsd' do
+#  options('--prerelease') # only needed if it is in an alpha state
+#  version '0.0.1.alpha.1'
+#end

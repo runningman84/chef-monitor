@@ -49,3 +49,12 @@ include_recipe 'sensu::api_service'
 include_recipe 'uchiwa'
 
 include_recipe 'monitor::default'
+
+#sensu_gem 'sensu-plugins-sensu' do
+#  options('--prerelease') # only needed if it is in an alpha state
+#  version '0.0.1.alpha.1'
+#end
+
+sensu_gem 'sensu-plugins-uchiwa' do
+  version '0.0.2'
+end
