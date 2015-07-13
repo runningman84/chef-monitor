@@ -19,7 +19,7 @@
 
 include_recipe 'monitor::default'
 
-#sensu_gem 'haproxy'
+# sensu_gem 'haproxy'
 
 ensu_gem 'sensu-plugins-redis' do
   version '0.0.2'

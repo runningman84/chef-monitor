@@ -89,10 +89,14 @@ sensu_client client_name do
 end
 
 sensu_gem 'sensu-plugins-network-checks' do
-  version '0.0.2'
+  version '0.0.3'
 end
 
 sensu_gem 'sensu-plugins-load-checks' do
+  version '0.0.2'
+end
+
+sensu_gem 'sensu-plugins-cpu-checks' do
   version '0.0.2'
 end
 
@@ -105,16 +109,16 @@ sensu_gem 'sensu-plugins-memory-checks' do
 end
 
 sensu_gem 'sensu-plugins-disk-checks' do
-  version '0.0.4'
+  version '1.0.0'
 end
 
 sensu_gem 'sensu-plugins-filesystem-checks' do
   version '0.0.2'
 end
 
-sensu_gem 'sensu-plugins-http' do
-  version '0.0.1'
-end
+# sensu_gem 'sensu-plugins-http' do
+#  version '0.0.1'
+# end
 
 sensu_gem 'sensu-plugins-vmstats' do
   version '0.0.2'

@@ -19,7 +19,7 @@
 
 include_recipe 'monitor::_extensions'
 
-#sensu_gem 'sensu-plugins-statsd' do
+# sensu_gem 'sensu-plugins-statsd' do
 #  options('--prerelease') # only needed if it is in an alpha state
 #  version '0.0.1.alpha.1'
-#end
+# end

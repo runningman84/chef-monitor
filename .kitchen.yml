@@ -33,6 +33,8 @@ suites:
     - recipe[monitor::redis]
     - recipe[monitor::rabbitmq]
   attributes:
+    apt:
+     compile_time_update: true
     authorization:
       sudo:
         users: ["vagrant", "kitchen"]
