@@ -89,31 +89,31 @@ sensu_client client_name do
 end
 
 sensu_gem 'sensu-plugins-network-checks' do
-  version '0.0.3'
+  version '0.0.4'
 end
 
 sensu_gem 'sensu-plugins-load-checks' do
-  version '0.0.2'
-end
-
-sensu_gem 'sensu-plugins-cpu-checks' do
-  version '0.0.2'
-end
-
-sensu_gem 'sensu-plugins-process-checks' do
-  version '0.0.2'
-end
-
-sensu_gem 'sensu-plugins-memory-checks' do
   version '0.0.3'
 end
 
+sensu_gem 'sensu-plugins-cpu-checks' do
+  version '0.0.3'
+end
+
+sensu_gem 'sensu-plugins-process-checks' do
+  version '0.0.4'
+end
+
+sensu_gem 'sensu-plugins-memory-checks' do
+  version '0.0.5'
+end
+
 sensu_gem 'sensu-plugins-disk-checks' do
-  version '1.0.0'
+  version '1.0.1'
 end
 
 sensu_gem 'sensu-plugins-filesystem-checks' do
-  version '0.0.2'
+  version '0.0.3'
 end
 
 # sensu_gem 'sensu-plugins-http' do
@@ -121,11 +121,11 @@ end
 # end
 
 sensu_gem 'sensu-plugins-vmstats' do
-  version '0.0.2'
+  version '0.0.3'
 end
 
 sensu_gem 'sensu-plugins-io-checks' do
-  version '0.0.1'
+  version '0.0.2'
 end
 
 include_recipe 'monitor::_nagios_plugins' if node['monitor']['use_nagios_plugins']
