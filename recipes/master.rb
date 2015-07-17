@@ -55,9 +55,9 @@ include_recipe 'monitor::default'
 include_recipe 'build-essential::default'
 
 sensu_gem 'sensu-plugins-sensu' do
-  version '0.0.1'
+  version '0.0.2'
 end
 
 sensu_gem 'sensu-plugins-uchiwa' do
-  version '0.0.2'
+  version '0.0.3'
 end

@@ -26,7 +26,7 @@ end
 
 sensu_check 'memory' do
   # file '/system/check-mem.rb'
-  command 'check-mem.rb -w 15 -c 10'
+  command 'check-memory.rb -w 15 -c 10'
   handlers ['default']
   interval node['monitor']['default_interval']
   subscribers ['linux']

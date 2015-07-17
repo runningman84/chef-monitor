@@ -24,5 +24,5 @@ include_recipe 'build-essential::default'
 # sensu_gem 'carrot-top'
 
 sensu_gem 'sensu-plugins-rabbitmq' do
-  version '0.0.2'
+  version '0.0.3'
 end
