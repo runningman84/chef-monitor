@@ -128,7 +128,7 @@ describe command('curl -s http://localhost:4567/info') do
 end
 
 describe command('curl -s http://localhost:4567/checks') do
-  %w(check-banner.rb check-disk-usage.rb check-mem.rb check-load.rb check-fs-writable.rb).each do |check|
+  %w(check-banner.rb check-disk-usage.rb check-memory.rb check-load.rb check-fs-writable.rb).each do |check|
     # test check
     its(:stdout) { should contain(check).after('command') }
   end
