@@ -116,10 +116,6 @@ sensu_gem 'sensu-plugins-filesystem-checks' do
   version '0.0.3'
 end
 
-# sensu_gem 'sensu-plugins-http' do
-#  version '0.0.1'
-# end
-
 sensu_gem 'sensu-plugins-vmstats' do
   version '0.0.3'
 end

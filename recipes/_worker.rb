@@ -21,9 +21,9 @@ include_recipe 'monitor::_master_search'
 
 include_recipe 'sensu::default'
 
-sensu_gem 'sensu-plugin' do
-  version node['monitor']['sensu_plugin_version']
-end
+#sensu_gem 'sensu-plugin' do
+#  version node['monitor']['sensu_plugin_version']
+#end
 
 handlers = node['monitor']['default_handlers'] + node['monitor']['metric_handlers']
 handlers.each do |handler_name|
