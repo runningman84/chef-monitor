@@ -67,15 +67,15 @@ sensu_check 'fs_writeable_tmp' do
   )
 end
 
-# sensu_check 'chef_client' do
-#  command 'check-chef-client.rb'
-#  handlers ['default']
-#  interval node['monitor']['default_interval']
-#  subscribers ['linux']
-#  additional(
-#    occurrences: node['monitor']['default_occurrences']
-#  )
-# end
+sensu_check 'chef_client' do
+  command 'check-process.rb -u root -p chef-client'
+  handlers ['default']
+  interval node['monitor']['default_interval']
+  subscribers ['linux']
+  additional(
+    occurrences: node['monitor']['default_occurrences']
+  )
+end
 
 # sensu_check "chef_client_log" do
 #  command "check-log.rb -f /var/log/chef/client.log -q \"FATAL\" -E \"Chef is already running\""
