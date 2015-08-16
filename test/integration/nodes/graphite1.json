@@ -1,0 +1,9 @@
+{
+  "id": "graphite1",
+  "run_list": ["recipe[graphite::carbon]"],
+  "automatic": {
+    "ipaddress": "10.0.0.95",
+    "uptime_seconds": 60,
+    "recipes": ["graphite::carbon"]
+  }
+}

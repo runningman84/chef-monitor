@@ -5,6 +5,9 @@ override['sensu']['version'] = '0.20.3-1'
 override['uchiwa']['version'] = '0.10.3-1'
 
 default['monitor']['master_address'] = nil
+default['monitor']['master_search_query'] = 'recipes:monitor\\:\\:master'
+default['monitor']['graphite_search_query'] = 'recipes:graphite\\:\\:carbon'
+default['monitor']['graphite_port'] = 2003
 
 default['monitor']['environment_aware_search'] = false
 default['monitor']['use_local_ipv4'] = false

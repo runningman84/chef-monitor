@@ -3,7 +3,7 @@ driver:
   name: vagrant
 
 provisioner:
-  name: chef_solo
+  name: chef_zero
 
 platforms:
   - name: ubuntu-14.04
@@ -32,6 +32,21 @@ suites:
     - recipe[monitor::linux]
     - recipe[monitor::redis]
     - recipe[monitor::rabbitmq]
+  attributes:
+    apt:
+     compile_time_update: true
+    authorization:
+      sudo:
+        users: ["vagrant", "kitchen"]
+        passwordless: true
+        include_sudoers_d: true
+    monitor:
+      use_nagios_plugins: false
+      use_system_profile: true
+      use_statsd_input: true
+- name: client
+  run_list:
+    - recipe[monitor::default]
   attributes:
     apt:
      compile_time_update: true

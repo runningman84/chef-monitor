@@ -2,6 +2,7 @@
 # Cookbook Name:: monitor
 # Recipe:: _graphite_handler
 #
+# Copyright 2015, Philipp H
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -17,24 +18,24 @@
 #
 
 graphite_address = node['monitor']['graphite_address']
+graphite_address = 'localhost' if node['recipes'].include?('graphite::carbon')
 graphite_port = node['monitor']['graphite_port']
 
 ip_type = node['monitor']['use_local_ipv4'] ? 'local_ipv4' : 'public_ipv4'
 
-case
-when Chef::Config[:solo]
-  graphite_address ||= 'localhost'
-  graphite_port ||= 2003
-when graphite_address.nil?
-  graphite_node = case
-                  when node['monitor']['environment_aware_search']
-                    search(:node, "chef_environment:#{node.chef_environment} AND recipes:graphite\\:\\:carbon").sort_by { |a| -a[:uptime_seconds] }.first
-                  else
-                    search(:node, 'recipes:graphite\\:\\:carbon').sort_by { |a| -a[:uptime_seconds] }.first
-                  end
+if graphite_address.nil?
+  search_query = node['monitor']['graphite_search_query']
+  search_query += " chef_environment:#{node.chef_environment}" if node['monitor']['environment_aware_search']
 
-  unless graphite_node.nil?
+  Chef::Log.debug('Searching graphite server nodes using ' + search_query)
+  graphite_nodes = search(:node, search_query)
+  Chef::Log.debug('Found ' + graphite_nodes.count.to_s + ' graphite servers')
 
+  if graphite_nodes.count > 0
+
+    # Use the node with the shortest uptime, older nodes might be offline
+    graphite_node = graphite_nodes.sort_by { |a| -a[:uptime_seconds] }.last
+    Chef::Log.debug('Using ' + graphite_node.name + ' as gaphite server')
     graphite_address =  case
                         when graphite_node.key?('cloud')
                           graphite_node['cloud'][ip_type] || graphite_node['ipaddress']
@@ -42,11 +43,14 @@ when graphite_address.nil?
                           graphite_node['ipaddress']
                         end
 
-    graphite_port = 2003
-
   end
 
 end
 
-node.override['sensu']['graphite']['host'] = graphite_address
-node.override['sensu']['graphite']['port'] = graphite_port
+if graphite_address.nil?
+  Chef::Log.warn('Did not find any graphite node, graphite output will not work')
+else
+  Chef::Log.info('Setting up ' + graphite_address + ' as graphite server')
+  node.override['sensu']['graphite']['host'] = graphite_address
+  node.override['sensu']['graphite']['port'] = graphite_port
+end

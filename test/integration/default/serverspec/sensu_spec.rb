@@ -118,7 +118,7 @@ end
 
 describe command('curl -s http://localhost:4567/info') do
   # test version
-  its(:stdout) { should contain('0.20.1').after('version') }
+  its(:stdout) { should contain('0.20.3').after('version') }
 
   # test rabbitmq connect
   its(:stdout) { should contain('connected":true').after('transport') }
@@ -141,7 +141,7 @@ end
 
 describe command('curl -s http://localhost:4567/clients') do
   # test version
-  its(:stdout) { should contain('0.20.1').after('version') }
+  its(:stdout) { should contain('0.20.3').after('version') }
 
   # test subscriptions
   its(:stdout) { should contain('linux').after('subscriptions') }

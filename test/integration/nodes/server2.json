@@ -1,0 +1,9 @@
+{
+  "id": "server2",
+  "run_list": ["recipe[monitor::master]"],
+  "automatic": {
+    "ipaddress": "10.0.0.79",
+    "uptime_seconds": 36000,
+    "recipes": ["monitor::master"]
+  }
+}
