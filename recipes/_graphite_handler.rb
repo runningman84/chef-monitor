@@ -26,6 +26,7 @@ sensu_handler 'graphite' do
     port: node['sensu']['graphite']['port']
   )
   mutator 'only_check_output'
+  not_if node['sensu']['graphite']['host'].nil?
 end
 
 if node['monitor']['use_nagios_plugins']

@@ -19,13 +19,12 @@
 
 graphite_address = node['monitor']['graphite_address']
 graphite_address = 'localhost' if node['recipes'].include?('graphite::carbon')
-graphite_port = node['monitor']['graphite_port']
 
 ip_type = node['monitor']['use_local_ipv4'] ? 'local_ipv4' : 'public_ipv4'
 
 if graphite_address.nil?
   search_query = node['monitor']['graphite_search_query']
-  search_query += " chef_environment:#{node.chef_environment}" if node['monitor']['environment_aware_search']
+  search_query += " AND chef_environment:#{node.chef_environment}" if node['monitor']['environment_aware_search']
 
   Chef::Log.debug('Searching graphite server nodes using ' + search_query)
   graphite_nodes = search(:node, search_query)
@@ -52,5 +51,5 @@ if graphite_address.nil?
 else
   Chef::Log.info('Setting up ' + graphite_address + ' as graphite server')
   node.override['sensu']['graphite']['host'] = graphite_address
-  node.override['sensu']['graphite']['port'] = graphite_port
+  node.override['sensu']['graphite']['port'] = 2003
 end
