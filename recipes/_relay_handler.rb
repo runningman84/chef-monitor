@@ -27,7 +27,7 @@ if node['sensu'].key?('graphite')
 
     sensu_snippet 'relay' do
       content(
-       json
+        json
       )
     end
 

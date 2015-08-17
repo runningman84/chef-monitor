@@ -34,8 +34,8 @@ if node['monitor']['use_nagios_plugins']
   sensu_handler 'graphite_perfdata' do
     type 'tcp'
     socket(
-    host: node['sensu']['graphite']['host'],
-    port: node['sensu']['graphite']['port']
+      host: node['sensu']['graphite']['host'],
+      port: node['sensu']['graphite']['port']
     )
     mutator 'nagios_perfdata'
   end
