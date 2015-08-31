@@ -20,5 +20,5 @@
 include_recipe 'monitor::default'
 
 sensu_gem 'sensu-plugins-redis' do
-  version '0.0.3'
+  version '0.0.4'
 end
