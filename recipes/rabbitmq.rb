@@ -20,7 +20,7 @@
 include_recipe 'monitor::_rabbitmq'
 
 sensu_check 'rabbitmq_process' do
-  command 'check-process.rb -p /usr/sbin/rabbitmq-server -w 2 -c 3 -C 1'
+  command 'check-process.rb -p erlang.*beam\.smp.*rabbitmq_server -w 2 -c 3 -C 1 -u rabbitmq'
   handlers ['default']
   standalone true
   interval node['monitor']['default_interval']
