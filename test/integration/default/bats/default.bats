@@ -5,7 +5,7 @@
 }
 
 @test "should have rabbitmq running" {
-  [ "$(ps aux | grep rabbitmq-server | grep -v grep)" ]
+  [ "$(ps aux | grep rabbitmq_server | grep -v grep)" ]
 }
 
 @test "rabbitmq should be listening for connections" {
