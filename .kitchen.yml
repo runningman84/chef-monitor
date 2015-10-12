@@ -44,6 +44,8 @@ suites:
       use_nagios_plugins: false
       use_system_profile: true
       use_statsd_input: true
+    rabbitmq:
+      use_distro_version: true
 - name: client
   run_list:
     - recipe[monitor::default]

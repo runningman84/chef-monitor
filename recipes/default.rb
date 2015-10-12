@@ -51,7 +51,6 @@ if node.key?('cloud')
     provider
   ).each do |id|
     key = "cloud_#{id}"
-
     client_attributes[key] = node['cloud'][id]
   end
 
@@ -111,7 +110,7 @@ sensu_gem 'sensu-plugins-memory-checks' do
 end
 
 sensu_gem 'sensu-plugins-disk-checks' do
-  version '1.0.1'
+  version '1.0.2'
 end
 
 sensu_gem 'sensu-plugins-filesystem-checks' do
