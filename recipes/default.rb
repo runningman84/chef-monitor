@@ -90,7 +90,7 @@ end
 include_recipe 'build-essential::default'
 
 sensu_gem 'sensu-plugins-network-checks' do
-  version '0.0.5'
+  version '0.0.8'
 end
 
 sensu_gem 'sensu-plugins-load-checks' do

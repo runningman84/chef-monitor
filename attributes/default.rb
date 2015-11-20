@@ -1,8 +1,11 @@
 include_attribute 'sensu'
 
 override['sensu']['use_embedded_ruby'] = true
-override['sensu']['version'] = '0.20.3-1'
-override['uchiwa']['version'] = '0.10.3-1'
+override['sensu']['version'] = '0.21.0-2'
+override['uchiwa']['version'] = '0.12.1-1'
+
+override["uchiwa"]["apt_repo_url"] = "http://repositories.sensuapp.org/apt"
+override["uchiwa"]["yum_repo_url"] = "http://repositories.sensuapp.org"
 
 default['monitor']['master_address'] = nil
 default['monitor']['master_search_query'] = 'recipes:monitor\\:\\:master'
