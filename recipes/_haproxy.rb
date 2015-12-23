@@ -19,8 +19,8 @@
 
 include_recipe 'monitor::default'
 
-sensu_gem 'sensu-plugins-redis' do
-  version '0.0.3'
+sensu_gem 'sensu-plugins-haproxy' do
+  version '0.0.5'
 end
 
 plugin_path = '/opt/sensu/embedded/bin/check-haproxy.rb'

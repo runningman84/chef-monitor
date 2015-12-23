@@ -18,7 +18,7 @@
 #
 
 sensu_gem 'sensu-plugins-pagerduty' do
-  version '0.0.3'
+  version '0.0.9'
 end
 
 sensu_snippet 'pagerduty' do

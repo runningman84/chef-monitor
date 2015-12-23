@@ -44,6 +44,20 @@ if node.key?('ec2')
 
 end
 
+if node.key?('stack')
+  %w(
+    name
+    id
+    account_id
+  ).each do |id|
+    key = "ec2_stack_#{id}"
+    key = 'ec2_account_id' if id == 'account_id'
+
+    client_attributes[key] = node['stack'][id] if node['stack'].key?(id)
+  end
+
+end
+
 if node.key?('cloud')
   %w(
     local_ipv4
@@ -90,11 +104,11 @@ end
 include_recipe 'build-essential::default'
 
 sensu_gem 'sensu-plugins-network-checks' do
-  version '0.0.8'
+  version '0.1.1'
 end
 
 sensu_gem 'sensu-plugins-load-checks' do
-  version '0.0.3'
+  version '0.0.4'
 end
 
 sensu_gem 'sensu-plugins-cpu-checks' do
@@ -110,7 +124,7 @@ sensu_gem 'sensu-plugins-memory-checks' do
 end
 
 sensu_gem 'sensu-plugins-disk-checks' do
-  version '1.0.2'
+  version '1.1.2'
 end
 
 sensu_gem 'sensu-plugins-filesystem-checks' do
