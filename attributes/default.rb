@@ -1,8 +1,8 @@
 include_attribute 'sensu'
 
 override['sensu']['use_embedded_ruby'] = true
-override['sensu']['version'] = '0.21.0-2'
-override['uchiwa']['version'] = '0.12.1-1'
+override['sensu']['version'] = '0.22.0-1'
+override['uchiwa']['version'] = '0.14.0-1'
 
 default['monitor']['master_address'] = nil
 default['monitor']['master_search_query'] = 'recipes:monitor\\:\\:master'

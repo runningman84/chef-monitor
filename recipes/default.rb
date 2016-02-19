@@ -39,7 +39,7 @@ if node.key?('ec2')
     key = "ec2_#{id}"
     key = 'ec2_av_zone' if id == 'placement_availability_zone'
 
-    client_attributes[key] = node['ec2'][id]
+    client_attributes[key] = node['ec2'][id] if node['ec2'].key?(id)
   end
 
 end
@@ -65,19 +65,20 @@ if node.key?('cloud')
     provider
   ).each do |id|
     key = "cloud_#{id}"
-    client_attributes[key] = node['cloud'][id]
+    client_attributes[key] = node['cloud'][id] if node['cloud'].key?(id)
   end
 
 end
 
 %w(
-  chef_environment
   platform
   platform_version
   platform_family
 ).each do |key|
   client_attributes[key] = node[key] if node.key?(key)
 end
+
+client_attributes['chef_env'] = node.chef_environment
 
 %w(
   scheme_prefix
@@ -104,7 +105,7 @@ end
 include_recipe 'build-essential::default'
 
 sensu_gem 'sensu-plugins-network-checks' do
-  version '0.1.1'
+  version '0.1.4'
 end
 
 sensu_gem 'sensu-plugins-load-checks' do
@@ -112,7 +113,7 @@ sensu_gem 'sensu-plugins-load-checks' do
 end
 
 sensu_gem 'sensu-plugins-cpu-checks' do
-  version '0.0.3'
+  version '0.0.4'
 end
 
 sensu_gem 'sensu-plugins-process-checks' do
@@ -120,11 +121,11 @@ sensu_gem 'sensu-plugins-process-checks' do
 end
 
 sensu_gem 'sensu-plugins-memory-checks' do
-  version '0.0.7'
+  version '0.0.9'
 end
 
 sensu_gem 'sensu-plugins-disk-checks' do
-  version '1.1.2'
+  version '1.1.3'
 end
 
 sensu_gem 'sensu-plugins-filesystem-checks' do
@@ -136,7 +137,7 @@ sensu_gem 'sensu-plugins-vmstats' do
 end
 
 sensu_gem 'sensu-plugins-io-checks' do
-  version '0.0.2'
+  version '0.0.3'
 end
 
 include_recipe 'monitor::_nagios_plugins' if node['monitor']['use_nagios_plugins']
