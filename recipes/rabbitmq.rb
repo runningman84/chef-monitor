@@ -30,7 +30,7 @@ sensu_check 'rabbitmq_process' do
 end
 
 sensu_check 'rabbitmq_alive' do
-  command "check-rabbitmq-alive.rb "
+  command 'check-rabbitmq-alive.rb '
   handlers ['default']
   standalone true
   interval node['monitor']['default_interval']
@@ -41,7 +41,7 @@ sensu_check 'rabbitmq_alive' do
 end
 
 sensu_check 'rabbitmq_node-health' do
-  command "check-rabbitmq-node-health.rb"
+  command 'check-rabbitmq-node-health.rb'
   handlers ['default']
   standalone true
   interval node['monitor']['default_interval']
@@ -52,7 +52,7 @@ sensu_check 'rabbitmq_node-health' do
 end
 
 sensu_check 'rabbitmq_queue-drain-time' do
-  command "check-rabbitmq-queue-drain-time.rb -w 300 -c 3600"
+  command 'check-rabbitmq-queue-drain-time.rb -w 300 -c 3600'
   handlers ['default']
   standalone true
   interval node['monitor']['default_interval']

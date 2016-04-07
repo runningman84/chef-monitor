@@ -17,7 +17,7 @@ end
 
 describe file('/etc/sensu') do
   it { should be_directory }
-  it { should be_owned_by 'sensu' }
+  it { should be_owned_by 'root' }
 end
 
 describe file('/etc/sensu/conf.d') do
