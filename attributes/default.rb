@@ -1,7 +1,7 @@
 include_attribute 'sensu'
 
 override['sensu']['use_embedded_ruby'] = true
-override['sensu']['version'] = '0.22.0-1'
+override['sensu']['version'] = '0.23.0-3'
 override['uchiwa']['version'] = '0.14.2-1'
 
 default['monitor']['master_address'] = nil
@@ -26,6 +26,7 @@ default['monitor']['default_handler_timeout'] = 300
 default['monitor']['metric_handlers'] = ['debug']
 default['monitor']['metric_interval'] = 60
 default['monitor']['metric_occurrences'] = 2
+default['monitor']['metric_disabled'] = false
 
 default['monitor']['client_extension_dir'] = '/etc/sensu/extensions/client'
 default['monitor']['server_extension_dir'] = '/etc/sensu/extensions/server'

@@ -39,4 +39,5 @@ sensu_check 'redis_metrics' do
     dependencies: ['redis_process'],
     occurrences: node['monitor']['metric_occurrences']
   )
+  not_if { node['monitor']['metric_disabled'] }
 end

@@ -48,7 +48,7 @@ end
 
 sensu_check 'load' do
   # file '/system/check-load.rb'
-  command 'check-load.rb -w 10,15,25 -c 15,20,30'
+  command 'check-load.rb -p -w 3,2,1 -c 9,6,3'
   handlers ['default']
   interval node['monitor']['default_interval']
   subscribers ['linux']
@@ -79,6 +79,7 @@ sensu_check 'load_metrics' do
     occurrences: node['monitor']['metric_occurrences']
   )
   not_if { node['monitor']['use_system_profile'] }
+  not_if { node['monitor']['metric_disabled'] }
 end
 
 sensu_check 'cpu_metrics' do
@@ -91,6 +92,7 @@ sensu_check 'cpu_metrics' do
     occurrences: node['monitor']['metric_occurrences']
   )
   not_if { node['monitor']['use_system_profile'] }
+  not_if { node['monitor']['metric_disabled'] }
 end
 
 sensu_check 'memory_metrics' do
@@ -103,6 +105,7 @@ sensu_check 'memory_metrics' do
     occurrences: node['monitor']['metric_occurrences']
   )
   not_if { node['monitor']['use_system_profile'] }
+  not_if { node['monitor']['metric_disabled'] }
 end
 
 sensu_check 'interface_metrics' do
@@ -115,6 +118,7 @@ sensu_check 'interface_metrics' do
     occurrences: node['monitor']['metric_occurrences']
   )
   not_if { node['monitor']['use_system_profile'] }
+  not_if { node['monitor']['metric_disabled'] }
 end
 
 sensu_check 'disk_metrics' do
@@ -127,6 +131,7 @@ sensu_check 'disk_metrics' do
     occurrences: node['monitor']['metric_occurrences']
   )
   not_if { node['monitor']['use_system_profile'] }
+  not_if { node['monitor']['metric_disabled'] }
 end
 
 sensu_check 'disk_usage_metrics' do
@@ -138,4 +143,5 @@ sensu_check 'disk_usage_metrics' do
   additional(
     occurrences: node['monitor']['metric_occurrences']
   )
+  not_if { node['monitor']['metric_disabled'] }
 end

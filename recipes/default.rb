@@ -105,7 +105,7 @@ end
 include_recipe 'build-essential::default'
 
 sensu_gem 'sensu-plugins-network-checks' do
-  version '0.1.4'
+  version '0.2.4'
 end
 
 sensu_gem 'sensu-plugins-load-checks' do
@@ -139,6 +139,11 @@ end
 sensu_gem 'sensu-plugins-io-checks' do
   version '0.0.3'
 end
+
+sensu_gem 'sensu-plugins-logs' do
+  version '0.0.4'
+end
+
 
 include_recipe 'monitor::_nagios_plugins' if node['monitor']['use_nagios_plugins']
 include_recipe 'monitor::_system_profile' if node['monitor']['use_system_profile']

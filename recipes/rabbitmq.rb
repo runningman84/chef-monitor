@@ -72,4 +72,5 @@ sensu_check 'rabbitmq_overview_metrics' do
     dependencies: ['rabbitmq_process'],
     occurrences: node['monitor']['metric_occurrences']
   )
+  not_if { node['monitor']['metric_disabled'] }
 end

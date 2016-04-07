@@ -18,7 +18,7 @@
 #
 
 sensu_gem 'sensu-plugins-aws' do
-  version '2.0.1'
+  version '2.3.0'
 end
 
 include_recipe 'monitor::_filters'
