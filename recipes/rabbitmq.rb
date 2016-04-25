@@ -51,7 +51,7 @@ sensu_check 'rabbitmq_node-health' do
   )
 end
 
-#sensu_check 'rabbitmq_queue-drain-time' do
+# sensu_check 'rabbitmq_queue-drain-time' do
 #  command 'check-rabbitmq-queue-drain-time.rb -w 300 -c 3600'
 #  handlers ['default']
 #  standalone true
@@ -60,7 +60,7 @@ end
 #    dependencies: ['rabbitmq_process'],
 #    occurrences: node['monitor']['default_occurrences']
 #  )
-#end
+# end
 
 sensu_check 'rabbitmq_overview_metrics' do
   type 'metric'
