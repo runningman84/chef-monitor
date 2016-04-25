@@ -20,7 +20,7 @@
 include_recipe 'monitor::default'
 
 sensu_gem 'sensu-plugins-haproxy' do
-  version '0.1.0'
+  version '0.1.1'
 end
 
 plugin_path = '/opt/sensu/embedded/bin/check-haproxy.rb'

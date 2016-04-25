@@ -121,7 +121,7 @@ sensu_gem 'sensu-plugins-process-checks' do
 end
 
 sensu_gem 'sensu-plugins-memory-checks' do
-  version '0.0.9'
+  version '1.0.2'
 end
 
 sensu_gem 'sensu-plugins-disk-checks' do
