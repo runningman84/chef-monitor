@@ -129,7 +129,7 @@ sensu_gem 'sensu-plugins-disk-checks' do
 end
 
 sensu_gem 'sensu-plugins-filesystem-checks' do
-  version '0.1.0'
+  version '0.2.0'
 end
 
 sensu_gem 'sensu-plugins-vmstats' do
