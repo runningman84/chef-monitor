@@ -24,7 +24,29 @@ end
 sensu_filter 'keepalives' do
   attributes(
     check: {
-      name: 'keepalive'
+      name: 'keepalive',
+      status: 2
+    },
+    occurrences: 'eval: value > 2'
+  )
+end
+
+sensu_filter 'ec2' do
+  attributes(
+    client: {
+      cloud_provider: 'ec2'
     }
   )
+end
+
+sensu_filter 'chef_env_prod' do
+  attributes(
+    client: {
+      chef_env: 'prod'
+    }
+  )
+end
+
+sensu_filter 'occurrences' do
+  attributes(occurrences: 'eval: value > :::check.occurrences|10:::')
 end

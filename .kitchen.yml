@@ -12,12 +12,6 @@ platforms:
       provider: lxc
     run_list:
       - recipe[apt]
-  - name: ubuntu-12.04
-    driver:
-      box: fgrehm/precise64-lxc
-      provider: lxc
-    run_list:
-      - recipe[apt]
   - name: centos-6.4
     driver:
       box: fgrehm/centos-6-64-lxc

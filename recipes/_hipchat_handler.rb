@@ -2,7 +2,7 @@
 # Cookbook Name:: monitor
 # Recipe:: _ec2_node_handler
 #
-# Copyright 2015, Philipp H
+# Copyright 2016, Philipp H
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -17,22 +17,26 @@
 # limitations under the License.
 #
 
-sensu_gem 'sensu-plugins-aws' do
-  version '3.1.0'
+sensu_gem 'sensu-plugins-hipchat' do
+  version '0.0.3'
 end
 
 include_recipe 'monitor::_filters'
 
-sensu_snippet 'ec2_node' do
+sensu_snippet 'hipchat' do
   content(
-    ec2_states: node['monitor']['ec2_states']
+    server_url: node['monitor']['hipchat_server_url'],
+    apikey: node['monitor']['hipchat_apikey'],
+    apiversion: node['monitor']['hipchat_apiversion'],
+    room: node['monitor']['hipchat_room'],
+    from: node['monitor']['hipchat_from']
   )
 end
 
-sensu_handler 'ec2_node' do
+sensu_handler 'hipchat' do
   type 'pipe'
-  command 'handler-ec2_node.rb'
-  filters %w(keepalives ec2)
+  command 'handler-hipchat.rb'
+  filters ['occurrences']
   severities %w(warning critical)
   timeout node['monitor']['default_handler_timeout']
 end
