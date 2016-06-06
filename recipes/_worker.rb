@@ -31,6 +31,8 @@ handlers.each do |handler_name|
   include_recipe "monitor::_#{handler_name}_handler"
 end
 
+include_recipe 'monitor::_deregister_handler'
+
 sensu_handler 'default' do
   type 'set'
   handlers node['monitor']['default_handlers']

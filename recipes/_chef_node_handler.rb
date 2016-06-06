@@ -44,7 +44,7 @@ include_recipe 'monitor::_filters'
 sensu_handler 'chef_node' do
   type 'pipe'
   command 'sudo handler-chef-node.rb'
-  filters ['keepalives']
+  filters %w(keepalives chef)
   severities %w(warning critical)
   timeout node['monitor']['default_handler_timeout']
 end

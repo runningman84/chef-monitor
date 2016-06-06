@@ -21,7 +21,7 @@ default['monitor']['sudo_commands'] = []
 
 default['monitor']['default_handlers'] = ['debug']
 default['monitor']['default_interval'] = 60
-default['monitor']['default_occurrences'] = 2
+default['monitor']['default_occurrences'] = 5
 default['monitor']['default_handler_timeout'] = 300
 default['monitor']['metric_handlers'] = ['debug']
 default['monitor']['metric_interval'] = 60

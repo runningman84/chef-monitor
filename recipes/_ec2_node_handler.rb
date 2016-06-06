@@ -17,6 +17,12 @@
 # limitations under the License.
 #
 
+include_recipe 'build-essential::default'
+
+package 'zlib1g-dev' do
+  action :install
+end
+
 sensu_gem 'sensu-plugins-aws' do
   version '3.1.0'
 end

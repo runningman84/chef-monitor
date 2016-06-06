@@ -39,6 +39,14 @@ sensu_filter 'ec2' do
   )
 end
 
+sensu_filter 'chef' do
+  attributes(
+    client: {
+      chef_env: 'eval: value.length > 0'
+    }
+  )
+end
+
 sensu_filter 'chef_env_prod' do
   attributes(
     client: {

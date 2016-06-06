@@ -21,8 +21,15 @@ include_recipe 'build-essential::default'
 
 include_recipe 'monitor::_filters'
 
+cookbook_file '/opt/sensu/embedded/bin/handler-sensu-deregister-custom.rb' do
+  source 'handlers/deregister.rb'
+  owner 'root'
+  group 'root'
+  mode 00755
+end
+
 sensu_handler 'deregister' do
   type 'pipe'
-  command 'handler-sensu-deregister.rb'
+  command 'handler-sensu-deregister-custom.rb'
   timeout node['monitor']['default_handler_timeout']
 end

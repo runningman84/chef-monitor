@@ -42,6 +42,11 @@ if node.key?('ec2')
     client_attributes[key] = node['ec2'][id] if node['ec2'].key?(id)
   end
 
+  if node['ec2'].key?('placement_availability_zone')
+    region = node['ec2']['placement_availability_zone'].scan(/[a-z]+\-[a-z]+\-[0-9]+/)
+    client_attributes['ec2_region'] = region.first if region.count > 0
+  end
+
 end
 
 if node.key?('stack')
@@ -79,6 +84,9 @@ end
 end
 
 client_attributes['chef_env'] = node.chef_environment
+
+org = Chef::Config[:chef_server_url].scan(/http.*\/organizations\/(.*)/)
+client_attributes['chef_org'] = org.first.first if org.count > 0
 
 %w(
   scheme_prefix
