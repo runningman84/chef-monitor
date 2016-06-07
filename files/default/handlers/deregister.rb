@@ -1,4 +1,5 @@
 #!/usr/bin/env ruby
+# 
 # see https://github.com/runningman84/sensu-plugins-sensu/blob/a5115abc767f52f46b34f519d1212beb4db32747/bin/handler-sensu-deregister.rb
 
 require 'rubygems'

@@ -32,6 +32,7 @@ handlers.each do |handler_name|
 end
 
 include_recipe 'monitor::_deregister_handler'
+include_recipe 'monitor::_maintenance_handler'
 
 sensu_handler 'default' do
   type 'set'
