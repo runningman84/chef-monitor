@@ -85,7 +85,7 @@ end
 
 client_attributes['chef_env'] = node.chef_environment
 
-org = Chef::Config[:chef_server_url].scan(/http.*\/organizations\/(.*)/)
+org = Chef::Config[:chef_server_url].scan(%r{/http.*\/organizations\/(.*)/})
 client_attributes['chef_org'] = org.first.first if org.count > 0
 
 %w(
