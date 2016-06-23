@@ -61,7 +61,7 @@ module Sensu
         return @options if @options
         @options = {
           interval: 10,
-          handler: 'graphite',
+          handler: 'metrics',
           add_client_prefix: true,
           path_prefix: 'system'
         }
@@ -81,9 +81,9 @@ module Sensu
         value = args.pop
         path = []
         if options[:add_client_prefix]
-          path << settings[:client][:name]
+          path << settings[:client][:scheme_prefix] + settings[:client][:name]
         end
-        path << options[:path_prefix]
+        #path << options[:path_prefix]
         path = (path + args).join('.')
         @metrics << [path, value, Time.now.to_i].join(' ')
       end
@@ -150,9 +150,9 @@ module Sensu
       def proc_loadavg_metrics
         read_file('/proc/loadavg') do |proc_loadavg|
           values = proc_loadavg.split(/\s+/).take(3).map(&:to_f)
-          add_metric('load_avg', '1_min', values[0])
-          add_metric('load_avg', '5_min', values[1])
-          add_metric('load_avg', '15_min', values[2])
+          add_metric('load_avg', 'one', values[0])
+          add_metric('load_avg', 'five', values[1])
+          add_metric('load_avg', 'fifteen', values[2])
           yield
         end
       end
@@ -165,7 +165,8 @@ module Sensu
             next unless interface
             values = data.split(/\s+/).map(&:to_i)
             Hash[dev_metrics.zip(values)].each do |key, value|
-              add_metric('net', interface, key.downcase, value)
+              keyname = key.byteslice(0, 2) + '_' + key.downcase.byteslice(2, key.length + -1)
+              add_metric('net', interface, keyname, value)
             end
           end
           yield

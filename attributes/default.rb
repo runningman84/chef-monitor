@@ -1,8 +1,8 @@
 include_attribute 'sensu'
 
 override['sensu']['use_embedded_ruby'] = true
-override['sensu']['version'] = '0.23.3-1'
-override['uchiwa']['version'] = '0.14.5-1'
+override['sensu']['version'] = '0.25.3-1'
+override['uchiwa']['version'] = '0.15.0-1'
 
 default['monitor']['master_address'] = nil
 default['monitor']['master_search_query'] = 'recipes:monitor\\:\\:master'
@@ -23,6 +23,9 @@ default['monitor']['default_handlers'] = ['debug']
 default['monitor']['default_interval'] = 60
 default['monitor']['default_occurrences'] = 5
 default['monitor']['default_handler_timeout'] = 300
+default['monitor']['standalone_mode'] = true
+default['monitor']['safe_mode'] = true
+
 default['monitor']['metric_handlers'] = ['debug']
 default['monitor']['metric_interval'] = 60
 default['monitor']['metric_occurrences'] = 2

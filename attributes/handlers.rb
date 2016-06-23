@@ -2,6 +2,7 @@ default['monitor']['pagerduty_api_key'] = ''
 
 default['monitor']['graphite_address'] = nil
 default['monitor']['graphite_port'] = nil
+default['monitor']['graphite_server_url'] = nil
 
 default['monitor']['hipchat_server_url'] = 'https://api.hipchat.com'
 default['monitor']['hipchat_apikey'] = '1234abcdefg1234abcdefg'

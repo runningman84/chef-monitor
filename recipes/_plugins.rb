@@ -1,8 +1,8 @@
 #
 # Cookbook Name:: monitor
-# Recipe:: _system_profile
+# Recipe:: _plugins
 #
-# Copyright 2013, Sean Porter Consulting
+# Copyright 2016, Philipp H
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -17,22 +17,10 @@
 # limitations under the License.
 #
 
-include_recipe 'monitor::_extensions'
+include_recipe 'build-essential::default'
 
-cookbook_file File.join(node['monitor']['client_extension_dir'], 'system_profile.rb') do
-  source 'extensions/system_profile.rb'
-  mode 0755
-  notifies :create, 'ruby_block[sensu_service_trigger]', :immediately
-end
-
-%w(
-  load_metrics
-  cpu_metrics
-  memory_metrics
-  interface_metrics
-).each do |key|
-  file "/etc/sensu/conf.d/checks/#{key}.json" do
-    action :delete
-    notifies :create, 'ruby_block[sensu_service_trigger]', :immediately
+node['monitor']['sensu_plugins'].each do |name, version|
+  sensu_gem "sensu-plugins-#{name}" do
+    version version if version != 'latest'
   end
 end

@@ -22,6 +22,12 @@ Metrics/LineLength:
 Metrics/MethodLength:
   Enabled: false
 
+CyclomaticComplexity:
+  Enabled: false
+
+Metrics/AbcSize:
+  Max: 60
+
 Style/AsciiComments:
   Enabled: false
 

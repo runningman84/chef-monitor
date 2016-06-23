@@ -25,7 +25,16 @@ sensu_check 'redis_process' do
   standalone true
   interval node['monitor']['default_interval']
   additional(
-    occurrences: node['monitor']['default_occurrences']
+    occurrences: node['monitor']['default_occurrences'],
+    graphiteStat0012hCons: graphite_url([':::scheme_prefix::::::name:::.redis.{blocked_clients,connected_clients,connected_slaves}'], 'from' => '-12hours'),
+    graphiteStat0072hCons: graphite_url([':::scheme_prefix::::::name:::.redis.{blocked_clients,connected_clients,connected_slaves}'], 'from' => '-72hours'),
+    graphiteStat0090dCons: graphite_url([':::scheme_prefix::::::name:::.redis.{blocked_clients,connected_clients,connected_slaves}'], 'from' => '-90days'),
+    graphiteStat0012hHits: graphite_url(['perSecond(:::scheme_prefix::::::name:::.redis.{keyspace_hits,keyspace_misses})'], 'from' => '-12hours'),
+    graphiteStat0072hHits: graphite_url(['perSecond(:::scheme_prefix::::::name:::.redis.{keyspace_hits,keyspace_misses})'], 'from' => '-72hours'),
+    graphiteStat0090dHits: graphite_url(['perSecond(:::scheme_prefix::::::name:::.redis.{keyspace_hits,keyspace_misses})'], 'from' => '-90days'),
+    graphiteStat0012hMem: graphite_url([':::scheme_prefix::::::name:::.redis.used_memory'], 'from' => '-12hours'),
+    graphiteStat0072hMem: graphite_url([':::scheme_prefix::::::name:::.redis.used_memory'], 'from' => '-72hours'),
+    graphiteStat0090dMem: graphite_url([':::scheme_prefix::::::name:::.redis.used_memory'], 'from' => '-90days')
   )
 end
 
@@ -37,7 +46,16 @@ sensu_check 'redis_metrics' do
   interval node['monitor']['metric_interval']
   additional(
     dependencies: ['redis_process'],
-    occurrences: node['monitor']['metric_occurrences']
+    occurrences: node['monitor']['metric_occurrences'],
+    graphiteStat0012hCons: graphite_url([':::scheme_prefix::::::name:::.redis.{blocked_clients,connected_clients,connected_slaves}'], 'from' => '-12hours'),
+    graphiteStat0072hCons: graphite_url([':::scheme_prefix::::::name:::.redis.{blocked_clients,connected_clients,connected_slaves}'], 'from' => '-72hours'),
+    graphiteStat0090dCons: graphite_url([':::scheme_prefix::::::name:::.redis.{blocked_clients,connected_clients,connected_slaves}'], 'from' => '-90days'),
+    graphiteStat0012hHits: graphite_url(['perSecond(:::scheme_prefix::::::name:::.redis.{keyspace_hits,keyspace_misses})'], 'from' => '-12hours'),
+    graphiteStat0072hHits: graphite_url(['perSecond(:::scheme_prefix::::::name:::.redis.{keyspace_hits,keyspace_misses})'], 'from' => '-72hours'),
+    graphiteStat0090dHits: graphite_url(['perSecond(:::scheme_prefix::::::name:::.redis.{keyspace_hits,keyspace_misses})'], 'from' => '-90days'),
+    graphiteStat0012hMem: graphite_url([':::scheme_prefix::::::name:::.redis.used_memory'], 'from' => '-12hours'),
+    graphiteStat0072hMem: graphite_url([':::scheme_prefix::::::name:::.redis.used_memory'], 'from' => '-72hours'),
+    graphiteStat0090dMem: graphite_url([':::scheme_prefix::::::name:::.redis.used_memory'], 'from' => '-90days')
   )
   not_if { node['monitor']['metric_disabled'] }
 end

@@ -25,7 +25,13 @@ sensu_check 'rabbitmq_process' do
   standalone true
   interval node['monitor']['default_interval']
   additional(
-    occurrences: node['monitor']['default_occurrences']
+    occurrences: node['monitor']['default_occurrences'],
+    graphiteStat0012hRate: graphite_url(['perSecond(:::scheme_prefix::::::name:::.rabbitmq.*.*.rate)'], 'from' => '-12hours', 'height' => 300, 'width' => 600),
+    graphiteStat0012hCount: graphite_url([':::scheme_prefix::::::name:::.rabbitmq.queue_totals.*.count'], 'from' => '-12hours', 'height' => 200, 'width' => 600),
+    graphiteStat0072hRate: graphite_url(['perSecond(:::scheme_prefix::::::name:::.rabbitmq.*.*.rate)'], 'from' => '-72hours', 'height' => 300, 'width' => 600),
+    graphiteStat0072hCount: graphite_url([':::scheme_prefix::::::name:::.rabbitmq.queue_totals.*.count'], 'from' => '-72hours', 'height' => 200, 'width' => 600),
+    graphiteStat0090dRate: graphite_url(['perSecond(:::scheme_prefix::::::name:::.rabbitmq.*.*.rate)'], 'from' => '-90days', 'height' => 300, 'width' => 600),
+    graphiteStat0090dCount: graphite_url([':::scheme_prefix::::::name:::.rabbitmq.queue_totals.*.count'], 'from' => '-90days', 'height' => 200, 'width' => 600)
   )
 end
 
@@ -36,7 +42,13 @@ sensu_check 'rabbitmq_alive' do
   interval node['monitor']['default_interval']
   additional(
     dependencies: ['rabbitmq_process'],
-    occurrences: node['monitor']['default_occurrences']
+    occurrences: node['monitor']['default_occurrences'],
+    graphiteStat0012hRate: graphite_url(['perSecond(:::scheme_prefix::::::name:::.rabbitmq.*.*.rate)'], 'from' => '-12hours', 'height' => 300, 'width' => 600),
+    graphiteStat0012hCount: graphite_url([':::scheme_prefix::::::name:::.rabbitmq.queue_totals.*.count'], 'from' => '-12hours', 'height' => 200, 'width' => 600),
+    graphiteStat0072hRate: graphite_url(['perSecond(:::scheme_prefix::::::name:::.rabbitmq.*.*.rate)'], 'from' => '-72hours', 'height' => 300, 'width' => 600),
+    graphiteStat0072hCount: graphite_url([':::scheme_prefix::::::name:::.rabbitmq.queue_totals.*.count'], 'from' => '-72hours', 'height' => 200, 'width' => 600),
+    graphiteStat0090dRate: graphite_url(['perSecond(:::scheme_prefix::::::name:::.rabbitmq.*.*.rate)'], 'from' => '-90days', 'height' => 300, 'width' => 600),
+    graphiteStat0090dCount: graphite_url([':::scheme_prefix::::::name:::.rabbitmq.queue_totals.*.count'], 'from' => '-90days', 'height' => 200, 'width' => 600)
   )
 end
 
@@ -47,7 +59,13 @@ sensu_check 'rabbitmq_node-health' do
   interval node['monitor']['default_interval']
   additional(
     dependencies: ['rabbitmq_process'],
-    occurrences: node['monitor']['default_occurrences']
+    occurrences: node['monitor']['default_occurrences'],
+    graphiteStat0012hRate: graphite_url(['perSecond(:::scheme_prefix::::::name:::.rabbitmq.*.*.rate)'], 'from' => '-12hours', 'height' => 300, 'width' => 600),
+    graphiteStat0012hCount: graphite_url([':::scheme_prefix::::::name:::.rabbitmq.queue_totals.*.count'], 'from' => '-12hours', 'height' => 200, 'width' => 600),
+    graphiteStat0072hRate: graphite_url(['perSecond(:::scheme_prefix::::::name:::.rabbitmq.*.*.rate)'], 'from' => '-72hours', 'height' => 300, 'width' => 600),
+    graphiteStat0072hCount: graphite_url([':::scheme_prefix::::::name:::.rabbitmq.queue_totals.*.count'], 'from' => '-72hours', 'height' => 200, 'width' => 600),
+    graphiteStat0090dRate: graphite_url(['perSecond(:::scheme_prefix::::::name:::.rabbitmq.*.*.rate)'], 'from' => '-90days', 'height' => 300, 'width' => 600),
+    graphiteStat0090dCount: graphite_url([':::scheme_prefix::::::name:::.rabbitmq.queue_totals.*.count'], 'from' => '-90days', 'height' => 200, 'width' => 600)
   )
 end
 
@@ -70,7 +88,13 @@ sensu_check 'rabbitmq_overview_metrics' do
   interval node['monitor']['metric_interval']
   additional(
     dependencies: ['rabbitmq_process'],
-    occurrences: node['monitor']['metric_occurrences']
+    occurrences: node['monitor']['metric_occurrences'],
+    graphiteStat0012hRate: graphite_url(['perSecond(:::scheme_prefix::::::name:::.rabbitmq.*.*.rate)'], 'from' => '-12hours', 'height' => 300, 'width' => 600),
+    graphiteStat0012hCount: graphite_url([':::scheme_prefix::::::name:::.rabbitmq.queue_totals.*.count'], 'from' => '-12hours', 'height' => 200, 'width' => 600),
+    graphiteStat0072hRate: graphite_url(['perSecond(:::scheme_prefix::::::name:::.rabbitmq.*.*.rate)'], 'from' => '-72hours', 'height' => 300, 'width' => 600),
+    graphiteStat0072hCount: graphite_url([':::scheme_prefix::::::name:::.rabbitmq.queue_totals.*.count'], 'from' => '-72hours', 'height' => 200, 'width' => 600),
+    graphiteStat0090dRate: graphite_url(['perSecond(:::scheme_prefix::::::name:::.rabbitmq.*.*.rate)'], 'from' => '-90days', 'height' => 300, 'width' => 600),
+    graphiteStat0090dCount: graphite_url([':::scheme_prefix::::::name:::.rabbitmq.queue_totals.*.count'], 'from' => '-90days', 'height' => 200, 'width' => 600)
   )
   not_if { node['monitor']['metric_disabled'] }
 end

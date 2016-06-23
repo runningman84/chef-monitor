@@ -110,47 +110,8 @@ sensu_client client_name do
   additional client_attributes
 end
 
-include_recipe 'build-essential::default'
-
-sensu_gem 'sensu-plugins-network-checks' do
-  version '0.2.4'
-end
-
-sensu_gem 'sensu-plugins-load-checks' do
-  version '0.0.4'
-end
-
-sensu_gem 'sensu-plugins-cpu-checks' do
-  version '0.0.4'
-end
-
-sensu_gem 'sensu-plugins-process-checks' do
-  version '0.0.6'
-end
-
-sensu_gem 'sensu-plugins-memory-checks' do
-  version '1.0.2'
-end
-
-sensu_gem 'sensu-plugins-disk-checks' do
-  version '1.1.3'
-end
-
-sensu_gem 'sensu-plugins-filesystem-checks' do
-  version '0.2.0'
-end
-
-sensu_gem 'sensu-plugins-vmstats' do
-  version '0.0.3'
-end
-
-sensu_gem 'sensu-plugins-io-checks' do
-  version '0.0.3'
-end
-
-sensu_gem 'sensu-plugins-logs' do
-  version '0.0.4'
-end
+include_recipe 'monitor::_plugins'
+include_recipe "monitor::#{node['os']}"
 
 include_recipe 'monitor::_nagios_plugins' if node['monitor']['use_nagios_plugins']
 include_recipe 'monitor::_system_profile' if node['monitor']['use_system_profile']
