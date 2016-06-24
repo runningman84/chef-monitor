@@ -3,6 +3,7 @@
 # Recipe:: default
 #
 # Copyright 2013, Sean Porter Consulting
+# Copyright 2016, Philipp H
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -18,12 +19,12 @@
 #
 
 include_recipe 'monitor::_master_search'
-
 include_recipe 'sensu::default'
 
 ip_type = node['monitor']['use_local_ipv4'] ? 'local_ipv4' : 'public_ipv4'
 
 client_attributes = node['monitor']['additional_client_attributes'].to_hash
+client_subscriptions = []
 
 client_name = node.name
 
@@ -44,7 +45,10 @@ if node.key?('ec2')
 
   if node['ec2'].key?('placement_availability_zone')
     region = node['ec2']['placement_availability_zone'].scan(/[a-z]+\-[a-z]+\-[0-9]+/)
-    client_attributes['ec2_region'] = region.first if region.count > 0
+    if region.count > 0
+      client_attributes['ec2_region'] = region.first
+      client_subscriptions << "region:#{region.first}"
+    end
   end
 
 end
@@ -60,7 +64,8 @@ if node.key?('stack')
 
     client_attributes[key] = node['stack'][id] if node['stack'].key?(id)
   end
-
+  client_subscriptions << "stack_name:#{client_attributes['ec2_stack_name']}" if client_attributes.key?('ec2_stack_name')
+  client_subscriptions << "account_id:#{client_attributes['ec2_account_id']}" if client_attributes.key?('ec2_account_id')
 end
 
 if node.key?('cloud')
@@ -72,7 +77,7 @@ if node.key?('cloud')
     key = "cloud_#{id}"
     client_attributes[key] = node['cloud'][id] if node['cloud'].key?(id)
   end
-
+  client_subscriptions << "provider:#{client_attributes['cloud_provider']}" if client_attributes.key?('cloud_provider')
 end
 
 %w(
@@ -100,13 +105,20 @@ end
 
 node.override['sensu']['name'] = client_name
 
+node['roles'].each do |role|
+  client_subscriptions << "role:#{role}"
+end
+client_subscriptions << "env:#{node.chef_environment}"
+client_subscriptions << "os:#{node['os']}"
+client_subscriptions << 'all'
+
 sensu_client client_name do
   if node.key?('cloud')
     address node['cloud'][ip_type] || node['ipaddress']
   else
     address node['ipaddress']
   end
-  subscriptions node['roles'] + [node['os'], 'all']
+  subscriptions client_subscriptions
   additional client_attributes
 end
 

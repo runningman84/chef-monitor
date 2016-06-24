@@ -41,16 +41,5 @@ default['monitor']['remedy_app'] = nil
 default['monitor']['remedy_group'] = nil
 default['monitor']['remedy_component'] = nil
 
-# mailer
-default['monitor']['mail_from'] = 'sensu'
-default['monitor']['delivery_method'] = 'smtp'
-default['monitor']['smtp_address'] = 'localhost'
-default['monitor']['smtp_port'] = 25
-default['monitor']['smtp_domain'] = 'localhost.localdomain'
-default['monitor']['smtp_username'] = nil
-default['monitor']['smtp_password'] = nil
-default['monitor']['smtp_authentication'] = nil
-default['monitor']['smtp_enable_starttls_auto'] = true
-
 # build-essential
 normal['build-essential']['compile_time'] = true
