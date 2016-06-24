@@ -1,8 +1,8 @@
 #
 # Cookbook Name:: monitor
-# Recipe:: _statsd
+# Recipe:: _install_rabbitmq
 #
-# Copyright 2013, Sean Porter Consulting
+# Copyright 2016, Philipp H
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -17,9 +17,4 @@
 # limitations under the License.
 #
 
-include_recipe 'monitor::_extensions'
-
-# sensu_gem 'sensu-plugins-statsd' do
-#  options('--prerelease') # only needed if it is in an alpha state
-#  version '0.0.1.alpha.1'
-# end
+include_recipe 'sensu::rabbitmq'

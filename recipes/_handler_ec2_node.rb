@@ -1,8 +1,8 @@
 #
 # Cookbook Name:: monitor
-# Recipe:: _pagerduty_handler
+# Recipe:: _handler_ec2_node
 #
-# Copyright 2013, Sean Porter Consulting
+# Copyright 2015, Philipp H
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -17,18 +17,35 @@
 # limitations under the License.
 #
 
-sensu_gem 'sensu-plugins-pagerduty' do
-  version '0.0.9'
+include_recipe 'build-essential::default'
+
+package 'zlib1g-dev' do
+  action :install
 end
 
-sensu_snippet 'pagerduty' do
-  content(api_key: node['monitor']['pagerduty_api_key'])
+sensu_gem 'sensu-plugins-aws' do
+  version '3.1.0'
 end
 
 include_recipe 'monitor::_filters'
 
-sensu_handler 'pagerduty' do
+cookbook_file '/opt/sensu/embedded/bin/handler-ec2_node-custom.rb' do
+  source 'handlers/ec2_node.rb'
+  owner 'root'
+  group 'root'
+  mode 00755
+end
+
+sensu_snippet 'ec2_node' do
+  content(
+    ec2_states: node['monitor']['ec2_states']
+  )
+end
+
+sensu_handler 'ec2_node' do
   type 'pipe'
-  command 'handler-pagerduty.rb'
-  filters ['actions']
+  command 'handler-ec2_node-custom.rb'
+  filters %w(keepalives ec2)
+  severities %w(warning critical)
+  timeout node['monitor']['default_handler_timeout']
 end

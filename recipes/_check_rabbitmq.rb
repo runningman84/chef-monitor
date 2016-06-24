@@ -1,6 +1,6 @@
 #
 # Cookbook Name:: monitor
-# Recipe:: rabbitmq
+# Recipe:: _check_rabbitmq
 #
 # Copyright 2013, Sean Porter Consulting
 #
@@ -17,7 +17,11 @@
 # limitations under the License.
 #
 
-include_recipe 'monitor::_rabbitmq'
+include_recipe 'build-essential::default'
+
+sensu_gem 'sensu-plugins-rabbitmq' do
+  version '1.3.1'
+end
 
 sensu_check 'rabbitmq_process' do
   command 'check-process.rb -p erlang.*beam.*rabbitmq_server -C 1 -u rabbitmq'

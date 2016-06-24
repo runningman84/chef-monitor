@@ -3,6 +3,7 @@
 # Recipe:: _worker
 #
 # Copyright 2013, Sean Porter Consulting
+# Copyright 2016, Philipp H
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.

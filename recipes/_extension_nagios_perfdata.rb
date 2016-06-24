@@ -1,6 +1,6 @@
 #
 # Cookbook Name:: monitor
-# Recipe:: _redis
+# Recipe:: _extension_nagios_perfdata
 #
 # Copyright 2013, Sean Porter Consulting
 #
@@ -17,8 +17,10 @@
 # limitations under the License.
 #
 
-include_recipe 'monitor::default'
+include_recipe 'monitor::_extensions'
 
-sensu_gem 'sensu-plugins-redis' do
-  version '0.1.0'
+cookbook_file File.join(node['monitor']['server_extension_dir'], 'nagios_perfdata.rb') do
+  source 'extensions/nagios_perfdata.rb'
+  mode 0755
+  notifies :create, 'ruby_block[sensu_service_trigger]', :immediately
 end

@@ -1,6 +1,6 @@
 #
 # Cookbook Name:: monitor
-# Recipe:: _graphite_handler
+# Recipe:: _handler_pagerduty
 #
 # Copyright 2013, Sean Porter Consulting
 #
@@ -17,27 +17,18 @@
 # limitations under the License.
 #
 
-include_recipe 'monitor::_graphite_search'
-
-sensu_handler 'graphite' do
-  type 'tcp'
-  socket(
-    host: node['sensu']['graphite']['host'],
-    port: node['sensu']['graphite']['port']
-  )
-  mutator 'only_check_output'
-  not_if node['sensu']['graphite']['host'].nil?
+sensu_gem 'sensu-plugins-pagerduty' do
+  version '1.0.0'
 end
 
-if node['monitor']['use_nagios_plugins']
-  include_recipe 'monitor::_nagios_perfdata'
+sensu_snippet 'pagerduty' do
+  content(api_key: node['monitor']['pagerduty_api_key'])
+end
 
-  sensu_handler 'graphite_perfdata' do
-    type 'tcp'
-    socket(
-      host: node['sensu']['graphite']['host'],
-      port: node['sensu']['graphite']['port']
-    )
-    mutator 'nagios_perfdata'
-  end
+include_recipe 'monitor::_filters'
+
+sensu_handler 'pagerduty' do
+  type 'pipe'
+  command 'handler-pagerduty.rb'
+  filters ['actions']
 end

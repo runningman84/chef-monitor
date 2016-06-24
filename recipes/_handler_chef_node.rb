@@ -1,8 +1,8 @@
 #
 # Cookbook Name:: monitor
-# Recipe:: _ec2_node_handler
+# Recipe:: _handler_chef_node
 #
-# Copyright 2016, Philipp H
+# Copyright 2013, Sean Porter Consulting
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -17,26 +17,34 @@
 # limitations under the License.
 #
 
-sensu_gem 'sensu-plugins-hipchat' do
-  version '0.0.3'
+include_recipe 'build-essential::default'
+
+sensu_gem 'sensu-plugins-chef' do
+  version '0.0.6'
+end
+
+handler_path = '/opt/sensu/embedded/bin/handler-chef-node.rb'
+
+node.override['monitor']['sudo_commands'] =
+  node['monitor']['sudo_commands'] + [handler_path]
+
+include_recipe 'monitor::_sudo'
+
+sensu_snippet 'chef' do
+  content(
+    server_url: Chef::Config[:chef_server_url],
+    client_name: Chef::Config[:node_name],
+    client_key: Chef::Config[:client_key],
+    verify_ssl: false
+  )
 end
 
 include_recipe 'monitor::_filters'
 
-sensu_snippet 'hipchat' do
-  content(
-    server_url: node['monitor']['hipchat_server_url'],
-    apikey: node['monitor']['hipchat_apikey'],
-    apiversion: node['monitor']['hipchat_apiversion'],
-    room: node['monitor']['hipchat_room'],
-    from: node['monitor']['hipchat_from']
-  )
-end
-
-sensu_handler 'hipchat' do
+sensu_handler 'chef_node' do
   type 'pipe'
-  command 'handler-hipchat.rb'
-  filters ['occurrences']
+  command 'sudo handler-chef-node.rb'
+  filters %w(keepalives chef)
   severities %w(warning critical)
   timeout node['monitor']['default_handler_timeout']
 end

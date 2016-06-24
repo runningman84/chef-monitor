@@ -1,9 +1,8 @@
 #
 # Cookbook Name:: monitor
-# Recipe:: _master_search
+# Recipe:: _transport_rabbitmq
 #
-# Copyright 2013, Sean Porter Consulting
-# Copyright 2015, Philipp H
+# Copyright 2016, Philipp H
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -13,8 +12,7 @@
 #
 # Unless required by applicable law or agreed to in writing, software
 # distributed under the License is distributed on an "AS IS" BASIS,
-# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or
-# implied.
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
@@ -22,9 +20,10 @@
 ip_type = node['monitor']['use_local_ipv4'] ? 'local_ipv4' : 'public_ipv4'
 master_address = node['monitor']['master_address']
 master_address = 'localhost' if node['recipes'].include?('monitor::master')
+master_address = node['monitor']['rabbitmq_address'] unless node['monitor']['rabbitmq_address'].nil?
 
 if master_address.nil?
-  search_query = node['monitor']['master_search_query']
+  search_query = node['monitor']['server_search_query']
   search_query += " AND chef_environment:#{node.chef_environment}" if node['monitor']['environment_aware_search']
 
   Chef::Log.debug('Searching sensu master nodes using ' + search_query)
@@ -52,6 +51,4 @@ if master_address.nil?
 else
   Chef::Log.info('Setting up ' + master_address + ' as sensu master')
   node.override['sensu']['rabbitmq']['host'] = master_address
-  node.override['sensu']['redis']['host'] = master_address
-  node.override['sensu']['api']['host'] = master_address
 end

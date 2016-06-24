@@ -1,6 +1,6 @@
 {
   "id": "server1",
-  "run_list": ["recipe[monitor::master]"],
+  "run_list": ["recipe[monitor::server]"],
   "automatic": {
     "ipaddress": "10.0.0.75",
     "uptime_seconds": 60,

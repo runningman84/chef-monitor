@@ -1,6 +1,6 @@
 #
 # Cookbook Name:: monitor
-# Recipe:: redis
+# Recipe:: _check_redis
 #
 # Copyright 2013, Sean Porter Consulting
 #
@@ -17,7 +17,9 @@
 # limitations under the License.
 #
 
-include_recipe 'monitor::_redis'
+sensu_gem 'sensu-plugins-redis' do
+  version '0.1.0'
+end
 
 sensu_check 'redis_process' do
   command 'check-process.rb -p redis-server -w 2 -c 3 -C 1'

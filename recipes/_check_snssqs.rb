@@ -1,8 +1,8 @@
 #
 # Cookbook Name:: monitor
-# Recipe:: _chef_node_handler
+# Recipe:: _check_snssqs
 #
-# Copyright 2016, Philipp H
+# Copyright 2013, Sean Porter Consulting
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -16,13 +16,3 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
-include_recipe 'build-essential::default'
-
-include_recipe 'monitor::_filters'
-
-sensu_handler 'deregister' do
-  type 'pipe'
-  command 'handler-sensu-deregister.rb'
-  timeout node['monitor']['default_handler_timeout']
-end

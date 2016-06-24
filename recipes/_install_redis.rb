@@ -1,8 +1,8 @@
 #
 # Cookbook Name:: monitor
-# Recipe:: _nagios_perfdata
+# Recipe:: _install_redis
 #
-# Copyright 2013, Sean Porter Consulting
+# Copyright 2016, Philipp H
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -17,10 +17,26 @@
 # limitations under the License.
 #
 
-include_recipe 'monitor::_extensions'
+if node['platform'] == 'ubuntu'
+  # will be reverted once the upstream redis package supports package installation
+  package 'redis-server' do
+    action :install
+  end
 
-cookbook_file File.join(node['monitor']['server_extension_dir'], 'nagios_perfdata.rb') do
-  source 'extensions/nagios_perfdata.rb'
-  mode 0755
-  notifies :create, 'ruby_block[sensu_service_trigger]', :immediately
+  service 'redis-server' do
+    action [:enable, :start]
+  end
+elsif node['platform'] == 'centos'
+  include_recipe 'yum-epel'
+
+  # will be reverted once the upstream redis package supports package installation
+  package 'redis' do
+    action :install
+  end
+
+  service 'redis' do
+    action [:enable, :start]
+  end
+else
+  include_recipe 'sensu::redis'
 end
