@@ -10,7 +10,7 @@ default['monitor']['api_address'] = nil
 
 default['monitor']['transport'] = 'rabbitmq'
 
-default['monitor']['server_search_query'] = 'recipes:monitor\\:\\:server'
+default['monitor']['master_search_query'] = 'recipes:monitor\\:\\:master'
 default['monitor']['graphite_search_query'] = 'recipes:graphite\\:\\:carbon'
 
 default['monitor']['environment_aware_search'] = false
