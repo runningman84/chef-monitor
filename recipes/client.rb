@@ -117,7 +117,7 @@ client_subscriptions << "os:#{node['os']}"
 client_subscriptions << 'all'
 
 sensu_client client_name do
-  if node.key?('cloud')
+  if node.key?('cloud') && node['cloud'].key?(ip_type)
     address node['cloud'][ip_type] || node['ipaddress']
   else
     address node['ipaddress']

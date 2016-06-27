@@ -37,10 +37,11 @@ sensu_check 'rabbitmq_process' do
     graphiteStat0090dRate: graphite_url(['perSecond(:::scheme_prefix::::::name:::.rabbitmq.*.*.rate)'], 'from' => '-90days', 'height' => 300, 'width' => 600),
     graphiteStat0090dCount: graphite_url([':::scheme_prefix::::::name:::.rabbitmq.queue_totals.*.count'], 'from' => '-90days', 'height' => 200, 'width' => 600)
   )
+  only_if { node['recipes'].include?('monitor::_install_rabbitmq') }
 end
 
 sensu_check 'rabbitmq_alive' do
-  command 'check-rabbitmq-alive.rb '
+  command 'check-rabbitmq-alive.rb'
   handlers ['default']
   standalone true
   interval node['monitor']['default_interval']
@@ -54,6 +55,7 @@ sensu_check 'rabbitmq_alive' do
     graphiteStat0090dRate: graphite_url(['perSecond(:::scheme_prefix::::::name:::.rabbitmq.*.*.rate)'], 'from' => '-90days', 'height' => 300, 'width' => 600),
     graphiteStat0090dCount: graphite_url([':::scheme_prefix::::::name:::.rabbitmq.queue_totals.*.count'], 'from' => '-90days', 'height' => 200, 'width' => 600)
   )
+  only_if { node['recipes'].include?('monitor::_install_rabbitmq') }
 end
 
 sensu_check 'rabbitmq_node-health' do
@@ -71,6 +73,7 @@ sensu_check 'rabbitmq_node-health' do
     graphiteStat0090dRate: graphite_url(['perSecond(:::scheme_prefix::::::name:::.rabbitmq.*.*.rate)'], 'from' => '-90days', 'height' => 300, 'width' => 600),
     graphiteStat0090dCount: graphite_url([':::scheme_prefix::::::name:::.rabbitmq.queue_totals.*.count'], 'from' => '-90days', 'height' => 200, 'width' => 600)
   )
+  only_if { node['recipes'].include?('monitor::_install_rabbitmq') }
 end
 
 # sensu_check 'rabbitmq_queue-drain-time' do

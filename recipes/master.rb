@@ -38,16 +38,17 @@ else
   raise "Unsupported Transport #{node['monitor']['transport']}"
 end
 
+include_recipe 'monitor::_install_redis' unless node['monitor']['redis_address']
+
 node.override['sensu']['transport']['name'] = node['monitor']['transport']
 node.override['sensu']['api']['host'] = 'localhost'
 
 include_recipe 'sensu::default'
 
-include_recipe "monitor::_check_#{node['monitor']['transport']}"
-
 handlers = node['monitor']['default_handlers'] + node['monitor']['metric_handlers']
 handlers.each do |handler_name|
   next if handler_name == 'debug'
+  next unless %w(chef_node ec2_node hipchat mailer pagerduty relay).include? handler_name
   include_recipe "monitor::_handler_#{handler_name}"
 end
 
@@ -100,4 +101,6 @@ sensu_gem 'sensu-plugins-uchiwa' do
   version '0.0.3'
 end
 
-include_recipe "monitor::client"
+include_recipe 'monitor::client'
+include_recipe 'monitor::_check_redis'
+include_recipe 'monitor::_check_rabbitmq' if node['monitor']['transport'] == 'rabbitmq'

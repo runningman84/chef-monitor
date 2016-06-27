@@ -111,7 +111,7 @@ describe command('curl -s http://localhost:3000/') do
   its(:stdout) { should contain('uchiwa').after('ng-app=') }
 end
 
-describe command('curl -s -I "http://localhost:4567/health?consumers=1&messages=1"') do
+describe command('curl -s -I "http://localhost:4567/health?messages=1"') do
   # test output
   its(:stdout) { should contain('HTTP/1.1 204') }
 end

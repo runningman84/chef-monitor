@@ -1,3 +1,5 @@
+default['monitor']['nagios_plugin_packages'] = ['nagios-plugins']
+
 default['monitor']['sensu_plugins']['network-checks'] = '1.0.0'
 default['monitor']['sensu_plugins']['load-checks'] = '1.0.0'
 default['monitor']['sensu_plugins']['cpu-checks'] = '1.0.0'
