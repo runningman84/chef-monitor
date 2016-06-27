@@ -23,7 +23,7 @@ master_address = 'localhost' if node['recipes'].include?('monitor::master')
 master_address = node['monitor']['rabbitmq_address'] unless node['monitor']['rabbitmq_address'].nil?
 
 if master_address.nil?
-  search_query = node['monitor']['server_search_query']
+  search_query = node['monitor']['master_search_query']
   search_query += " AND chef_environment:#{node.chef_environment}" if node['monitor']['environment_aware_search']
 
   Chef::Log.debug('Searching sensu master nodes using ' + search_query)
