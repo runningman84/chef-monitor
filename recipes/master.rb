@@ -17,30 +17,18 @@
 # limitations under the License.
 #
 
-case node['monitor']['transport']
-when 'rabbitmq'
-  if node['monitor']['rabbitmq_address'].nil?
-    include_recipe 'monitor::_install_rabbitmq'
-    node.override['sensu']['rabbitmq']['host'] = 'localhost'
-  else
-    node.override['sensu']['rabbitmq']['host'] = node['monitor']['rabbitmq_address']
-  end
-when 'redis'
-  if node['monitor']['redis_address'].nil?
-    include_recipe 'monitor::_install_redis'
-    node.override['sensu']['redis']['host'] = 'localhost'
-  else
-    node.override['sensu']['rabbitmq']['host'] = node['monitor']['redis_address']
-  end
-when 'snssqs'
-  # nothing yet
-else
-  raise "Unsupported Transport #{node['monitor']['transport']}"
+if node['monitor']['rabbitmq_address'].nil?
+  include_recipe 'monitor::_install_rabbitmq' if node['monitor']['transport'] == 'rabbitmq'
 end
 
-include_recipe 'monitor::_install_redis' unless node['monitor']['redis_address']
+if node['monitor']['redis_address'].nil?
+  include_recipe 'monitor::_install_redis'
+else
+  node.override['sensu']['redis']['host'] = node['monitor']['redis_address']
+end
 
 node.override['sensu']['transport']['name'] = node['monitor']['transport']
+include_recipe "monitor::_transport_#{node['monitor']['transport']}"
 node.override['sensu']['api']['host'] = 'localhost'
 
 include_recipe 'sensu::default'

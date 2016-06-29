@@ -89,7 +89,7 @@ end
 
 sensu_check 'rabbitmq_overview_metrics' do
   type 'metric'
-  command 'metrics-rabbitmq-overview.rb --scheme :::scheme_prefix::::::name:::.rabbitmq'
+  command "metrics-rabbitmq-overview.rb --scheme :::scheme_prefix::::::name:::.rabbitmq --host #{node['sensu']['rabbitmq']['host']}"
   handlers ['metrics']
   standalone true
   interval node['monitor']['metric_interval']

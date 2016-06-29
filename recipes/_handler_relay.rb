@@ -18,7 +18,7 @@
 #
 
 include_recipe 'monitor::_extensions'
-include_recipe 'monitor::_graphite_search'
+include_recipe 'monitor::_search_graphite'
 
 if node['sensu'].key?('graphite')
 

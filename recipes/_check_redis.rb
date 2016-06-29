@@ -43,7 +43,7 @@ end
 
 sensu_check 'redis_metrics' do
   type 'metric'
-  command 'metrics-redis-graphite.rb --scheme :::scheme_prefix::::::name:::.redis'
+  command "metrics-redis-graphite.rb --scheme :::scheme_prefix::::::name:::.redis --host #{node['sensu']['redis']['host']}"
   handlers ['metrics']
   standalone true
   interval node['monitor']['metric_interval']

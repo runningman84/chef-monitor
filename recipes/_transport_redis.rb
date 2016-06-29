@@ -17,13 +17,10 @@
 # limitations under the License.
 #
 
-# embeded transport
-
 # disable databag search for ssl certificate
 node.set['sensu']['use_ssl'] = false
 
 ip_type = node['monitor']['use_local_ipv4'] ? 'local_ipv4' : 'public_ipv4'
-master_address = node['monitor']['master_address']
 master_address = 'localhost' if node['recipes'].include?('monitor::master')
 master_address = node['monitor']['redis_address'] unless node['monitor']['redis_address'].nil?
 

@@ -24,13 +24,20 @@ sensu_gem 'sensu-transport-snssqs' do
   action :install
 end
 
+if node.key?('ec2') && node['ec2'].key?('placement_availability_zone')
+  region = node['ec2']['placement_availability_zone'].scan(/[a-z]+\-[a-z]+\-[0-9]+/)
+  if region.count > 0 && node['monitor']['snsqs_region'].nil?
+    node.set['monitor']['snssqs_region'] = region.first
+  end
+end
+
 sensu_snippet 'snssqs' do
   content(
-    max_number_of_messages: node['monitor']['snsqs']['max_number_of_messages'],
-    wait_time_seconds: node['monitor']['snsqs']['wait_time_seconds'],
-    region: node['monitor']['snsqs']['region'],
-    consuming_sqs_queue_url: node['monitor']['snsqs']['consuming_sqs_queue_url'],
-    publishing_sns_topic_arn: node['monitor']['snsqs']['publishing_sns_topic_arn']
+    max_number_of_messages: node['monitor']['snssqs_max_number_of_messages'],
+    wait_time_seconds: node['monitor']['snssqs_wait_time_seconds'],
+    region: node['monitor']['snssqs_region'],
+    consuming_sqs_queue_url: node['monitor']['snssqs_consuming_sqs_queue_url'],
+    publishing_sns_topic_arn: node['monitor']['snssqs_publishing_sns_topic_arn']
   )
 end
 

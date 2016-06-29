@@ -18,7 +18,6 @@
 #
 
 ip_type = node['monitor']['use_local_ipv4'] ? 'local_ipv4' : 'public_ipv4'
-master_address = node['monitor']['master_address']
 master_address = 'localhost' if node['recipes'].include?('monitor::master')
 master_address = node['monitor']['rabbitmq_address'] unless node['monitor']['rabbitmq_address'].nil?
 

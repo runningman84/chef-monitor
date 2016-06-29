@@ -40,6 +40,12 @@ default['monitor']['metric_disabled'] = false
 default['monitor']['client_extension_dir'] = '/etc/sensu/extensions/client'
 default['monitor']['server_extension_dir'] = '/etc/sensu/extensions/server'
 
+default['monitor']['snsqs_max_number_of_messages'] = 10
+default['monitor']['snsqs_wait_time_seconds'] = 2
+default['monitor']['snsqs_region'] = nil
+default['monitor']['snsqs_consuming_sqs_queue_url'] = nil
+default['monitor']['snsqs_publishing_sns_topic_arn'] = nil
+
 # grpahite scheme
 default['monitor']['scheme_prefix'] = 'sensu.default.'
 # remedy defaults deprecated
