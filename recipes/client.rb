@@ -18,11 +18,12 @@
 # limitations under the License.
 #
 
-include_recipe "monitor::_transport_#{node['monitor']['transport']}"
-
-node.override['sensu']['transport']['name'] = node['monitor']['transport']
+node.set['sensu']['use_ssl'] = false unless node['monitor']['transport'] == 'rabbitmq'
 
 include_recipe 'sensu::default'
+
+include_recipe "monitor::_transport_#{node['monitor']['transport']}"
+node.override['sensu']['transport']['name'] = node['monitor']['transport']
 
 ip_type = node['monitor']['use_local_ipv4'] ? 'local_ipv4' : 'public_ipv4'
 

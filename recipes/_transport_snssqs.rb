@@ -19,9 +19,19 @@
 
 node.set['sensu']['use_ssl'] = false
 
+sensu_gem 'aws-sdk' do
+end
+
 # https://github.com/SimpleFinance/sensu-transport-snssqs
-sensu_gem 'sensu-transport-snssqs' do
-  action :install
+# sensu_gem 'sensu-transport-snssqs' do
+#  action :install
+# end
+
+cookbook_file '/opt/sensu/embedded/lib/ruby/gems/2.3.0/gems/sensu-transport-6.0.0/lib/sensu/transport/snssqs.rb' do
+  source 'transports/snssqs.rb'
+  owner 'root'
+  group 'root'
+  mode 00644
 end
 
 if node.key?('ec2') && node['ec2'].key?('placement_availability_zone')
@@ -37,7 +47,10 @@ sensu_snippet 'snssqs' do
     wait_time_seconds: node['monitor']['snssqs_wait_time_seconds'],
     region: node['monitor']['snssqs_region'],
     consuming_sqs_queue_url: node['monitor']['snssqs_consuming_sqs_queue_url'],
-    publishing_sns_topic_arn: node['monitor']['snssqs_publishing_sns_topic_arn']
+    publishing_sns_topic_arn: node['monitor']['snssqs_publishing_sns_topic_arn'],
+    statsd_addr: node['monitor']['snssqs_statsd_addr'],
+    statsd_namespace: node['monitor']['snssqs_statsd_namespace'],
+    statsd_sample_rate: node['monitor']['snssqs_statsd_sample_rate']
   )
 end
 

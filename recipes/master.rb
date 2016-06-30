@@ -27,11 +27,13 @@ else
   node.override['sensu']['redis']['host'] = node['monitor']['redis_address']
 end
 
+node.set['sensu']['use_ssl'] = false unless node['monitor']['transport'] == 'rabbitmq'
+
+include_recipe 'sensu::default'
+
 node.override['sensu']['transport']['name'] = node['monitor']['transport']
 include_recipe "monitor::_transport_#{node['monitor']['transport']}"
 node.override['sensu']['api']['host'] = 'localhost'
-
-include_recipe 'sensu::default'
 
 handlers = node['monitor']['default_handlers'] + node['monitor']['metric_handlers']
 handlers.each do |handler_name|
