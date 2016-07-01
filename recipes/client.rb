@@ -18,6 +18,8 @@
 # limitations under the License.
 #
 
+require 'digest'
+
 node.set['sensu']['use_ssl'] = false unless node['monitor']['transport'] == 'rabbitmq'
 
 include_recipe 'sensu::default'
@@ -29,6 +31,8 @@ ip_type = node['monitor']['use_local_ipv4'] ? 'local_ipv4' : 'public_ipv4'
 
 client_attributes = node['monitor']['additional_client_attributes'].to_hash
 client_subscriptions = []
+
+client_attributes['signature'] = Digest::SHA256.hexdigest File.read node['monitor']['signature_file']
 
 client_name = node.name
 

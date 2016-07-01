@@ -39,3 +39,5 @@ sensu_handler 'mailer' do
   type 'pipe'
   command 'handler-mailer.rb'
 end
+
+node.set['monitor']['active_handlers']['mailer'] = true

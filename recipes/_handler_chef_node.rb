@@ -19,32 +19,38 @@
 
 include_recipe 'build-essential::default'
 
-sensu_gem 'sensu-plugins-chef' do
-  version '0.0.6'
-end
+if File.exist?('/etc/chef/client.rb') && File.exist?('/etc/chef/client.pem')
 
-handler_path = '/opt/sensu/embedded/bin/handler-chef-node.rb'
+  sensu_gem 'sensu-plugins-chef' do
+    version '0.0.6'
+  end
 
-node.override['monitor']['sudo_commands'] =
-  node['monitor']['sudo_commands'] + [handler_path]
+  handler_path = '/opt/sensu/embedded/bin/handler-chef-node.rb'
 
-include_recipe 'monitor::_sudo'
+  node.override['monitor']['sudo_commands'] =
+    node['monitor']['sudo_commands'] + [handler_path]
 
-sensu_snippet 'chef' do
-  content(
-    server_url: Chef::Config[:chef_server_url],
-    client_name: Chef::Config[:node_name],
-    client_key: Chef::Config[:client_key],
-    verify_ssl: false
-  )
-end
+  include_recipe 'monitor::_sudo'
 
-include_recipe 'monitor::_filters'
+  sensu_snippet 'chef' do
+    content(
+      server_url: Chef::Config[:chef_server_url],
+      client_name: Chef::Config[:node_name],
+      client_key: Chef::Config[:client_key],
+      verify_ssl: false
+    )
+  end
 
-sensu_handler 'chef_node' do
-  type 'pipe'
-  command 'sudo handler-chef-node.rb'
-  filters %w(keepalives chef)
-  severities %w(warning critical)
-  timeout node['monitor']['default_handler_timeout']
+  include_recipe 'monitor::_filters'
+
+  sensu_handler 'chef_node' do
+    type 'pipe'
+    command 'sudo handler-chef-node.rb'
+    filters %w(keepalives chef)
+    severities %w(warning critical)
+    timeout node['monitor']['default_handler_timeout']
+  end
+
+  node.set['monitor']['active_handlers']['chef_node'] = true
+
 end

@@ -35,52 +35,43 @@ node.override['sensu']['transport']['name'] = node['monitor']['transport']
 include_recipe "monitor::_transport_#{node['monitor']['transport']}"
 node.override['sensu']['api']['host'] = 'localhost'
 
-handlers = node['monitor']['default_handlers'] + node['monitor']['metric_handlers']
-handlers.each do |handler_name|
-  next if handler_name == 'debug'
-  next unless %w(chef_node ec2_node hipchat mailer pagerduty relay).include? handler_name
-  include_recipe "monitor::_handler_#{handler_name}"
+active_default_handlers = []
+
+node['monitor']['default_handlers'].each do |handler_name|
+  if %w(chef_node ec2_node hipchat mailer pagerduty).include? handler_name
+    include_recipe "monitor::_handler_#{handler_name}"
+    active_default_handlers << handler_name if node['monitor']['active_handlers'][handler_name]
+  else
+    active_default_handlers << handler_name
+  end
 end
 
 include_recipe 'monitor::_handler_deregister'
 include_recipe 'monitor::_handler_maintenance'
 
+active_metric_handlers = []
+
+node['monitor']['metric_handlers'].each do |handler_name|
+  if %w(relay).include? handler_name
+    include_recipe "monitor::_handler_#{handler_name}"
+    active_default_handlers << handler_name if node['monitor']['active_handlers'][handler_name]
+  else
+    active_default_handlers << handler_name
+  end
+end
+
 sensu_handler 'default' do
   type 'set'
-  handlers node['monitor']['default_handlers']
+  handlers active_default_handlers
 end
 
 sensu_handler 'metrics' do
   type 'set'
-  handlers node['monitor']['metric_handlers']
-end
-
-check_definitions = case
-                    when Chef::Config[:solo]
-                      data_bag('sensu_checks').map do |item|
-                        data_bag_item('sensu_checks', item)
-                      end
-                    when Chef::DataBag.list.key?('sensu_checks')
-                      search(:sensu_checks, '*:*')
-                    else
-                      []
-                    end
-
-check_definitions.each do |check|
-  sensu_check check['id'] do
-    type check['type']
-    command check['command']
-    subscribers check['subscribers']
-    interval check['interval']
-    handlers check['handlers']
-    additional check['additional']
-  end
+  handlers active_metric_handlers
 end
 
 include_recipe 'sensu::server_service'
-
 include_recipe 'sensu::api_service'
-
 include_recipe 'uchiwa'
 
 include_recipe 'build-essential::default'
@@ -94,3 +85,4 @@ end
 include_recipe 'monitor::client'
 include_recipe 'monitor::_check_redis'
 include_recipe 'monitor::_check_rabbitmq' if node['monitor']['transport'] == 'rabbitmq'
+include_recipe 'monitor::_check_from_databags'

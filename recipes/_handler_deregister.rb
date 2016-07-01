@@ -26,3 +26,5 @@ sensu_handler 'deregister' do
   command 'handler-sensu-deregister.rb'
   timeout node['monitor']['default_handler_timeout']
 end
+
+node.set['monitor']['active_handlers']['deregister'] = true

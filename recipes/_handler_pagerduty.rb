@@ -17,18 +17,22 @@
 # limitations under the License.
 #
 
-sensu_gem 'sensu-plugins-pagerduty' do
-  version '1.0.0'
-end
+unless node['monitor']['pagerduty_api_key'].nil?
 
-sensu_snippet 'pagerduty' do
-  content(api_key: node['monitor']['pagerduty_api_key'])
-end
+  sensu_gem 'sensu-plugins-pagerduty' do
+    version '1.0.0'
+  end
 
-include_recipe 'monitor::_filters'
+  sensu_snippet 'pagerduty' do
+    content(api_key: node['monitor']['pagerduty_api_key'])
+  end
 
-sensu_handler 'pagerduty' do
-  type 'pipe'
-  command 'handler-pagerduty.rb'
-  filters ['actions']
+  include_recipe 'monitor::_filters'
+
+  sensu_handler 'pagerduty' do
+    type 'pipe'
+    command 'handler-pagerduty.rb'
+    filters ['actions']
+  end
+
 end

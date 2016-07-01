@@ -7,6 +7,7 @@ override['uchiwa']['version'] = '0.16.0-1'
 default['monitor']['redis_address'] = nil
 default['monitor']['rabbitmq_address'] = nil
 default['monitor']['api_address'] = nil
+default['monitor']['graphite_address'] = nil
 
 default['monitor']['transport'] = 'rabbitmq'
 
@@ -48,6 +49,15 @@ default['monitor']['snssqs_publishing_sns_topic_arn'] = nil
 default['monitor']['snssqs_statsd_addr'] = 'localhost:8125'
 default['monitor']['snssqs_statsd_namespace'] = 'snssqs'
 default['monitor']['snssqs_statsd_sample_rate'] = 1
+
+default['monitor']['active_handlers']['chef_node'] = false
+default['monitor']['active_handlers']['ec2_node'] = false
+default['monitor']['active_handlers']['hipchat'] = false
+default['monitor']['active_handlers']['mailer'] = false
+default['monitor']['active_handlers']['pagerduty'] = false
+default['monitor']['active_handlers']['relay'] = false
+
+default['monitor']['signature_file'] = '/etc/ssh/ssh_host_rsa_key'
 
 # grpahite scheme
 default['monitor']['scheme_prefix'] = 'sensu.default.'

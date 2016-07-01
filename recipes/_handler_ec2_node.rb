@@ -19,33 +19,39 @@
 
 include_recipe 'build-essential::default'
 
-package 'zlib1g-dev' do
-  action :install
-end
+if node.key?('ec2')
 
-sensu_gem 'sensu-plugins-aws' do
-  version '3.1.0'
-end
+  package 'zlib1g-dev' do
+    action :install
+  end
 
-include_recipe 'monitor::_filters'
+  sensu_gem 'sensu-plugins-aws' do
+    version '3.1.0'
+  end
 
-cookbook_file '/opt/sensu/embedded/bin/handler-ec2_node-custom.rb' do
-  source 'handlers/ec2_node.rb'
-  owner 'root'
-  group 'root'
-  mode 00755
-end
+  include_recipe 'monitor::_filters'
 
-sensu_snippet 'ec2_node' do
-  content(
-    ec2_states: node['monitor']['ec2_states']
-  )
-end
+  cookbook_file '/opt/sensu/embedded/bin/handler-ec2_node-custom.rb' do
+    source 'handlers/ec2_node.rb'
+    owner 'root'
+    group 'root'
+    mode 00755
+  end
 
-sensu_handler 'ec2_node' do
-  type 'pipe'
-  command 'handler-ec2_node-custom.rb'
-  filters %w(keepalives ec2)
-  severities %w(warning critical)
-  timeout node['monitor']['default_handler_timeout']
+  sensu_snippet 'ec2_node' do
+    content(
+      ec2_states: node['monitor']['ec2_states']
+    )
+  end
+
+  sensu_handler 'ec2_node' do
+    type 'pipe'
+    command 'handler-ec2_node-custom.rb'
+    filters %w(keepalives ec2)
+    severities %w(warning critical)
+    timeout node['monitor']['default_handler_timeout']
+  end
+
+  node.set['monitor']['active_handlers']['ec2_node'] = true
+
 end
