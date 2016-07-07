@@ -1,6 +1,7 @@
 include_attribute 'sensu'
 
 override['sensu']['use_embedded_ruby'] = true
+# override['sensu']['version'] = '0.25.3-1'
 override['sensu']['version'] = '0.25.3-1'
 override['uchiwa']['version'] = '0.16.0-1'
 
@@ -46,7 +47,7 @@ default['monitor']['snssqs_wait_time_seconds'] = 2
 default['monitor']['snssqs_region'] = nil
 default['monitor']['snssqs_consuming_sqs_queue_url'] = nil
 default['monitor']['snssqs_publishing_sns_topic_arn'] = nil
-default['monitor']['snssqs_statsd_addr'] = 'localhost:8125'
+default['monitor']['snssqs_statsd_addr'] = ''
 default['monitor']['snssqs_statsd_namespace'] = 'snssqs'
 default['monitor']['snssqs_statsd_sample_rate'] = 1
 

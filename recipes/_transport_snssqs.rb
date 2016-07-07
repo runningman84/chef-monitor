@@ -37,9 +37,6 @@ sensu_snippet 'snssqs' do
     wait_time_seconds: node['monitor']['snssqs_wait_time_seconds'],
     region: node['monitor']['snssqs_region'],
     consuming_sqs_queue_url: node['monitor']['snssqs_consuming_sqs_queue_url'],
-    publishing_sns_topic_arn: node['monitor']['snssqs_publishing_sns_topic_arn'],
-    statsd_addr: node['monitor']['snssqs_statsd_addr'],
-    statsd_namespace: node['monitor']['snssqs_statsd_namespace'],
-    statsd_sample_rate: node['monitor']['snssqs_statsd_sample_rate']
+    publishing_sns_topic_arn: node['monitor']['snssqs_publishing_sns_topic_arn']
   )
 end

@@ -34,7 +34,9 @@ end
 sensu_filter 'ec2' do
   attributes(
     client: {
-      cloud_provider: 'ec2'
+      cloud: {
+        provider: 'ec2'
+      }
     }
   )
 end
@@ -42,7 +44,9 @@ end
 sensu_filter 'chef' do
   attributes(
     client: {
-      chef_env: 'eval: value.length > 0'
+      chef: {
+        _env: 'eval: value.length > 0'
+      }
     }
   )
 end
@@ -50,7 +54,9 @@ end
 sensu_filter 'chef_env_prod' do
   attributes(
     client: {
-      chef_env: 'prod'
+      chef: {
+        _env: 'prod'
+      }
     }
   )
 end
