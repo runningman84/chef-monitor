@@ -33,6 +33,9 @@ client_attributes = node['monitor']['additional_client_attributes'].to_hash
 client_subscriptions = []
 
 client_attributes['signature'] = (Digest::SHA256.hexdigest File.read node['monitor']['signature_file'])[0..31]
+client_attributes['safe_mode'] = node['monitor']['safe_mode']
+client_attributes['standalone_mode'] = node['monitor']['standalone_mode']
+client_attributes['transport'] = node['monitor']['transport']
 
 if client_attributes['keepalive'].nil? && node['monitor']['transport'] == 'snssqs'
   client_attributes['keepalive'] = { 'thresholds' => { 'warning' => 60 * 3, 'critical' => 60 * 10 } }
@@ -143,6 +146,8 @@ end
 client_subscriptions << "env:#{node.chef_environment}"
 client_subscriptions << "os:#{node['os']}"
 client_subscriptions << 'all'
+
+client_subscriptions = [] if node['monitor']['transport'] == 'snssqs'
 
 sensu_client client_name do
   if node.key?('cloud') && node['cloud'].key?(ip_type)

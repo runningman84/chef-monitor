@@ -32,11 +32,18 @@ if node.key?('ec2') && node['ec2'].key?('placement_availability_zone')
 end
 
 sensu_snippet 'snssqs' do
-  content(
-    max_number_of_messages: node['monitor']['snssqs_max_number_of_messages'],
-    wait_time_seconds: node['monitor']['snssqs_wait_time_seconds'],
-    region: node['monitor']['snssqs_region'],
-    consuming_sqs_queue_url: node['monitor']['snssqs_consuming_sqs_queue_url'],
-    publishing_sns_topic_arn: node['monitor']['snssqs_publishing_sns_topic_arn']
-  )
+  if node['recipes'].include?('monitor::master')
+    content(
+      max_number_of_messages: node['monitor']['snssqs_max_number_of_messages'],
+      wait_time_seconds: node['monitor']['snssqs_wait_time_seconds'],
+      region: node['monitor']['snssqs_region'],
+      consuming_sqs_queue_url: node['monitor']['snssqs_consuming_sqs_queue_url'],
+      publishing_sns_topic_arn: node['monitor']['snssqs_publishing_sns_topic_arn']
+    )
+  else
+    content(
+      region: node['monitor']['snssqs_region'],
+      publishing_sns_topic_arn: node['monitor']['snssqs_publishing_sns_topic_arn']
+    )
+  end
 end
