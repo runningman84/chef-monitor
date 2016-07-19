@@ -19,6 +19,13 @@
 
 include_recipe 'monitor::_extensions'
 
+sensu_snippet 'system_profile' do
+  content(
+    interval: node['monitor']['metric_interval'],
+    handler: 'metrics'
+  )
+end
+
 cookbook_file File.join(node['monitor']['client_extension_dir'], 'system_profile.rb') do
   source 'extensions/system_profile.rb'
   mode 0755

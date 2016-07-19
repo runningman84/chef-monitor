@@ -45,7 +45,7 @@ sensu_filter 'chef' do
   attributes(
     client: {
       chef: {
-        _env: 'eval: value.length > 0'
+        environment: 'eval: value.length > 0'
       }
     }
   )
@@ -55,7 +55,7 @@ sensu_filter 'chef_env_prod' do
   attributes(
     client: {
       chef: {
-        _env: 'prod'
+        environment: 'prod'
       }
     }
   )

@@ -21,6 +21,7 @@ node.set['sensu']['use_ssl'] = false
 
 # https://github.com/SimpleFinance/sensu-transport-snssqs
 sensu_gem 'sensu-transport-snssqs' do
+  version '2.0.2'
   action :install
 end
 
@@ -47,3 +48,5 @@ sensu_snippet 'snssqs' do
     )
   end
 end
+
+node.override['sensu']['service_max_wait'] = 10 + node['monitor']['snssqs_wait_time_seconds'] * 2
