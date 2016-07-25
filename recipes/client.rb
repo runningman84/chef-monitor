@@ -20,7 +20,7 @@
 
 require 'digest'
 
-node.set['sensu']['use_ssl'] = false unless node['monitor']['transport'] == 'rabbitmq'
+node.override['sensu']['use_ssl'] = false unless node['monitor']['transport'] == 'rabbitmq'
 
 include_recipe 'sensu::default'
 

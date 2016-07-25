@@ -17,7 +17,7 @@
 # limitations under the License.
 #
 
-node.set['sensu']['use_ssl'] = false
+node.override['sensu']['use_ssl'] = false
 
 # https://github.com/SimpleFinance/sensu-transport-snssqs
 sensu_gem 'sensu-transport-snssqs' do

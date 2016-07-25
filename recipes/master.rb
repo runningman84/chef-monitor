@@ -27,7 +27,8 @@ else
   node.override['sensu']['redis']['host'] = node['monitor']['redis_address']
 end
 
-node.set['sensu']['use_ssl'] = false unless node['monitor']['transport'] == 'rabbitmq'
+node.override['sensu']['use_ssl'] = false unless node['monitor']['transport'] == 'rabbitmq'
+node.override['sensu']['client_deregister_on_stop'] = false
 
 include_recipe 'sensu::default'
 
