@@ -28,7 +28,6 @@ else
 end
 
 node.override['sensu']['use_ssl'] = false unless node['monitor']['transport'] == 'rabbitmq'
-node.override['sensu']['client_deregister_on_stop'] = false
 
 include_recipe 'sensu::default'
 
@@ -77,7 +76,7 @@ include_recipe 'uchiwa'
 
 include_recipe 'build-essential::default'
 sensu_gem 'sensu-plugins-sensu' do
-  version '0.1.0'
+  version '1.0.0'
 end
 sensu_gem 'sensu-plugins-uchiwa' do
   version '0.0.3'
