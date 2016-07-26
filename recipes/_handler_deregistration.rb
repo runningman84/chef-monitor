@@ -1,6 +1,6 @@
 #
 # Cookbook Name:: monitor
-# Recipe:: _handler_deregister
+# Recipe:: _handler_deregistration
 #
 # Copyright 2016, Philipp H
 #
@@ -21,7 +21,7 @@ include_recipe 'build-essential::default'
 
 include_recipe 'monitor::_filters'
 
-sensu_handler 'deregister' do
+sensu_handler 'deregistration' do
   type 'pipe'
   command 'handler-sensu-deregister.rb'
   timeout node['monitor']['default_handler_timeout']

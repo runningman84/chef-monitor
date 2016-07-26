@@ -46,7 +46,7 @@ node['monitor']['default_handlers'].each do |handler_name|
   end
 end
 
-include_recipe 'monitor::_handler_deregister'
+include_recipe 'monitor::_handler_deregistration'
 include_recipe 'monitor::_handler_maintenance'
 
 active_metric_handlers = []
