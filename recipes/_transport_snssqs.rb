@@ -21,7 +21,7 @@ node.override['sensu']['use_ssl'] = false
 
 # https://github.com/SimpleFinance/sensu-transport-snssqs
 sensu_gem 'sensu-transport-snssqs' do
-  version '2.0.2'
+  version '2.0.4'
   action :install
 end
 

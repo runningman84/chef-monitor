@@ -45,10 +45,11 @@ sensu_filter 'chef' do
   attributes(
     client: {
       chef: {
-        environment: 'eval: value.length > 0'
+        environment: 'eval: value.nil?'
       }
     }
   )
+  negate true
 end
 
 sensu_filter 'chef_env_prod' do
