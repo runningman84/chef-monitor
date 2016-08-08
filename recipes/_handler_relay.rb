@@ -49,6 +49,8 @@ if node['sensu'].key?('graphite')
       )
     end
 
+    node.set['monitor']['active_handlers']['relay'] = true
+
   end
 
 end

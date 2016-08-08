@@ -35,4 +35,6 @@ unless node['monitor']['pagerduty_api_key'].nil?
     filters ['actions']
   end
 
+  node.set['monitor']['active_handlers']['pagerduty'] = true
+
 end
