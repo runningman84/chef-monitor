@@ -35,8 +35,8 @@ end
 sensu_snippet 'snssqs' do
   if node['recipes'].include?('monitor::master')
     content(
-      max_number_of_messages: node['monitor']['snssqs_max_number_of_messages'],
-      wait_time_seconds: node['monitor']['snssqs_wait_time_seconds'],
+      max_number_of_messages: node['monitor']['snssqs_max_number_of_messages'].to_i,
+      wait_time_seconds: node['monitor']['snssqs_wait_time_seconds'].to_i,
       region: node['monitor']['snssqs_region'],
       consuming_sqs_queue_url: node['monitor']['snssqs_consuming_sqs_queue_url'],
       publishing_sns_topic_arn: node['monitor']['snssqs_publishing_sns_topic_arn']
@@ -49,4 +49,4 @@ sensu_snippet 'snssqs' do
   end
 end
 
-node.override['sensu']['service_max_wait'] = 10 + node['monitor']['snssqs_wait_time_seconds'] * 2
+node.override['sensu']['service_max_wait'] = 10 + node['monitor']['snssqs_wait_time_seconds'].to_i * 2
