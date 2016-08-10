@@ -25,6 +25,13 @@ sensu_gem 'sensu-transport-snssqs' do
   action :install
 end
 
+cookbook_file '/opt/sensu/embedded/lib/ruby/gems/2.3.0/gems/sensu-transport-snssqs-2.0.4/lib/sensu/transport/snssqs.rb' do
+  source 'transport/snssqs.rb'
+  owner 'root'
+  group 'root'
+  mode 00644
+end
+
 if node.key?('ec2') && node['ec2'].key?('placement_availability_zone')
   region = node['ec2']['placement_availability_zone'].scan(/[a-z]+\-[a-z]+\-[0-9]+/)
   if region.count > 0 && node['monitor']['snsqs_region'].nil?
