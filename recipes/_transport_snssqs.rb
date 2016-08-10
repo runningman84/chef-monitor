@@ -26,7 +26,7 @@ sensu_gem 'sensu-transport-snssqs' do
 end
 
 cookbook_file '/opt/sensu/embedded/lib/ruby/gems/2.3.0/gems/sensu-transport-snssqs-2.0.4/lib/sensu/transport/snssqs.rb' do
-  source 'transport/snssqs.rb'
+  source 'transports/snssqs.rb'
   owner 'root'
   group 'root'
   mode 00644
