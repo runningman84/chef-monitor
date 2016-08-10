@@ -6,6 +6,7 @@ AllCops:
     - files/default/plugins/*
     - files/default/extensions/*
     - files/default/handlers/*
+    - files/default/transports/*
 
 # other configuration
 # ...
