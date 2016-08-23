@@ -8,13 +8,13 @@ provisioner:
 platforms:
   - name: ubuntu-14.04
     driver:
-      box: fgrehm/trusty64-lxc
+      box: asy/trusty64-lxc
       provider: lxc
     run_list:
       - recipe[apt]
-  - name: centos-6.4
+  - name: centos-6.x
     driver:
-      box: fgrehm/centos-6-64-lxc
+      box: asy/centos-6-64-lxc
       provider: lxc
     run_list:
       - recipe[yum]

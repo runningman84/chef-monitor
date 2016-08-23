@@ -31,6 +31,8 @@ node.override['sensu']['use_ssl'] = false unless node['monitor']['transport'] ==
 
 include_recipe 'sensu::default'
 
+include_recipe 'monitor::_fix_service'
+
 node.override['sensu']['transport']['name'] = node['monitor']['transport']
 include_recipe "monitor::_transport_#{node['monitor']['transport']}"
 node.override['sensu']['api']['host'] = 'localhost'
@@ -62,12 +64,12 @@ end
 
 sensu_handler 'default' do
   type 'set'
-  handlers active_default_handlers
+  handlers active_default_handlers.uniq
 end
 
 sensu_handler 'metrics' do
   type 'set'
-  handlers active_metric_handlers
+  handlers active_metric_handlers.uniq
 end
 
 include_recipe 'sensu::server_service'

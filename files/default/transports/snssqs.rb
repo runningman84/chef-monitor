@@ -7,10 +7,10 @@ module Sensu
     class SNSSQS < Sensu::Transport::Base
       attr_accessor :logger
 
-      STRING_STR     = 'String'.freeze
-      KEEPALIVES_STR = 'keepalives'.freeze
-      PIPE_STR       = 'pipe'.freeze
-      TYPE_STR       = 'type'.freeze
+      STRING_STR     = "String".freeze
+      KEEPALIVES_STR = "keepalives".freeze
+      PIPE_STR       = "pipe".freeze
+      TYPE_STR       = "type".freeze
 
       def initialize
         @connected = false
@@ -24,12 +24,10 @@ module Sensu
         #
         # See:
         # https://github.com/sensu/sensu/blob/cdc25b29169ef2dcd2e056416eab0e83dbe000bb/CHANGELOG.md#0230---2016-04-04
-        succeed
+        succeed()
       end
 
-      def connected?
-        @connected
-      end
+      def connected?; @connected; end
 
       def connect(settings)
         @settings = settings
@@ -41,11 +39,11 @@ module Sensu
 
         # connect to statsd, if necessary
         @statsd = nil
-        if !@settings[:statsd_addr].nil? && @settings[:statsd_addr] != ''
+        if !@settings[:statsd_addr].nil? and @settings[:statsd_addr] != ""
           pieces = @settings[:statsd_addr].split(':')
-          @statsd = Statsd.new(pieces[0], pieces[1].to_i).tap do |sd|
+          @statsd = Statsd.new(pieces[0], pieces[1].to_i).tap { |sd|
             sd.namespace = @settings[:statsd_namespace]
-          end
+          }
           @statsd_sample_rate = @settings[:statsd_sample_rate].to_f
         end
       end
@@ -59,7 +57,7 @@ module Sensu
         # do we actually report it.
         start = Time.now
         result = yield
-        unless @statsd.nil?
+        if !@statsd.nil?
           @statsd.timing(stat, ((Time.now - start) * 1000).round(5), @statsd_sample_rate)
         end
         result
@@ -82,13 +80,13 @@ module Sensu
       # called when there is a message for you to consume.
       #
       # "funnel" and "type" parameters are completely ignored.
-      def subscribe(type, pipe, funnel=nil, _options={}, &callback)
+      def subscribe(type, pipe, funnel = nil, options = {}, &callback)
         if type == :fanout
-          logger.debug("skipping unsupported fanout subscription type=#{type}, pipe=#{pipe}, funnel=#{funnel}")
+          self.logger.debug("skipping unsupported fanout subscription type=#{type}, pipe=#{pipe}, funnel=#{funnel}")
           return
         end
 
-        logger.info("subscribing to type=#{type}, pipe=#{pipe}, funnel=#{funnel}")
+        self.logger.info("subscribing to type=#{type}, pipe=#{pipe}, funnel=#{funnel}")
 
         if pipe == KEEPALIVES_STR
           @keepalives_callback = callback
@@ -97,41 +95,41 @@ module Sensu
         end
 
         unless @subscribing
-          do_all_the_time do
+          do_all_the_time {
             EM::Iterator.new(receive_messages, 10).each do |msg, iter|
-              statsd_time("sqs.#{@settings[:consuming_sqs_queue_url]}.process_timing") do
-                if msg.key?('message_attributes')
+              statsd_time("sqs.#{@settings[:consuming_sqs_queue_url]}.process_timing") {
+                if msg.key?("message_attributes")
                   if msg.message_attributes[PIPE_STR].string_value == KEEPALIVES_STR
                     @keepalives_callback.call(msg, msg.body)
                   else
                     @results_callback.call(msg, msg.body)
                   end
                 end
-              end
+              }
               iter.next
             end
-          end
+          }
           @subscribing = true
         end
       end
 
       # acknowledge will delete the given message from the SQS queue.
       def acknowledge(info, &callback)
-        EM.defer do
+        EM.defer {
           @sqs.delete_message(
             queue_url: @settings[:consuming_sqs_queue_url],
-            receipt_handle: info.receipt_handle
+            receipt_handle: info.receipt_handle,
           )
           statsd_incr("sqs.#{@settings[:consuming_sqs_queue_url]}.message.deleted")
-          yield(info) if callback
-        end
+          callback.call(info) if callback
+        }
       end
 
       # publish publishes a message to the SNS topic.
       #
       # The type, pipe, and options are transformed into SNS message
       # attributes and included with the message.
-      def publish(type, pipe, message, options={}, &callback)
+      def publish(type, pipe, message, options = {}, &callback)
         attributes = {
           TYPE_STR => str_attr(type),
           PIPE_STR => str_attr(pipe)
@@ -145,13 +143,13 @@ module Sensu
       private
 
       def str_attr(str)
-        { data_type: STRING_STR, string_value: str }
+        { :data_type => STRING_STR, :string_value => str }
       end
 
       def do_all_the_time(&blk)
-        callback = proc do
+        callback = proc {
           do_all_the_time(&blk)
-        end
+        }
         EM.defer(blk, callback)
       end
 
@@ -162,23 +160,25 @@ module Sensu
           message_attributes: attributes
         )
         statsd_incr("sns.#{@settings[:publishing_sns_topic_arn]}.message.published")
-        yield({ response: resp }) if callback
+        callback.call({ :response => resp }) if callback
       end
 
-      PIPE_ARR = [PIPE_STR].freeze
+      PIPE_ARR = [PIPE_STR]
 
       # receive_messages returns an array of SQS messages
       # for the consuming queue
       def receive_messages
-        resp = @sqs.receive_message(
-          message_attribute_names: PIPE_ARR,
-          queue_url: @settings[:consuming_sqs_queue_url],
-          wait_time_seconds: @settings[:wait_time_seconds],
-          max_number_of_messages: @settings[:max_number_of_messages]
-        )
-        resp.messages
-      rescue Aws::SQS::Errors::ServiceError => e
-        logger.info(e)
+        begin
+          resp = @sqs.receive_message(
+            message_attribute_names: PIPE_ARR,
+            queue_url: @settings[:consuming_sqs_queue_url],
+            wait_time_seconds: @settings[:wait_time_seconds],
+            max_number_of_messages: @settings[:max_number_of_messages],
+          )
+          resp.messages
+        rescue Aws::SQS::Errors::ServiceError => e
+          self.logger.info(e)
+        end
       end
     end
   end

@@ -24,6 +24,8 @@ node.override['sensu']['use_ssl'] = false unless node['monitor']['transport'] ==
 
 include_recipe 'sensu::default'
 
+include_recipe 'monitor::_fix_service'
+
 include_recipe "monitor::_transport_#{node['monitor']['transport']}"
 node.override['sensu']['transport']['name'] = node['monitor']['transport']
 
@@ -158,5 +160,10 @@ include_recipe 'monitor::_plugins_nagios' if node['monitor']['use_nagios_plugins
 include_recipe 'monitor::_system_profile' if node['monitor']['use_system_profile']
 
 include_recipe "monitor::_check_#{node['os']}"
+
+zap_directory '/etc/sensu/conf.d/checks' do
+  pattern '*.json'
+  notifies :create, 'ruby_block[sensu_service_trigger]', :immediately
+end
 
 include_recipe 'sensu::client_service'

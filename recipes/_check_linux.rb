@@ -26,7 +26,7 @@ sensu_check 'ssh' do
   command 'check-banner.rb'
   handlers ['default']
   interval node['monitor']['default_interval']
-  subscribers ['linux'] unless node['monitor']['standalone_mode']
+  subscribers ['os:linux'] unless node['monitor']['standalone_mode']
   standalone true if node['monitor']['standalone_mode']
   additional(
     occurrences: node['monitor']['default_occurrences']
@@ -35,10 +35,10 @@ end
 
 sensu_check 'disk_usage' do
   # file '/system/check-disk.rb'
-  command 'check-disk-usage.rb -w 80 -c 90 -x nfs,tmpfs,fuse'
+  command 'check-disk-usage.rb -w 80 -c 90 -x nfs,tmpfs,fuse,cgroup'
   handlers ['default']
   interval node['monitor']['default_interval']
-  subscribers ['linux'] unless node['monitor']['standalone_mode']
+  subscribers ['os:linux'] unless node['monitor']['standalone_mode']
   standalone true if node['monitor']['standalone_mode']
   additional(
     occurrences: node['monitor']['default_occurrences'],
@@ -53,7 +53,7 @@ sensu_check 'memory' do
   command 'check-memory.rb -w 15 -c 10'
   handlers ['default']
   interval node['monitor']['default_interval']
-  subscribers ['linux'] unless node['monitor']['standalone_mode']
+  subscribers ['os:linux'] unless node['monitor']['standalone_mode']
   standalone true if node['monitor']['standalone_mode']
   additional(
     occurrences: node['monitor']['default_occurrences'],
@@ -68,7 +68,7 @@ sensu_check 'swap' do
   command 'check-swap.rb -w 60 -c 50'
   handlers ['default']
   interval node['monitor']['default_interval']
-  subscribers ['linux'] unless node['monitor']['standalone_mode']
+  subscribers ['os:linux'] unless node['monitor']['standalone_mode']
   standalone true if node['monitor']['standalone_mode']
   additional(
     occurrences: node['monitor']['default_occurrences'],
@@ -85,7 +85,7 @@ sensu_check 'load' do
   command 'check-load.rb -p -w 3,2,1 -c 9,6,3'
   handlers ['default']
   interval node['monitor']['default_interval']
-  subscribers ['linux'] unless node['monitor']['standalone_mode']
+  subscribers ['os:linux'] unless node['monitor']['standalone_mode']
   standalone true if node['monitor']['standalone_mode']
   additional(
     occurrences: node['monitor']['default_occurrences'],
@@ -99,7 +99,7 @@ sensu_check 'fs_writeable_tmp' do
   command 'check-fs-writable.rb -d /tmp'
   handlers ['default']
   interval node['monitor']['default_interval']
-  subscribers ['linux'] unless node['monitor']['standalone_mode']
+  subscribers ['os:linux'] unless node['monitor']['standalone_mode']
   standalone true if node['monitor']['standalone_mode']
   additional(
     occurrences: node['monitor']['default_occurrences']
@@ -113,7 +113,7 @@ sensu_check 'load_metrics' do
   command 'metrics-load.rb --scheme :::scheme_prefix::::::name:::.load'
   handlers ['metrics']
   interval node['monitor']['metric_interval']
-  subscribers ['linux'] unless node['monitor']['standalone_mode']
+  subscribers ['os:linux'] unless node['monitor']['standalone_mode']
   standalone true if node['monitor']['standalone_mode']
   additional(
     occurrences: node['monitor']['metric_occurrences'],
@@ -130,7 +130,7 @@ sensu_check 'cpu_metrics' do
   command 'metrics-cpu.rb --scheme :::scheme_prefix::::::name:::.cpu'
   handlers ['metrics']
   interval node['monitor']['metric_interval']
-  subscribers ['linux'] unless node['monitor']['standalone_mode']
+  subscribers ['os:linux'] unless node['monitor']['standalone_mode']
   standalone true if node['monitor']['standalone_mode']
   additional(
     occurrences: node['monitor']['metric_occurrences'],
@@ -147,7 +147,7 @@ sensu_check 'memory_metrics' do
   command 'metrics-memory.rb --scheme :::scheme_prefix::::::name:::.memory'
   handlers ['metrics']
   interval node['monitor']['metric_interval']
-  subscribers ['linux'] unless node['monitor']['standalone_mode']
+  subscribers ['os:linux'] unless node['monitor']['standalone_mode']
   standalone true if node['monitor']['standalone_mode']
   additional(
     occurrences: node['monitor']['metric_occurrences'],
@@ -164,7 +164,7 @@ sensu_check 'interface_metrics' do
   command 'metrics-interface.rb --scheme :::scheme_prefix::::::name:::.interface'
   handlers ['metrics']
   interval node['monitor']['metric_interval']
-  subscribers ['linux'] unless node['monitor']['standalone_mode']
+  subscribers ['os:linux'] unless node['monitor']['standalone_mode']
   standalone true if node['monitor']['standalone_mode']
   additional(
     occurrences: node['monitor']['metric_occurrences'],
@@ -181,7 +181,7 @@ sensu_check 'disk_metrics' do
   command 'metrics-disk.rb --scheme :::scheme_prefix::::::name:::.disk'
   handlers ['metrics']
   interval node['monitor']['metric_interval']
-  subscribers ['linux'] unless node['monitor']['standalone_mode']
+  subscribers ['os:linux'] unless node['monitor']['standalone_mode']
   standalone true if node['monitor']['standalone_mode']
   additional(
     occurrences: node['monitor']['metric_occurrences'],
@@ -197,7 +197,7 @@ sensu_check 'disk_usage_metrics' do
   command 'metrics-disk-usage.rb -l --scheme :::scheme_prefix::::::name:::.disk_usage'
   handlers ['metrics']
   interval node['monitor']['metric_interval']
-  subscribers ['linux'] unless node['monitor']['standalone_mode']
+  subscribers ['os:linux'] unless node['monitor']['standalone_mode']
   standalone true if node['monitor']['standalone_mode']
   additional(
     occurrences: node['monitor']['metric_occurrences'],
