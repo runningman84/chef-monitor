@@ -40,20 +40,13 @@ if node.key?('ec2') && node['ec2'].key?('placement_availability_zone')
 end
 
 sensu_snippet 'snssqs' do
-  if node['recipes'].include?('monitor::master')
-    content(
-      max_number_of_messages: node['monitor']['snssqs_max_number_of_messages'].to_i,
-      wait_time_seconds: node['monitor']['snssqs_wait_time_seconds'].to_i,
-      region: node['monitor']['snssqs_region'],
-      consuming_sqs_queue_url: node['monitor']['snssqs_consuming_sqs_queue_url'],
-      publishing_sns_topic_arn: node['monitor']['snssqs_publishing_sns_topic_arn']
-    )
-  else
-    content(
-      region: node['monitor']['snssqs_region'],
-      publishing_sns_topic_arn: node['monitor']['snssqs_publishing_sns_topic_arn']
-    )
-  end
+  content(
+    max_number_of_messages: node['monitor']['snssqs_max_number_of_messages'].to_i,
+    wait_time_seconds: node['monitor']['snssqs_wait_time_seconds'].to_i,
+    region: node['monitor']['snssqs_region'],
+    consuming_sqs_queue_url: node['monitor']['snssqs_consuming_sqs_queue_url'],
+    publishing_sns_topic_arn: node['monitor']['snssqs_publishing_sns_topic_arn']
+  )
 end
 
 node.override['sensu']['service_max_wait'] = 10 + node['monitor']['snssqs_wait_time_seconds'].to_i * 2
