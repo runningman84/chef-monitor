@@ -20,6 +20,13 @@ describe file('/etc/sensu') do
   it { should be_owned_by 'root' }
 end
 
+describe file('/etc/sensu/config.json') do
+  it { should contain('"name": "redis').after(/transport/) }
+  it { should contain('"host": "localhost"').after(/rabbitmq/).before(/5671/) }
+  it { should contain('"host": "localhost"').after(/redis/).before(/6379/) }
+  it { should contain('"host": "localhost"').after(/api/).before(/4567/) }
+end
+
 describe file('/etc/sensu/conf.d') do
   it { should be_directory }
   #  it { should be_owned_by 'sensu' }
