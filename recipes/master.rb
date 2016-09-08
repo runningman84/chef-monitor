@@ -72,10 +72,6 @@ sensu_handler 'metrics' do
   handlers active_metric_handlers.uniq
 end
 
-include_recipe 'sensu::server_service'
-include_recipe 'sensu::api_service'
-include_recipe 'uchiwa'
-
 include_recipe 'build-essential::default'
 sensu_gem 'sensu-plugins-sensu' do
   version '1.0.0'
@@ -88,3 +84,9 @@ include_recipe 'monitor::client'
 include_recipe 'monitor::_check_redis'
 include_recipe 'monitor::_check_rabbitmq' if node['monitor']['transport'] == 'rabbitmq'
 include_recipe 'monitor::_check_from_databags'
+
+include_recipe 'sensu::server_service'
+include_recipe 'sensu::api_service'
+include_recipe 'sensu::client_service'
+
+include_recipe 'uchiwa'

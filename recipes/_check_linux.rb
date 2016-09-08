@@ -22,7 +22,6 @@ sensu_gem 'ohai'
 ### Checks
 
 sensu_check 'ssh' do
-  # file '/system/check-disk.rb'
   command 'check-banner.rb'
   handlers ['default']
   interval node['monitor']['default_interval']
@@ -34,7 +33,6 @@ sensu_check 'ssh' do
 end
 
 sensu_check 'disk_usage' do
-  # file '/system/check-disk.rb'
   command 'check-disk-usage.rb -w 80 -c 90 -x nfs,tmpfs,fuse,cgroup'
   handlers ['default']
   interval node['monitor']['default_interval']
@@ -49,7 +47,6 @@ sensu_check 'disk_usage' do
 end
 
 sensu_check 'memory' do
-  # file '/system/check-mem.rb'
   command 'check-memory.rb -w 15 -c 10'
   handlers ['default']
   interval node['monitor']['default_interval']
@@ -64,7 +61,6 @@ sensu_check 'memory' do
 end
 
 sensu_check 'swap' do
-  # file '/system/check-mem.rb'
   command 'check-swap.rb -w 60 -c 50'
   handlers ['default']
   interval node['monitor']['default_interval']
@@ -78,13 +74,10 @@ sensu_check 'swap' do
   )
 end
 
-# graphiteStat12h: graphite_url(["sensu.logstash.eu-central-1a.i-f5fe2348.load.load_avg.*"]),
-
 sensu_check 'load' do
-  # file '/system/check-load.rb'
-  command 'check-load.rb -p -w 3,2,1 -c 9,6,3'
+  command 'check-load.rb -p -w 3,2,1.5 -c 6,4,3'
   handlers ['default']
-  interval node['monitor']['default_interval']
+  interval [node['monitor']['default_interval'], 60].max
   subscribers ['os:linux'] unless node['monitor']['standalone_mode']
   standalone true if node['monitor']['standalone_mode']
   additional(

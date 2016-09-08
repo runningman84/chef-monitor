@@ -65,3 +65,19 @@ end
 sensu_filter 'occurrences' do
   attributes(occurrences: 'eval: value > :::check.occurrences|10:::')
 end
+
+sensu_filter 'every_3_occurrences' do
+  attributes(occurrences: 'eval: value % 3')
+end
+
+sensu_filter 'every_10_occurrences' do
+  attributes(occurrences: 'eval: value % 10')
+end
+
+sensu_filter 'max_100_occurrences' do
+  attributes(occurrences: 'eval: value < 100')
+end
+
+sensu_filter 'max_300_occurrences' do
+  attributes(occurrences: 'eval: value < 300')
+end

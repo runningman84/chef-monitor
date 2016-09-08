@@ -17,13 +17,11 @@
 # limitations under the License.
 #
 
-master_addresses = []
-
 ip_type = node['monitor']['use_local_ipv4'] ? 'local_ipv4' : 'public_ipv4'
-master_addresses = ['localhost'] if node['recipes'].include?('monitor::master')
-master_addresses = [node['monitor']['rabbitmq_address']] unless node['monitor']['rabbitmq_address'].nil?
+master_address = 'localhost' if node['recipes'].include?('monitor::master')
+master_address = node['monitor']['rabbitmq_address'] unless node['monitor']['rabbitmq_address'].nil?
 
-if master_addresses.count == 0
+if master_address.nil?
   search_query = node['monitor']['master_search_query']
   search_query += " AND chef_environment:#{node.chef_environment}" if node['monitor']['environment_aware_search']
 
@@ -42,15 +40,14 @@ if master_addresses.count == 0
                       else
                         master_node['ipaddress']
                       end
-    master_addresses << master_address
 
   end
 
 end
 
-if master_addresses.count == 0
+if master_address.nil?
   Chef::Log.warn('Did not find any master sensu node, monitoring will not work')
 else
-  Chef::Log.info('Setting up ' + master_addresses.join(',') + ' as sensu master')
-  node.override['sensu']['rabbitmq']['hosts'] = master_addresses
+  Chef::Log.info('Setting up ' + master_address + ' as sensu master')
+  node.override['sensu']['rabbitmq']['host'] = master_address
 end

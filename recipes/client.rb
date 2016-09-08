@@ -166,4 +166,11 @@ zap_directory '/etc/sensu/conf.d/checks' do
   notifies :create, 'ruby_block[sensu_service_trigger]', :immediately
 end
 
-include_recipe 'sensu::client_service'
+include_recipe 'sensu::client_service' unless node['recipes'].include?('monitor::master')
+
+directory '/var/cache/sensu' do
+  owner 'sensu'
+  group 'sensu'
+  mode 00755
+  action :create
+end
