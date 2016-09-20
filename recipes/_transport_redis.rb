@@ -27,6 +27,7 @@ master_address = node['monitor']['redis_address'] unless node['monitor']['redis_
 if master_address.nil?
   search_query = node['monitor']['master_search_query']
   search_query += " AND chef_environment:#{node.chef_environment}" if node['monitor']['environment_aware_search']
+  search_query += ' AND monitor_transport:redis'
 
   Chef::Log.debug('Searching sensu master nodes using ' + search_query)
   master_nodes = search(:node, search_query)
