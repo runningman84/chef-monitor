@@ -62,16 +62,17 @@ sensu_filter 'chef_env_prod' do
   )
 end
 
+# deprecated due to https://github.com/sensu-extensions/sensu-extensions-occurrences
 sensu_filter 'occurrences' do
   attributes(occurrences: 'eval: value > :::check.occurrences|10:::')
 end
 
 sensu_filter 'every_3_occurrences' do
-  attributes(occurrences: 'eval: value % 3')
+  attributes(occurrences: 'eval: (value % 3) == 0')
 end
 
 sensu_filter 'every_5_occurrences' do
-  attributes(occurrences: 'eval: value % 5')
+  attributes(occurrences: 'eval: (value % 5) == 0')
 end
 
 sensu_filter 'max_100_occurrences' do
