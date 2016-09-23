@@ -2,7 +2,7 @@ include_attribute 'sensu'
 
 override['sensu']['use_embedded_ruby'] = true
 override['sensu']['client_deregister_on_stop'] = false
-override['sensu']['version'] = '0.26.1-1'
+override['sensu']['version'] = '0.26.3-1'
 override['uchiwa']['version'] = '0.18.2-1'
 
 default['monitor']['redis_address'] = nil
