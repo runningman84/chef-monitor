@@ -72,7 +72,7 @@ if node.key?('ec2') && node['ec2'].is_a?(Hash)
 
       parsed = JSON.parse(cmd.stdout)
       parsed['Tags'].each do |tag|
-        client_attributes['ec2']['tags'][tag['Key'].downcase] = tag['Value']
+        client_attributes['ec2']['tags'][tag['Key']] = tag['Value']
       end
     rescue StandardError => e
       Chef::Log.warn("Could not setup ec2 tags: #{e.message}")

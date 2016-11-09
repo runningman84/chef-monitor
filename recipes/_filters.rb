@@ -62,6 +62,16 @@ sensu_filter 'chef_env_prod' do
   )
 end
 
+sensu_filter 'chef_same_endpoint' do
+  attributes(
+    client: {
+      chef: {
+        endpoint: Chef::Config[:chef_server_url]
+      }
+    }
+  )
+end
+
 # deprecated due to https://github.com/sensu-extensions/sensu-extensions-occurrences
 sensu_filter 'occurrences' do
   attributes(occurrences: 'eval: value > :::check.occurrences|10:::')
