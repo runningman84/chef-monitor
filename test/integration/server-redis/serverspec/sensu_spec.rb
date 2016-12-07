@@ -115,7 +115,7 @@ end
 
 describe command('curl -s http://localhost:3000/') do
   # test uchiwa login page
-  its(:stdout) { should contain('uchiwa').after('ng-app=') }
+  its(:stdout) { should contain('uchiwa') }
 end
 
 describe command('curl -s -I "http://localhost:4567/health?messages=1"') do
