@@ -19,6 +19,7 @@
 #
 
 require 'digest'
+require 'resolv'
 
 node.override['sensu']['use_ssl'] = false unless node['monitor']['transport'] == 'rabbitmq'
 
@@ -147,7 +148,11 @@ client_subscriptions << 'all'
 
 sensu_client client_name do
   if node.key?('cloud') && node['cloud'].key?(ip_type)
-    address node['cloud'][ip_type] || node['ipaddress']
+    if node['cloud'][ip_type] =~ Resolv::IPv4::Regex
+      address node['cloud'][ip_type]
+    else
+      address node['ipaddress']
+    end
   else
     address node['ipaddress']
   end
