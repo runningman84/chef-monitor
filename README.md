@@ -6,10 +6,21 @@ Description
 Monitor is a cookbook for monitoring services, using Sensu, a
 monitoring framework. The default recipe installs & configures the
 Sensu client (monitoring agent), as well as common service check
-dependencies. The master recipe installs & configures the Sensu server,
-API, dashboard, & their dependencies (eg. RabbitMQ & Redis). The
-remaining recipes are intended to put monitoring checks in place in
-order to monitor specific services (eg. `recipe[monitor::redis]`).
+dependencies. This cookbook supports multiple transports:
+* rabbitmq (default)
+* redis
+* snssqs
+
+The master recipe installs & configures the Sensu server,
+API, dashboard, & their dependencies (eg. RabbitMQ & Redis).
+This cookbook also supports external redis servers using the `redis_address`
+attribute.
+
+Autoscaling sensu servers can be build using an external redis (e.g. aws elastic cache)
+and snssqs transport (using sns and sqs and standalone only checks).
+
+The cookbook contains preconfigured handlers for ec2 and chef 
+in order to remove ephemeral instances without creating incidents.
 
 Learn more about Sensu [Here](http://docs.sensuapp.org/).
 
@@ -21,8 +32,12 @@ The [Sensu](http://community.opscode.com/cookbooks/sensu) and [sudo](http://comm
 Attributes
 ==========
 
+`node["monitor"]["transport"]` - Defaults to rabbitmq.
+Supports rabbitmq, redis and snssqs
+
 `node["monitor"]["master_address"]` - Bypass the chef node search and
-explicitly set the address to reach the master server.
+explicitly set the address to reach the master server. Only used 
+for rabbitmq and redis transport.
 
 `node["monitor"]["environment_aware_search"]` - Defaults to false.
 If true, will limit search to the node's chef_environment.
@@ -43,5 +58,8 @@ attributes to be passed to the sensu_client LWRP.
 Usage
 =====
 
-Example: To monitor the Redis service running on a Chef node, include
-"recipe[monitor::redis]" in its run list.
+Example: To monitor a Chef node, include
+"recipe[monitor::default]" in its run list.
+
+Please create application specific checks within your application cookbooks.
+This cookbook only contains base checks.
