@@ -17,12 +17,11 @@
 # limitations under the License.
 #
 
-check_definitions = case
-                    when Chef::Config[:solo]
+check_definitions = if Chef::Config[:solo]
                       data_bag('sensu_checks').map do |item|
                         data_bag_item('sensu_checks', item)
                       end
-                    when Chef::DataBag.list.key?('sensu_checks')
+                    elsif Chef::DataBag.list.key?('sensu_checks')
                       search(:sensu_checks, '*:*')
                     else
                       []

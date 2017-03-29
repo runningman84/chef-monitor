@@ -35,12 +35,11 @@ if master_address.nil?
     # Use the node with the shortest uptime, older nodes might be offline
     master_node = master_nodes.sort_by { |a| -a[:uptime_seconds] }.last
     Chef::Log.debug('Using ' + master_node.name + ' as sensu master')
-    master_address =  case
-                      when master_node.key?('cloud')
-                        master_node['cloud'][ip_type] || master_node['ipaddress']
-                      else
-                        master_node['ipaddress']
-                      end
+    master_address = if master_node.key?('cloud')
+                       master_node['cloud'][ip_type] || master_node['ipaddress']
+                     else
+                       master_node['ipaddress']
+                     end
 
   end
 
