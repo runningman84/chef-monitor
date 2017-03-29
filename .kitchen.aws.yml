@@ -1,0 +1,35 @@
+---
+driver:
+  name: ec2
+  aws_ssh_key_id: mysshkey
+  security_group_ids: ["sg-1234567a"]
+  region: eu-central-1
+  availability_zone: b
+  require_chef_omnibus: true
+  subnet_id: subnet-9a6467e2
+  iam_profile_name: SensuInstanceProfile
+  instance_type: t2.small
+#  price: 0.6
+  associate_public_ip: true
+  interface: dns
+  tags:
+    Name: "monitor_test"
+
+transport:
+#  ssh_key: /path/to/id_rsa-aws
+  connection_timeout: 10
+  connection_retries: 5
+  username: ubuntu
+
+platforms:
+  - name: ubuntu-14.04
+    driver:
+      image_id: ami-09618e66
+    attributes:
+      monitor:
+        redis_address: sensu-redis.utgwtc.ng.0001.euc1.cache.amazonaws.com
+        transport: snssqs
+        snssqs_publishing_sns_topic_arn: 'arn:aws:sns:eu-central-1:001579709704:sensu-client-1'
+        snssqs_consuming_sqs_queue_url: 'https://sqs.eu-central-1.amazonaws.com/001579709704/sensu-server'
+    run_list:
+      - recipe[aws::ec2_hints]

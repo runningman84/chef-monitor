@@ -1,8 +1,8 @@
 #
 # Cookbook Name:: monitor
-# Recipe:: _pagerduty_handler
+# Recipe:: _install_redis
 #
-# Copyright 2013, Sean Porter Consulting
+# Copyright 2016, Philipp H
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -17,18 +17,26 @@
 # limitations under the License.
 #
 
-sensu_gem 'sensu-plugins-pagerduty' do
-  version '0.0.9'
-end
+if node['platform'] == 'ubuntu'
+  # will be reverted once the upstream redis package supports package installation
+  package 'redis-server' do
+    action :install
+  end
 
-sensu_snippet 'pagerduty' do
-  content(api_key: node['monitor']['pagerduty_api_key'])
-end
+  service 'redis-server' do
+    action [:enable, :start]
+  end
+elsif node['platform'] == 'centos'
+  include_recipe 'yum-epel'
 
-include_recipe 'monitor::_filters'
+  # will be reverted once the upstream redis package supports package installation
+  package 'redis' do
+    action :install
+  end
 
-sensu_handler 'pagerduty' do
-  type 'pipe'
-  command 'handler-pagerduty.rb'
-  filters ['actions']
+  service 'redis' do
+    action [:enable, :start]
+  end
+else
+  include_recipe 'sensu::redis'
 end

@@ -1,6 +1,6 @@
 #
 # Cookbook Name:: monitor
-# Recipe:: _maintenance
+# Recipe:: _install_rabbitmq
 #
 # Copyright 2016, Philipp H
 #
@@ -17,17 +17,4 @@
 # limitations under the License.
 #
 
-include_recipe 'monitor::_filters'
-
-cookbook_file '/opt/sensu/embedded/bin/handler-sensu-maintenance-custom.rb' do
-  source 'handlers/maintenance.rb'
-  owner 'root'
-  group 'root'
-  mode 00755
-end
-
-sensu_handler 'maintenance' do
-  type 'pipe'
-  command 'handler-sensu-maintenance-custom.rb'
-  timeout node['monitor']['default_handler_timeout']
-end
+include_recipe 'sensu::rabbitmq'

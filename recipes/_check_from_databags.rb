@@ -1,8 +1,8 @@
 #
 # Cookbook Name:: monitor
-# Recipe:: _worker
+# Recipe:: _check_from_databags
 #
-# Copyright 2013, Sean Porter Consulting
+# Copyright 2016, Philipp H
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -16,33 +16,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
-include_recipe 'monitor::_master_search'
-
-include_recipe 'sensu::default'
-
-# sensu_gem 'sensu-plugin' do
-#  version node['monitor']['sensu_plugin_version']
-# end
-
-handlers = node['monitor']['default_handlers'] + node['monitor']['metric_handlers']
-handlers.each do |handler_name|
-  next if handler_name == 'debug'
-  include_recipe "monitor::_#{handler_name}_handler"
-end
-
-include_recipe 'monitor::_deregister_handler'
-include_recipe 'monitor::_maintenance_handler'
-
-sensu_handler 'default' do
-  type 'set'
-  handlers node['monitor']['default_handlers']
-end
-
-sensu_handler 'metrics' do
-  type 'set'
-  handlers node['monitor']['metric_handlers']
-end
 
 check_definitions = case
                     when Chef::Config[:solo]
@@ -65,5 +38,3 @@ check_definitions.each do |check|
     additional check['additional']
   end
 end
-
-include_recipe 'sensu::server_service'

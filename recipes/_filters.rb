@@ -34,7 +34,9 @@ end
 sensu_filter 'ec2' do
   attributes(
     client: {
-      cloud_provider: 'ec2'
+      cloud: {
+        provider: 'ec2'
+      }
     }
   )
 end
@@ -42,19 +44,51 @@ end
 sensu_filter 'chef' do
   attributes(
     client: {
-      chef_env: 'eval: value.length > 0'
+      chef: {
+        environment: 'eval: value.nil?'
+      }
     }
   )
+  negate true
 end
 
 sensu_filter 'chef_env_prod' do
   attributes(
     client: {
-      chef_env: 'prod'
+      chef: {
+        environment: 'prod'
+      }
     }
   )
 end
 
+sensu_filter 'chef_same_endpoint' do
+  attributes(
+    client: {
+      chef: {
+        endpoint: Chef::Config[:chef_server_url]
+      }
+    }
+  )
+end
+
+# deprecated due to https://github.com/sensu-extensions/sensu-extensions-occurrences
 sensu_filter 'occurrences' do
   attributes(occurrences: 'eval: value > :::check.occurrences|10:::')
+end
+
+sensu_filter 'every_3_occurrences' do
+  attributes(occurrences: 'eval: (value % 3) == 0')
+end
+
+sensu_filter 'every_5_occurrences' do
+  attributes(occurrences: 'eval: (value % 5) == 0')
+end
+
+sensu_filter 'max_100_occurrences' do
+  attributes(occurrences: 'eval: value < 100')
+end
+
+sensu_filter 'max_300_occurrences' do
+  attributes(occurrences: 'eval: value < 300')
 end

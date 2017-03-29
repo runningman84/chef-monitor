@@ -8,13 +8,13 @@ provisioner:
 platforms:
   - name: ubuntu-14.04
     driver:
-      box: fgrehm/trusty64-lxc
+      box: asy/trusty64-lxc
       provider: lxc
     run_list:
       - recipe[apt]
-  - name: centos-6.4
+  - name: centos-6.x
     driver:
-      box: fgrehm/centos-6-64-lxc
+      box: asy/centos-6-64-lxc
       provider: lxc
     run_list:
       - recipe[yum]
@@ -23,9 +23,6 @@ suites:
 - name: default
   run_list:
     - recipe[monitor::master]
-    - recipe[monitor::linux]
-    - recipe[monitor::redis]
-    - recipe[monitor::rabbitmq]
   attributes:
     apt:
      compile_time_update: true
@@ -40,9 +37,9 @@ suites:
       use_statsd_input: true
     rabbitmq:
       use_distro_version: true
-- name: client
+- name: server-redis
   run_list:
-    - recipe[monitor::default]
+    - recipe[monitor::master]
   attributes:
     apt:
      compile_time_update: true
@@ -55,3 +52,37 @@ suites:
       use_nagios_plugins: false
       use_system_profile: true
       use_statsd_input: true
+      transport: redis
+    rabbitmq:
+      use_distro_version: true
+- name: client
+  run_list:
+    - recipe[monitor::client]
+  attributes:
+    apt:
+     compile_time_update: true
+    authorization:
+      sudo:
+        users: ["vagrant", "kitchen"]
+        passwordless: true
+        include_sudoers_d: true
+    monitor:
+      use_nagios_plugins: false
+      use_system_profile: true
+      use_statsd_input: true
+- name: client-redis
+  run_list:
+    - recipe[monitor::client]
+  attributes:
+    apt:
+     compile_time_update: true
+    authorization:
+      sudo:
+        users: ["vagrant", "kitchen"]
+        passwordless: true
+        include_sudoers_d: true
+    monitor:
+      use_nagios_plugins: false
+      use_system_profile: true
+      use_statsd_input: true
+      transport: redis

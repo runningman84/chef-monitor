@@ -1,6 +1,6 @@
 #
 # Cookbook Name:: monitor
-# Recipe:: _statsd
+# Recipe:: _check_snssqs
 #
 # Copyright 2013, Sean Porter Consulting
 #
@@ -16,10 +16,3 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
-include_recipe 'monitor::_extensions'
-
-# sensu_gem 'sensu-plugins-statsd' do
-#  options('--prerelease') # only needed if it is in an alpha state
-#  version '0.0.1.alpha.1'
-# end

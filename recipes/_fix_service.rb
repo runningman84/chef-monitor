@@ -1,6 +1,6 @@
 #
 # Cookbook Name:: monitor
-# Recipe:: _ec2_node_handler
+# Recipe:: _handler_hipchat
 #
 # Copyright 2016, Philipp H
 #
@@ -17,26 +17,11 @@
 # limitations under the License.
 #
 
-sensu_gem 'sensu-plugins-hipchat' do
-  version '0.0.3'
-end
-
-include_recipe 'monitor::_filters'
-
-sensu_snippet 'hipchat' do
-  content(
-    server_url: node['monitor']['hipchat_server_url'],
-    apikey: node['monitor']['hipchat_apikey'],
-    apiversion: node['monitor']['hipchat_apiversion'],
-    room: node['monitor']['hipchat_room'],
-    from: node['monitor']['hipchat_from']
-  )
-end
-
-sensu_handler 'hipchat' do
-  type 'pipe'
-  command 'handler-hipchat.rb'
-  filters ['occurrences']
-  severities %w(warning critical)
-  timeout node['monitor']['default_handler_timeout']
+# temporary fix for
+# https://github.com/sensu/sensu/issues/1413
+cookbook_file '/etc/init.d/sensu-service' do
+  source 'sensu-service'
+  owner 'root'
+  group 'root'
+  mode 00755
 end

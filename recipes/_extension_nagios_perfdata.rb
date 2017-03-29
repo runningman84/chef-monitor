@@ -1,6 +1,6 @@
 #
 # Cookbook Name:: monitor
-# Recipe:: _nagios_perfdata
+# Recipe:: _extension_nagios_perfdata
 #
 # Copyright 2013, Sean Porter Consulting
 #

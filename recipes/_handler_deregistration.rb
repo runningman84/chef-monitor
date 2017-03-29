@@ -1,8 +1,8 @@
 #
 # Cookbook Name:: monitor
-# Recipe:: _redis
+# Recipe:: _handler_deregistration
 #
-# Copyright 2013, Sean Porter Consulting
+# Copyright 2016, Philipp H
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -17,8 +17,14 @@
 # limitations under the License.
 #
 
-include_recipe 'monitor::default'
+include_recipe 'build-essential::default'
 
-sensu_gem 'sensu-plugins-redis' do
-  version '0.1.0'
+include_recipe 'monitor::_filters'
+
+sensu_handler 'deregistration' do
+  type 'pipe'
+  command 'handler-sensu-deregister.rb'
+  timeout node['monitor']['default_handler_timeout']
 end
+
+node.set['monitor']['active_handlers']['deregister'] = true

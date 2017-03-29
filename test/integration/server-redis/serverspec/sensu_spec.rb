@@ -21,7 +21,7 @@ describe file('/etc/sensu') do
 end
 
 describe file('/etc/sensu/config.json') do
-  it { should contain('"name": "rabbitmq').after(/transport/) }
+  it { should contain('"name": "redis').after(/transport/) }
   it { should contain('"host": "localhost"').after(/rabbitmq/).before(/5671/) }
   it { should contain('"host": "localhost"').after(/redis/).before(/6379/) }
   it { should contain('"host": "localhost"').after(/api/).before(/4567/) }
@@ -118,7 +118,7 @@ describe command('curl -s http://localhost:3000/') do
   its(:stdout) { should contain('uchiwa') }
 end
 
-describe command('curl -s -I "http://localhost:4567/health?consumers=1&messages=1"') do
+describe command('curl -s -I "http://localhost:4567/health?messages=1"') do
   # test output
   its(:stdout) { should contain('HTTP/1.1 204') }
 end
@@ -134,17 +134,17 @@ describe command('curl -s http://localhost:4567/info') do
   its(:stdout) { should contain('connected":true').after('redis') }
 end
 
-#describe command('curl -s http://localhost:4567/checks') do
-#  %w(check-banner.rb check-disk-usage.rb check-memory.rb check-load.rb check-fs-writable.rb).each do |check|
-#    # test check
-#    its(:stdout) { should contain(check).after('command') }
-#  end
-#
-#  %w(metrics-disk-usage.rb metrics-redis-graphite.rb metrics-rabbitmq-overview.rb).each do |check|
-#    # test metric
-#    its(:stdout) { should contain(check).after('command') }
-#  end
-#end
+describe command('curl -s http://localhost:4567/checks') do
+  %w(check-banner.rb check-disk-usage.rb check-memory.rb check-load.rb check-fs-writable.rb).each do |check|
+    # test check
+    its(:stdout) { should contain(check).after('command') }
+  end
+
+  %w(metrics-disk-usage.rb metrics-redis-graphite.rb).each do |check|
+    # test metric
+    its(:stdout) { should contain(check).after('command') }
+  end
+end
 
 describe command('curl -s http://localhost:4567/clients') do
   # test version

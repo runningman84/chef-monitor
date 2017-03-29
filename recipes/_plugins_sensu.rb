@@ -1,8 +1,8 @@
 #
 # Cookbook Name:: monitor
-# Recipe:: _haproxy
+# Recipe:: _plugins
 #
-# Copyright 2013, Sean Porter Consulting
+# Copyright 2016, Philipp H
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -17,15 +17,10 @@
 # limitations under the License.
 #
 
-include_recipe 'monitor::default'
+include_recipe 'build-essential::default'
 
-sensu_gem 'sensu-plugins-haproxy' do
-  version '0.1.1'
+node['monitor']['sensu_plugins'].each do |name, version|
+  sensu_gem "sensu-plugins-#{name}" do
+    version version if version != 'latest'
+  end
 end
-
-plugin_path = '/opt/sensu/embedded/bin/check-haproxy.rb'
-
-node.override['monitor']['sudo_commands'] =
-  node['monitor']['sudo_commands'] + [plugin_path]
-
-include_recipe 'monitor::_sudo'
