@@ -35,12 +35,11 @@ if graphite_address.nil?
     # Use the node with the shortest uptime, older nodes might be offline
     graphite_node = graphite_nodes.sort_by { |a| -a[:uptime_seconds] }.last
     Chef::Log.debug('Using ' + graphite_node.name + ' as gaphite server')
-    graphite_address =  case
-                        when graphite_node.key?('cloud')
-                          graphite_node['cloud'][ip_type] || graphite_node['ipaddress']
-                        else
-                          graphite_node['ipaddress']
-                        end
+    graphite_address = if graphite_node.key?('cloud')
+                         graphite_node['cloud'][ip_type] || graphite_node['ipaddress']
+                       else
+                         graphite_node['ipaddress']
+                       end
 
   end
 
