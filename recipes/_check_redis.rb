@@ -36,7 +36,8 @@ sensu_check 'redis_process' do
     graphiteStat0090dHits: graphite_url(['perSecond(:::scheme_prefix::::::name:::.redis.{keyspace_hits,keyspace_misses})'], 'from' => '-90days'),
     graphiteStat0012hMem: graphite_url([':::scheme_prefix::::::name:::.redis.used_memory'], 'from' => '-12hours'),
     graphiteStat0072hMem: graphite_url([':::scheme_prefix::::::name:::.redis.used_memory'], 'from' => '-72hours'),
-    graphiteStat0090dMem: graphite_url([':::scheme_prefix::::::name:::.redis.used_memory'], 'from' => '-90days')
+    graphiteStat0090dMem: graphite_url([':::scheme_prefix::::::name:::.redis.used_memory'], 'from' => '-90days'),
+    refresh: node['monitor']['default_refresh']
   )
   only_if { node['recipes'].include?('monitor::_install_redis') }
 end
@@ -58,7 +59,8 @@ sensu_check 'redis_metrics' do
     graphiteStat0090dHits: graphite_url(['perSecond(:::scheme_prefix::::::name:::.redis.{keyspace_hits,keyspace_misses})'], 'from' => '-90days'),
     graphiteStat0012hMem: graphite_url([':::scheme_prefix::::::name:::.redis.used_memory'], 'from' => '-12hours'),
     graphiteStat0072hMem: graphite_url([':::scheme_prefix::::::name:::.redis.used_memory'], 'from' => '-72hours'),
-    graphiteStat0090dMem: graphite_url([':::scheme_prefix::::::name:::.redis.used_memory'], 'from' => '-90days')
+    graphiteStat0090dMem: graphite_url([':::scheme_prefix::::::name:::.redis.used_memory'], 'from' => '-90days'),
+    refresh: node['monitor']['default_refresh']
   )
   not_if { node['monitor']['metric_disabled'] }
 end

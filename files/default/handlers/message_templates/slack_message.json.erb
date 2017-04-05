@@ -1,0 +1,10 @@
+{
+  "username": "SensuBot",
+  "channel": "#<%= @event.dig('client', 'slack_channel') || 'sdc-dev' %>",
+  "attachments": [
+    {
+      "title": "<%= @event.dig('client', 'name') || '-' %> (<%= @event.dig("client", "ec2", "stack_name") || "-" %>): <%= @event.dig("check", "name") || "-" %> [<%= @event.dig("occurrences") || "-" %>]",
+      "text": "<%= @event.dig('client', 'ec2', 'tags', 'chefenv') || "-" %>@<%= @event.dig("client", "ec2", "tags", "chef-org") || "-" %>:\n <%= @event["check"]["output"].gsub('"', '\\"') %>"
+    }
+  ]
+}
