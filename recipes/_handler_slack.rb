@@ -19,7 +19,7 @@
 unless node['monitor']['slack_webhook'].nil?
 
   sensu_gem 'sensu-plugins-slack' do
-    version node['monitor']['sensu_plugins']['slack']
+    version node['monitor']['sensu_optional_plugins']['slack']
   end
 
   include_recipe 'monitor::_filters'
