@@ -1,16 +1,5 @@
 language: ruby
-cache:
-bundler: true
-directories:
-- ../vendor/bundle
-- vendor/cookbooks
-sudo: false
-bundler_args: --without integration --path=$PWD/../vendor/bundle
+bundler_args: --without integration
 rvm:
-- 2.0
-- 2.1
-- 2.2
-before_script:
-- bundle exec berks vendor vendor/cookbooks
-script:
-- bundle exec "strainer test --except kitchen"
+  - 2.2.5
+before_install: gem install bundler -v 1.10.6

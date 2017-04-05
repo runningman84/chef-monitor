@@ -51,6 +51,8 @@ default['monitor']['snssqs_publishing_sns_topic_arn'] = nil
 default['monitor']['snssqs_statsd_addr'] = ''
 default['monitor']['snssqs_statsd_namespace'] = 'snssqs'
 default['monitor']['snssqs_statsd_sample_rate'] = 1
+default['monitor']['access_key_id'] = nil
+default['monitor']['secret_access_key'] = nil
 
 default['monitor']['active_handlers']['chef_node'] = false
 default['monitor']['active_handlers']['ec2_node'] = false

@@ -34,9 +34,19 @@ module Sensu
         @connected = true
         @results_callback = proc {}
         @keepalives_callback = proc {}
-        @sqs = Aws::SQS::Client.new(region: @settings[:region])
-        @sns = Aws::SNS::Client.new(region: @settings[:region])
-
+        if @settings[:access_key_id].nil?
+          @sqs = Aws::SQS::Client.new(region: @settings[:region])
+          @sns = Aws::SNS::Client.new(region: @settings[:region])
+        else
+          @sqs = Aws::SQS::Client.new(region: @settings[:region],
+                                      access_key_id: @settings[:access_key_id],
+                                      secret_access_key: @settings[:secret_access_key]
+                                    )
+          @sns = Aws::SNS::Client.new(region: @settings[:region],
+                                      access_key_id: @settings[:access_key_id],
+                                      secret_access_key: @settings[:secret_access_key]
+                                    )
+        end
         # connect to statsd, if necessary
         @statsd = nil
         if !@settings[:statsd_addr].nil? and @settings[:statsd_addr] != ""

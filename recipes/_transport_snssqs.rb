@@ -45,7 +45,9 @@ sensu_snippet 'snssqs' do
     wait_time_seconds: node['monitor']['snssqs_wait_time_seconds'].to_i,
     region: node['monitor']['snssqs_region'],
     consuming_sqs_queue_url: node['monitor']['snssqs_consuming_sqs_queue_url'],
-    publishing_sns_topic_arn: node['monitor']['snssqs_publishing_sns_topic_arn']
+    publishing_sns_topic_arn: node['monitor']['snssqs_publishing_sns_topic_arn'],
+    access_key_id: node['monitor']['access_key_id'],
+    secret_access_key: node['monitor']['secret_access_key']
   )
 end
 
