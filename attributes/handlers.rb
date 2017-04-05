@@ -14,7 +14,7 @@ default['monitor']['hipchat_room'] = 'Ops'
 default['monitor']['hipchat_from'] = 'Sensu'
 
 # slack
-default['monitor']['slack_webhook'] = 'https://hooks.slack.com/services/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'
+default['monitor']['slack_webhook'] = nil
 default['monitor']['slack_message_template'] = node['sensu']['directory'] + '/handlers/slack_message.json.erb'
 
 # mailer
