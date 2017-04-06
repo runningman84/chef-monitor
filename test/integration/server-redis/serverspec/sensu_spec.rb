@@ -125,7 +125,7 @@ end
 
 describe command('curl -s http://localhost:4567/info') do
   # test version
-  its(:stdout) { should contain('0.26.5').after('version') }
+  its(:stdout) { should contain('0.28.4').after('version') }
 
   # test rabbitmq connect
   its(:stdout) { should contain('connected":true').after('transport') }
@@ -134,21 +134,16 @@ describe command('curl -s http://localhost:4567/info') do
   its(:stdout) { should contain('connected":true').after('redis') }
 end
 
-describe command('curl -s http://localhost:4567/checks') do
-  %w(check-banner.rb check-disk-usage.rb check-memory.rb check-load.rb check-fs-writable.rb).each do |check|
+%w(disk_usage memory redis_metrics disk_metrics redis_process disk_usage_metrics ssh swap load fs_writeable_tmp).each do |check|
+  describe command("curl -s -i -X POST -H 'Content-Type: application/json' -d '{\"check\": \"#{check}\"}' http://127.0.0.1:4567/request") do
     # test check
-    its(:stdout) { should contain(check).after('command') }
-  end
-
-  %w(metrics-disk-usage.rb metrics-redis-graphite.rb).each do |check|
-    # test metric
-    its(:stdout) { should contain(check).after('command') }
+    its(:stdout) { should contain('HTTP/1.1 202') }
   end
 end
 
 describe command('curl -s http://localhost:4567/clients') do
   # test version
-  its(:stdout) { should contain('0.26.5').after('version') }
+  its(:stdout) { should contain('0.28.4').after('version') }
 
   # test subscriptions
   its(:stdout) { should contain('linux').after('subscriptions') }

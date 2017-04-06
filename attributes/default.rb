@@ -2,8 +2,8 @@ include_attribute 'sensu'
 
 override['sensu']['use_embedded_ruby'] = true
 override['sensu']['client_deregister_on_stop'] = false
-override['sensu']['version'] = '0.26.5-2' # Alt: '0.26.5-2' Neu & Auto: '0.28.4-1'
-override['uchiwa']['version'] = '0.21.0-1' # Alt: '0.21.0-1' Auto: '0.22.0-1' Wirklich Neu: '0.23.1-1'
+override['sensu']['version'] = '0.28.4-1' # Alt: '0.26.5-2' Neu & Auto: '0.28.4-1'
+override['uchiwa']['version'] = '0.22.0-1' # Alt: '0.21.0-1' Auto: '0.22.0-1' Wirklich Neu: '0.23.1-1'
 
 default['monitor']['redis_address'] = nil
 default['monitor']['rabbitmq_address'] = nil
