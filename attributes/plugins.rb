@@ -10,3 +10,5 @@ default['monitor']['sensu_plugins']['filesystem-checks'] = '0.2.0'
 default['monitor']['sensu_plugins']['vmstats'] = '1.0.0'
 default['monitor']['sensu_plugins']['io-checks'] = '1.0.0'
 default['monitor']['sensu_plugins']['logs'] = '0.0.4'
+
+default['monitor']['sensu_optional_plugins']['slack'] = '1.0.0'

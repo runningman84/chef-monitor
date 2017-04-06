@@ -24,6 +24,12 @@ platforms:
       provider: lxc
     run_list:
       - recipe[yum]
+  - name: ubuntu-16.04
+    driver:
+      box: asy/xenial64-lxc
+      provider: lxc
+    run_list:
+      - recipe[apt]
 
 suites:
 - name: default

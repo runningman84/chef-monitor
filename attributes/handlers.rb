@@ -13,6 +13,10 @@ default['monitor']['hipchat_apiversion'] = 'v1'
 default['monitor']['hipchat_room'] = 'Ops'
 default['monitor']['hipchat_from'] = 'Sensu'
 
+# slack
+default['monitor']['slack_webhook'] = nil
+default['monitor']['slack_message_template'] = node['sensu']['directory'] + '/handlers/slack_message.json.erb'
+
 # mailer
 default['monitor']['mail_from'] = 'sensu'
 default['monitor']['delivery_method'] = 'smtp'

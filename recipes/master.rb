@@ -40,7 +40,7 @@ node.override['sensu']['api']['host'] = 'localhost'
 active_default_handlers = []
 
 node['monitor']['default_handlers'].each do |handler_name|
-  if %w(chef_node ec2_node hipchat mailer pagerduty).include? handler_name
+  if %w(chef_node ec2_node hipchat mailer pagerduty slack).include? handler_name
     include_recipe "monitor::_handler_#{handler_name}"
     active_default_handlers << handler_name if node['monitor']['active_handlers'][handler_name]
   else

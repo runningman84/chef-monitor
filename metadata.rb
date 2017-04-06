@@ -22,6 +22,6 @@ end
 depends 'sudo'
 depends 'yum-epel'
 depends 'build-essential'
-depends 'sensu', '>= 3.0.0'
+depends 'sensu', '~> 4.0.0'
 depends 'uchiwa', '>= 1.2.0'
 depends 'zap', '~> 0.11.4'
