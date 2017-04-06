@@ -92,7 +92,7 @@ if node.key?('stack') && node['stack'].is_a?(Hash)
     key = "stack_#{id}"
     key = 'account_id' if id == 'account_id'
 
-    client_attributes['ec2'][key] = node['stack'][id] if node['stack'].key?(id)
+    client_attributes['ec2'][key] = node['stack'][id].to_s if node['stack'].key?(id)
   end
   client_subscriptions << "stack_name:#{client_attributes['ec2']['stack_name']}" if client_attributes['ec2'].key?('stack_name')
   client_subscriptions << "account_id:#{client_attributes['ec2']['account_id']}" if client_attributes['ec2'].key?('account_id')
@@ -102,10 +102,12 @@ if node.key?('cloud_v2') && node['cloud_v2'].is_a?(Hash)
   client_attributes['cloud'] = {}
   %w(
     local_ipv4
+    local_hostname
     public_ipv4
+    public_hostname
     provider
   ).each do |key|
-    client_attributes['cloud'][key] = node['cloud_v2'][key] if node['cloud_v2'].key?(key)
+    client_attributes['cloud'][key] = node['cloud_v2'][key].to_s if node['cloud_v2'].key?(key)
   end
   client_subscriptions << "provider:#{client_attributes['cloud']['provider']}" if client_attributes['cloud'].key?('provider')
 end
@@ -115,7 +117,7 @@ end
   platform_version
   platform_family
 ).each do |key|
-  client_attributes[key] = node[key] if node.key?(key)
+  client_attributes[key] = node[key].to_s if node.key?(key)
 end
 
 client_attributes['chef'] = {}

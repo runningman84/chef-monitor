@@ -34,6 +34,7 @@ module Sensu
         @connected = true
         @results_callback = proc {}
         @keepalives_callback = proc {}
+        Aws.use_bundled_cert! if Gem.win_platform?
         if @settings[:access_key_id].nil?
           @sqs = Aws::SQS::Client.new(region: @settings[:region])
           @sns = Aws::SNS::Client.new(region: @settings[:region])
