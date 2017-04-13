@@ -42,7 +42,7 @@ unless node['monitor']['slack_webhook'].nil?
     type 'pipe'
     command 'handler-slack.rb'
     filters ['occurrences']
-    severities %w(warning critical)
+    severities node['monitor']['slack_severities']
     timeout node['monitor']['default_handler_timeout']
   end
 
