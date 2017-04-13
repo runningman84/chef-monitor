@@ -61,6 +61,7 @@ if node.key?('ec2') && node['ec2'].is_a?(Hash)
     region = node['ec2']['placement_availability_zone'].scan(/[a-z]+\-[a-z]+\-[0-9]+/)
     if region.count > 0
       client_attributes['ec2']['region'] = region.first
+      client_attributes['aws_mngt_console'] = "https://#{region.first}.console.aws.amazon.com/ec2/v2/home?region=#{region.first}#Instances:search=#{node['ec2']['instance_id']};sort=Name"
       client_subscriptions << "region:#{region.first}"
     end
 
