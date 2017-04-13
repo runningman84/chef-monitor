@@ -23,6 +23,7 @@ default['monitor']['additional_client_attributes'] = Mash.new
 default['monitor']['use_sensu_plugins'] = true
 default['monitor']['use_nagios_plugins'] = false
 default['monitor']['use_system_profile'] = false
+default['monitor']['use_check_os'] = true
 default['monitor']['use_statsd_input'] = false
 
 default['monitor']['sudo_commands'] = []

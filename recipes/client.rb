@@ -166,7 +166,7 @@ include_recipe 'monitor::_plugins_sensu' if node['monitor']['use_sensu_plugins']
 include_recipe 'monitor::_plugins_nagios' if node['monitor']['use_nagios_plugins']
 include_recipe 'monitor::_system_profile' if node['monitor']['use_system_profile']
 
-include_recipe "monitor::_check_#{node['os']}"
+include_recipe "monitor::_check_#{node['os']}" if node['monitor']['use_check_os']
 
 zap_directory '/etc/sensu/conf.d/checks' do
   pattern '*.json'
