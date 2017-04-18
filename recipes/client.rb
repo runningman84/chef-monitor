@@ -144,6 +144,7 @@ node.override['sensu']['name'] = client_name
 
 node['roles'].each do |role|
   client_subscriptions << "role:#{role}"
+  client_subscriptions << "role_by_env:#{role}_#{node.chef_environment}"
 end
 client_subscriptions << "env:#{node.chef_environment}"
 client_subscriptions << "os:#{node['os']}"
