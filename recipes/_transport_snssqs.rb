@@ -34,7 +34,7 @@ end
 
 if node.key?('ec2') && node['ec2'].key?('placement_availability_zone')
   region = node['ec2']['placement_availability_zone'].scan(/[a-z]+\-[a-z]+\-[0-9]+/)
-  if region.count > 0 && node['monitor']['snsqs_region'].nil?
+  if region.count > 0 && node['monitor']['snssqs_region'].nil?
     node.set['monitor']['snssqs_region'] = region.first
   end
 end
