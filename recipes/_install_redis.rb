@@ -24,7 +24,7 @@ if node['platform'] == 'ubuntu'
   end
 
   service 'redis-server' do
-    action [:enable, :start]
+    action %i[enable start]
   end
 elsif node['platform'] == 'centos'
   include_recipe 'yum-epel'
@@ -35,7 +35,7 @@ elsif node['platform'] == 'centos'
   end
 
   service 'redis' do
-    action [:enable, :start]
+    action %i[enable start]
   end
 else
   include_recipe 'sensu::redis'

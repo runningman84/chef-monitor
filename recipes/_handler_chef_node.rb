@@ -46,8 +46,8 @@ if File.exist?('/etc/chef/client.rb') && File.exist?('/etc/chef/client.pem')
   sensu_handler 'chef_node' do
     type 'pipe'
     command 'sudo handler-chef-node.rb'
-    filters %w(keepalives chef chef_same_endpoint every_3_occurrences max_300_occurrences)
-    severities %w(warning critical)
+    filters %w[keepalives chef chef_same_endpoint every_3_occurrences max_300_occurrences]
+    severities %w[warning critical]
     timeout node['monitor']['default_handler_timeout']
   end
 

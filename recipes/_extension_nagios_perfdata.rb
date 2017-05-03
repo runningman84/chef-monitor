@@ -21,6 +21,6 @@ include_recipe 'monitor::_extensions'
 
 cookbook_file File.join(node['monitor']['server_extension_dir'], 'nagios_perfdata.rb') do
   source 'extensions/nagios_perfdata.rb'
-  mode 0755
+  mode 0o755
   notifies :create, 'ruby_block[sensu_service_trigger]', :immediately
 end

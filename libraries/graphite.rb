@@ -19,7 +19,7 @@
 
 def graphite_url(targets=[], options={})
   return nil if node['monitor']['graphite_server_url'].nil?
-  return nil if targets.count == 0
+  return nil if targets.count.zero?
 
   options['from'] = '-12hours' unless options.key?('from')
   options['to'] = 'now' unless options.key?('to')

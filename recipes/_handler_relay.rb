@@ -26,13 +26,13 @@ if node['sensu'].key?('graphite')
 
     cookbook_file File.join(node['monitor']['server_extension_dir'], 'relay.rb') do
       source 'extensions/relay.rb'
-      mode 0755
+      mode 0o755
       notifies :create, 'ruby_block[sensu_service_trigger]', :immediately
     end
 
     cookbook_file File.join(node['monitor']['server_extension_dir'], 'metrics.rb') do
       source 'extensions/metrics.rb'
-      mode 0755
+      mode 0o755
       notifies :create, 'ruby_block[sensu_service_trigger]', :immediately
     end
 

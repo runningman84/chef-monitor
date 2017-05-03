@@ -90,6 +90,7 @@ Vagrantfile
 # Travis #
 ##########
 .travis.yml
+LICENSE
 
 # Bundler #
 ###########

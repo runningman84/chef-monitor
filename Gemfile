@@ -1,8 +1,8 @@
 source 'https://rubygems.org'
 
 gem 'berkshelf', '~> 3.1'
-gem 'rake'
 gem 'emeril'
+gem 'rake'
 
 group :test do
   gem 'chefspec', '~> 4.0'
@@ -12,6 +12,6 @@ group :test do
 end
 
 group :integration do
-  gem 'test-kitchen'
   gem 'kitchen-vagrant'
+  gem 'test-kitchen'
 end

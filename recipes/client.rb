@@ -44,14 +44,14 @@ client_name = node.name
 
 if node.key?('ec2') && node['ec2'].is_a?(Hash)
   client_attributes['ec2'] = {}
-  %w(
+  %w[
     ami_id
     instance_id
     instance_type
     placement_availability_zone
     kernel_id
     profile
-  ).each do |id|
+  ].each do |id|
     key = id
     key = 'az' if id == 'placement_availability_zone'
     client_attributes['ec2'][key] = node['ec2'][id] if node['ec2'].key?(id)
@@ -85,11 +85,11 @@ if node.key?('ec2') && node['ec2'].is_a?(Hash)
 end
 
 if node.key?('stack') && node['stack'].is_a?(Hash)
-  %w(
+  %w[
     name
     id
     account_id
-  ).each do |id|
+  ].each do |id|
     key = "stack_#{id}"
     key = 'account_id' if id == 'account_id'
 
@@ -101,23 +101,23 @@ end
 
 if node.key?('cloud_v2') && node['cloud_v2'].is_a?(Hash)
   client_attributes['cloud'] = {}
-  %w(
+  %w[
     local_ipv4
     local_hostname
     public_ipv4
     public_hostname
     provider
-  ).each do |key|
+  ].each do |key|
     client_attributes['cloud'][key] = node['cloud_v2'][key].to_s if node['cloud_v2'].key?(key)
   end
   client_subscriptions << "provider:#{client_attributes['cloud']['provider']}" if client_attributes['cloud'].key?('provider')
 end
 
-%w(
+%w[
   platform
   platform_version
   platform_family
-).each do |key|
+].each do |key|
   client_attributes[key] = node[key].to_s if node.key?(key)
 end
 
@@ -130,12 +130,12 @@ client_attributes['chef']['client'] = Chef::Config[:node_name]
 client_attributes['chef']['key'] = Chef::Config[:client_key]
 
 # deprecated
-%w(
+%w[
   scheme_prefix
   remedy_app
   remedy_group
   remedy_component
-).each do |key|
+].each do |key|
   next unless node['monitor'].key?(key)
   client_attributes[key] = node['monitor'][key] if node['monitor'][key]
 end
@@ -180,6 +180,6 @@ include_recipe 'sensu::client_service' unless node['recipes'].include?('monitor:
 directory '/var/cache/sensu' do
   owner 'sensu'
   group 'sensu'
-  mode 00755
+  mode 0o0755
   action :create
 end

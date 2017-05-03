@@ -39,7 +39,7 @@ unless node['monitor']['hipchat_apikey'].nil?
     type 'pipe'
     command 'handler-hipchat.rb'
     filters ['occurrences']
-    severities %w(warning critical)
+    severities %w[warning critical]
     timeout node['monitor']['default_handler_timeout']
   end
 

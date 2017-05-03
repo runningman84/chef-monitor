@@ -23,7 +23,7 @@ cookbook_file '/opt/sensu/embedded/bin/handler-sensu-maintenance-custom.rb' do
   source 'handlers/maintenance.rb'
   owner 'root'
   group 'root'
-  mode 00755
+  mode 0o0755
 end
 
 sensu_handler 'maintenance' do
