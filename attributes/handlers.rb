@@ -16,7 +16,7 @@ default['monitor']['hipchat_from'] = 'Sensu'
 # slack
 default['monitor']['slack_webhook'] = nil
 default['monitor']['slack_message_template'] = node['sensu']['directory'] + '/handlers/slack_message.json.erb'
-default['monitor']['slack_severities'] = %w[warning critical]
+default['monitor']['slack_severities'] = %w(warning critical)
 
 # mailer
 default['monitor']['mail_from'] = 'sensu'

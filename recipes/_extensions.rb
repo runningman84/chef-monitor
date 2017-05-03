@@ -17,10 +17,10 @@
 # limitations under the License.
 #
 
-%w[
+%w(
   client
   server
-].each do |service|
+).each do |service|
   extension_dir = node['monitor']["#{service}_extension_dir"]
 
   directory extension_dir do

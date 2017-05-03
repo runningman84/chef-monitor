@@ -32,12 +32,12 @@ cookbook_file File.join(node['monitor']['client_extension_dir'], 'system_profile
   notifies :create, 'ruby_block[sensu_service_trigger]', :immediately
 end
 
-%w[
+%w(
   load_metrics
   cpu_metrics
   memory_metrics
   interface_metrics
-].each do |key|
+).each do |key|
   file "/etc/sensu/conf.d/checks/#{key}.json" do
     action :delete
     notifies :create, 'ruby_block[sensu_service_trigger]', :immediately

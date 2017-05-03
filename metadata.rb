@@ -10,13 +10,13 @@ chef_version '~> 12'
 issues_url 'https://github.com/runningman84/chef-monitor/issues'
 source_url 'https://github.com/runningman84/chef-monitor'
 
-%w[
+%w(
   ubuntu
   debian
   centos
   redhat
   fedora
-].each do |os|
+).each do |os|
   supports os
 end
 
