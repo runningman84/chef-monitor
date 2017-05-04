@@ -23,5 +23,5 @@ cookbook_file '/etc/init.d/sensu-service' do
   source 'sensu-service'
   owner 'root'
   group 'root'
-  mode 00755
+  mode 0o0755
 end

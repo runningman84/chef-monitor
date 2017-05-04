@@ -22,19 +22,25 @@ node.override['sensu']['use_ssl'] = false
 # https://github.com/SimpleFinance/sensu-transport-snssqs
 sensu_gem 'sensu-transport-snssqs' do
   version '2.0.4'
+  action :remove
+end
+
+# https://github.com/troyready/sensu-transport-snssqs-ng
+sensu_gem 'sensu-transport-snssqs-ng' do
+  version '2.1.0'
   action :install
 end
 
-cookbook_file '/opt/sensu/embedded/lib/ruby/gems/2.3.0/gems/sensu-transport-snssqs-2.0.4/lib/sensu/transport/snssqs.rb' do
-  source 'transports/snssqs.rb'
-  owner 'root'
-  group 'root'
-  mode 00644
-end
+# cookbook_file '/opt/sensu/embedded/lib/ruby/gems/2.3.0/gems/sensu-transport-snssqs-2.0.4/lib/sensu/transport/snssqs.rb' do
+#   source 'transports/snssqs.rb'
+#   owner 'root'
+#   group 'root'
+#   mode 00644
+# end
 
 if node.key?('ec2') && node['ec2'].key?('placement_availability_zone')
   region = node['ec2']['placement_availability_zone'].scan(/[a-z]+\-[a-z]+\-[0-9]+/)
-  if region.count > 0 && node['monitor']['snsqs_region'].nil?
+  if region.count > 0 && node['monitor']['snssqs_region'].nil?
     node.set['monitor']['snssqs_region'] = region.first
   end
 end

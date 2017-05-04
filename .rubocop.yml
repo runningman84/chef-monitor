@@ -46,3 +46,6 @@ Style/SpaceAroundOperators:
 
 Style/Lambda:
   Enabled: false
+
+Style/PercentLiteralDelimiters:
+  Enabled: false

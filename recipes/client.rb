@@ -180,6 +180,6 @@ include_recipe 'sensu::client_service' unless node['recipes'].include?('monitor:
 directory '/var/cache/sensu' do
   owner 'sensu'
   group 'sensu'
-  mode 00755
+  mode 0o0755
   action :create
 end

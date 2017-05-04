@@ -4,5 +4,6 @@
 .librarian
 .kitchen/
 .kitchen.local.yml*
+.kitchen.aws.secret.yml
 tmp/
 vendor/
