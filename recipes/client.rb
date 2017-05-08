@@ -25,7 +25,7 @@ node.override['sensu']['use_ssl'] = false unless node['monitor']['transport'] ==
 
 include_recipe 'sensu::default'
 
-include_recipe 'monitor::_fix_service' unless node[:platform_family].include?('windows')
+include_recipe 'monitor::_fix_service' unless node['platform_family'].include?('windows')
 
 include_recipe "monitor::_transport_#{node['monitor']['transport']}"
 node.override['sensu']['transport']['name'] = node['monitor']['transport']
@@ -35,7 +35,7 @@ ip_type = node['monitor']['use_local_ipv4'] ? 'local_ipv4' : 'public_ipv4'
 client_attributes = node['monitor']['additional_client_attributes'].to_hash
 client_subscriptions = []
 
-client_attributes['signature'] = (Digest::SHA256.hexdigest File.read node['monitor']['signature_file'])[0..31] unless node[:platform_family].include?('windows')
+client_attributes['signature'] = (Digest::SHA256.hexdigest File.read node['monitor']['signature_file'])[0..31] unless node['platform_family'].include?('windows')
 client_attributes['safe_mode'] = node['monitor']['safe_mode']
 client_attributes['standalone_mode'] = node['monitor']['standalone_mode']
 client_attributes['transport'] = node['monitor']['transport']
@@ -173,7 +173,7 @@ include_recipe "monitor::_check_#{node['os']}" if node['monitor']['use_check_os'
 zap_directory '/etc/sensu/conf.d/checks' do
   pattern '*.json'
   notifies :create, 'ruby_block[sensu_service_trigger]', :immediately
-  not_if { node[:platform_family].include?('windows') }
+  not_if { node['platform_family'].include?('windows') }
 end
 
 include_recipe 'sensu::client_service' unless node['recipes'].include?('monitor::master')
@@ -183,5 +183,5 @@ directory '/var/cache/sensu' do
   group 'sensu'
   mode 0o755
   action :create
-  not_if { node[:platform_family].include?('windows') }
+  not_if { node['platform_family'].include?('windows') }
 end
