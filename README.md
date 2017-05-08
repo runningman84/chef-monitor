@@ -24,6 +24,11 @@ in order to remove ephemeral instances without creating incidents.
 
 Learn more about Sensu [Here](http://docs.sensuapp.org/).
 
+The only transport working for Windows is currently snssqs.
+
+Garbage collection for Sensu checks doesn't work under Windows (zap_directory).
+If you remove checks, you specifically need to delete the .json from .\conf.d\checks
+
 Requirements
 ============
 
