@@ -19,7 +19,7 @@
 
 include_recipe 'build-essential::default'
 
-if node[:platform_family].include?("windows")
+if node[:platform_family].include?('windows')
   node['monitor']['sensu_plugins'].each do |name, version|
     gem_package "sensu-plugins-#{name}" do
       gem_binary('C:\\opt\\sensu\\embedded\\bin\\gem.cmd')
@@ -27,7 +27,7 @@ if node[:platform_family].include?("windows")
       version version if version != 'latest'
     end
   end
-  
+
 else
   node['monitor']['sensu_plugins'].each do |name, version|
     sensu_gem "sensu-plugins-#{name}" do

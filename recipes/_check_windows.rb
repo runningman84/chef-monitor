@@ -85,7 +85,7 @@ sensu_check 'disk_usage' do
     graphiteStat0090d: graphite_url([':::scheme_prefix::::::name:::.disk_usage.root.used_percentage', ':::scheme_prefix::::::name:::.disk_usage.*.*.used_percentage'], 'from' => '-90days'),
     refresh: node['monitor']['default_refresh']
   )
-end 
+end
 
 sensu_check 'memory' do
   command 'check-windows-ram.rb.bat -w 85 -c 90'
@@ -100,12 +100,12 @@ sensu_check 'memory' do
     graphiteStat0090d: graphite_url([':::scheme_prefix::::::name:::.memory.free'], 'from' => '-90days'),
     refresh: node['monitor']['default_refresh']
   )
-end 
+end
 
 ### Metrics
 
 if node['monitor']['metric_disabled'] != true
-    
+
   sensu_check 'cpu_metrics' do
     type 'metric'
     command 'metrics-windows-cpu-load.rb.bat --scheme :::scheme_prefix::::::name:::.cpu'
@@ -120,8 +120,8 @@ if node['monitor']['metric_disabled'] != true
       graphiteStat0090d: graphite_url(['perSecond(:::scheme_prefix::::::name:::.cpu.total.{user,system,iowait,idle})'], 'from' => '-90days', 'height' => 300),
       refresh: node['monitor']['default_refresh']
     )
-  end 
-  
+  end
+
   sensu_check 'memory_metrics' do
     type 'metric'
     command 'metrics-windows-ram-usage.rb.bat --scheme :::scheme_prefix::::::name:::.memory'
@@ -137,7 +137,7 @@ if node['monitor']['metric_disabled'] != true
       refresh: node['monitor']['default_refresh']
     )
   end
-  
+
   sensu_check 'interface_metrics' do
     type 'metric'
     command 'metrics-windows-network.rb.bat --scheme :::scheme_prefix::::::name:::.interface'
@@ -153,7 +153,7 @@ if node['monitor']['metric_disabled'] != true
       refresh: node['monitor']['default_refresh']
     )
   end
-  
+
   sensu_check 'disk_usage_metrics' do
     type 'metric'
     command 'metrics-windows-disk-usage.rb.bat --scheme :::scheme_prefix::::::name:::.disk_usage'

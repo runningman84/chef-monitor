@@ -19,13 +19,13 @@
 
 node.override['sensu']['use_ssl'] = false
 
-if node[:platform_family].include?("windows")
+if node[:platform_family].include?('windows')
   gem_package 'sensu-transport-snssqs-ng' do
     gem_binary('C:\\opt\\sensu\\embedded\\bin\\gem.cmd')
     options('--force')
     version '2.1.0'
   end
-  
+
 else
   # https://github.com/SimpleFinance/sensu-transport-snssqs
   sensu_gem 'sensu-transport-snssqs' do
@@ -38,7 +38,7 @@ else
     version '2.1.0'
     action :install
   end
-  
+
 end
 
 if node.key?('ec2') && node['ec2'].key?('placement_availability_zone')
