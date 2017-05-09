@@ -25,6 +25,12 @@ platforms:
       provider: lxc
     run_list:
       - recipe[yum]
+  - name: centos-7.x
+    driver:
+      box: asy/centos-7-64-lxc
+      provider: lxc
+    run_list:
+      - recipe[yum]
 
 suites:
 - name: default
