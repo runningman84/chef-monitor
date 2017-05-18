@@ -26,6 +26,7 @@ if node['monitor']['redis_address'].nil?
 else
   node.override['sensu']['redis']['host'] = node['monitor']['redis_address']
 end
+node.override['sensu']['redis']['db'] = node['monitor']['redis_db'] unless node['monitor']['redis_db'].nil?
 
 node.override['sensu']['use_ssl'] = false unless node['monitor']['transport'] == 'rabbitmq'
 

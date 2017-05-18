@@ -6,6 +6,7 @@ override['sensu']['version'] = '0.28.4-1'
 override['uchiwa']['version'] = '0.22.0-1'
 
 default['monitor']['redis_address'] = nil
+default['monitor']['redis_db'] = nil
 default['monitor']['rabbitmq_address'] = nil
 default['monitor']['api_address'] = nil
 default['monitor']['graphite_address'] = nil
