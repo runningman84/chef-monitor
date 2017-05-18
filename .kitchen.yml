@@ -66,6 +66,7 @@ suites:
       use_system_profile: true
       use_statsd_input: true
       transport: redis
+      redis_db: 1
     rabbitmq:
       use_distro_version: true
 - name: client
