@@ -180,17 +180,48 @@ class Ec2Node < Sensu::Handler
     @event['client']['name']
   end
 
-  # Method to check if there is any insance and if instance is in a valid state that could be deleted
+  def account_id
+    @event.dig('client', 'ec2', 'account_id') || settings.dig('ec2_node', 'account_id') || settings.dig('ec2_node', 'ec2', 'account_id')
+  end
+
+  def get_associated_role
+    dyn = Aws::DynamoDB::Client.new
+    resp = dyn.get_item({
+      key: {
+        'account_id' => {
+          s: account_id
+        }
+      },
+      table_name: 'shared_monitoring_customer_accounts'
+    })
+    return resp.item.service_role_arn.s
+  end
+
+  def assume_role
+    sts = Aws::STS::Client.new
+    resp = sts.assume_role({
+      role_arn: get_associated_role
+    })
+    return {
+      access_key_id: resp.credentials.access_key_id,
+      secret_access_key: resp.secret_access_key,
+      session_token: resp.session_token
+    }
+  end
+
+  # Method to check if there is any instance and if instance is in a valid state that could be deleted
   def ec2_node_should_be_deleted?
     # Defining region for aws SDK object
-    ec2 = Aws::EC2::Client.new(region: region)
+    credentials = {}
+    credentials = assume_role unless account_id == Aws::STS::Client.new.get_caller_identity.account
+    ec2 = Aws::EC2::Client.new({region: region}.merge(credentials))
     settings['ec2_node'] = {} unless settings['ec2_node']
     instance_states = @event['client']['ec2_states'] || settings['ec2_node']['ec2_states'] || ['shutting-down', 'terminated', 'stopping', 'stopped']
     instance_reasons = @event['client']['ec2_state_reasons'] || settings['ec2_node']['ec2_state_reasons'] || %w(Client.UserInitiatedShutdown Server.SpotInstanceTermination Client.InstanceInitiatedShutdown)
 
     begin
       # Finding the instance
-      instances = ec2.describe_instances(instance_ids: [instance_id]).reservations[0]
+      instances = ec2.describe_instances({instance_ids: [instance_id]}.merge(credentials)).reservations[0]
       # If instance is empty/nil instance id is not valid so client can be deleted
       if instances.nil? || instances.empty?
         true
