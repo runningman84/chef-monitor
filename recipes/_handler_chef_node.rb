@@ -21,17 +21,6 @@ include_recipe 'build-essential::default'
 
 if File.exist?('/etc/chef/client.rb') && File.exist?('/etc/chef/client.pem')
 
-  case node['platform_family']
-  when 'debian'
-    apt_package 'ruby-dev' do
-      action :install
-    end
-  when 'rhel'
-    yum_package 'ruby-devel' do
-      action :install
-    end
-  end
-
   sensu_gem 'sensu-plugins-chef' do
     version '1.0.0'
   end
