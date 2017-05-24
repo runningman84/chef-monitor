@@ -31,7 +31,7 @@ if File.exist?('/etc/chef/client.rb') && File.exist?('/etc/chef/client.pem')
       action :install
     end
   end
-  
+
   sensu_gem 'sensu-plugins-chef' do
     version '1.0.0'
   end
