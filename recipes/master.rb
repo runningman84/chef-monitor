@@ -78,7 +78,7 @@ sensu_gem 'sensu-plugins-sensu' do
   version '1.0.0'
 end
 sensu_gem 'sensu-plugins-uchiwa' do
-  version '0.0.3'
+  version '1.0.0'
 end
 
 include_recipe 'monitor::client'

@@ -79,7 +79,7 @@ sensu_check 'swap' do
 end
 
 sensu_check 'load' do
-  command 'check-load.rb -p -w 3,2,1.5 -c 6,4,3'
+  command 'check-load.rb -w 3,2,1.5 -c 6,4,3'
   handlers ['default']
   interval [node['monitor']['default_interval'], 60].max
   subscribers ['os:linux'] unless node['monitor']['standalone_mode']

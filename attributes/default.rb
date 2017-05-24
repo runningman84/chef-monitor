@@ -2,8 +2,17 @@ include_attribute 'sensu'
 
 override['sensu']['use_embedded_ruby'] = true
 override['sensu']['client_deregister_on_stop'] = false
-override['sensu']['version'] = '0.28.4-1'
-override['uchiwa']['version'] = '0.22.0-1'
+override['uchiwa']['add_repo'] = false
+if node['platform'].include?('ubuntu')
+  override['sensu']['apt_repo_codename'] = node['lsb']['codename']
+end
+override['sensu']['apt_repo_url'] = 'https://sensu.global.ssl.fastly.net/apt'
+# override['uchiwa']['apt_repo_url'] = 'https://sensu.global.ssl.fastly.net/apt'
+override['sensu']['yum_repo_url'] = 'https://sensu.global.ssl.fastly.net'
+# override['uchiwa']['yum_repo_url'] = 'https://sensu.global.ssl.fastly.net'
+override['sensu']['msi_repo_url'] = 'https://sensu.global.ssl.fastly.net/msi/'
+override['sensu']['version'] = '0.29.0-11'
+override['uchiwa']['version'] = '0.25.2-1'
 
 default['monitor']['redis_address'] = nil
 default['monitor']['redis_db'] = nil
