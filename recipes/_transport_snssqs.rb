@@ -23,7 +23,7 @@ if node['platform_family'].include?('windows')
   gem_package 'sensu-transport-snssqs-ng' do
     gem_binary('C:\\opt\\sensu\\embedded\\bin\\gem.cmd')
     options('--force')
-    version '2.1.0'
+    version '2.1.1'
   end
 
 else
@@ -35,7 +35,7 @@ else
 
   # https://github.com/troyready/sensu-transport-snssqs-ng
   sensu_gem 'sensu-transport-snssqs-ng' do
-    version '2.1.0'
+    version '2.1.1'
     action :install
   end
 
