@@ -19,18 +19,19 @@ platforms:
       provider: lxc
     run_list:
       - recipe[apt]
-  - name: centos-6.x
-    driver:
-      box: asy/centos-6-64-lxc
-      provider: lxc
-    run_list:
-      - recipe[yum]
+  # - name: centos-6.x
+  #   driver:
+  #     box: asy/centos-6-64-lxc
+  #     provider: lxc
+  #   run_list:
+  #     - recipe[yum]
   - name: centos-7.x
     driver:
       box: asy/centos-7-64-lxc
       provider: lxc
     run_list:
       - recipe[yum]
+      - recipe[monitor::_kitchen_centos7]
 
 suites:
 - name: default
@@ -48,8 +49,8 @@ suites:
       use_nagios_plugins: false
       use_system_profile: true
       use_statsd_input: true
-    rabbitmq:
-      use_distro_version: true
+    # rabbitmq:
+    #   use_distro_version: true
 - name: server-redis
   run_list:
     - recipe[monitor::master]
@@ -67,8 +68,8 @@ suites:
       use_statsd_input: true
       transport: redis
       redis_db: 1
-    rabbitmq:
-      use_distro_version: true
+    # rabbitmq:
+    #   use_distro_version: true
 - name: client
   run_list:
     - recipe[monitor::client]

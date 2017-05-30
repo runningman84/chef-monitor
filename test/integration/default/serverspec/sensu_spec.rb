@@ -104,9 +104,9 @@ describe 'uchiwa' do
     expect(port(3000)).to be_listening
   end
 
-  it 'has a running service of uchiwa' do
-    expect(service('uchiwa')).to be_running
-  end
+  # it 'has a running service of uchiwa' do
+  #   expect(service('uchiwa')).to be_running
+  # end
 
   it 'has a enabled service of uchiwa' do
     expect(service('uchiwa')).to be_enabled

@@ -83,3 +83,14 @@ default['monitor']['remedy_component'] = nil
 
 # build-essential
 normal['build-essential']['compile_time'] = true
+
+# rabbitmq
+default['rabbitmq']['use_distro_version'] = true
+if node['platform'].include?('ubuntu')
+  if node['lsb']['release'] == '14.04'
+    default['rabbitmq']['use_distro_version'] = false
+    # default['rabbitmq']['version'] = '3.5.7'
+  end
+elsif node['platform_family'].include?('rhel')
+  default['rabbitmq']['use_distro_version'] = false
+end
