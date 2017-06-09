@@ -185,7 +185,7 @@ class Ec2Node < Sensu::Handler
   end
 
   def get_associated_role
-    dyn = Aws::DynamoDB::Client.new
+    dyn = Aws::DynamoDB::Client.new({region: region_server})
     resp = dyn.get_item({
       key: {
         'account_id' => {
@@ -198,7 +198,7 @@ class Ec2Node < Sensu::Handler
   end
 
   def assume_role
-    sts = Aws::STS::Client.new
+    sts = Aws::STS::Client.new({region: region_server})
     resp = sts.assume_role({
       role_arn: get_associated_role
     })
@@ -213,8 +213,19 @@ class Ec2Node < Sensu::Handler
   def ec2_node_should_be_deleted?
     # Defining region for aws SDK object
     credentials = {}
-    credentials = assume_role unless account_id == Aws::STS::Client.new.get_caller_identity.account
-    ec2 = Aws::EC2::Client.new({region: region}.merge(credentials))
+    unless region_client == region_server
+      puts "[EC2 Node] #{instance_id} is in region #{region_client} server is in region #{region_server}"
+    end
+    unless account_id == Aws::STS::Client.new({region: region_server}).get_caller_identity.account
+      puts "[EC2 Node] #{instance_id} is in account #{account_id} server is in account #{Aws::STS::Client.new({region: region_server}).get_caller_identity.account}"
+      begin
+        credentials = assume_role
+      rescue Aws::DynamoDB::Errors::ResourceNotFoundException
+        puts "[EC2 Node] Role switch failed due to missing DynamoDB item"
+        return false
+      end
+    end
+    ec2 = Aws::EC2::Client.new({region: region_client}.merge(credentials))
     settings['ec2_node'] = {} unless settings['ec2_node']
     instance_states = @event['client']['ec2_states'] || settings['ec2_node']['ec2_states'] || ['shutting-down', 'terminated', 'stopping', 'stopped']
     instance_reasons = @event['client']['ec2_state_reasons'] || settings['ec2_node']['ec2_state_reasons'] || %w(Client.UserInitiatedShutdown Server.SpotInstanceTermination Client.InstanceInitiatedShutdown)
@@ -242,12 +253,27 @@ class Ec2Node < Sensu::Handler
     end
   end
 
-  def region
-    @region ||= begin
+  def region_client
+    @region_client ||= begin
       region_check = ENV['EC2_REGION']
       region_check = settings['aws']['region'] if settings.key?('aws')
-      region_check = event['client']['ec2_region'] if event['client'].key?('ec2_region')
-      region_check = event['client']['ec2']['region'] if event['client'].key?('ec2') && event['client']['ec2'].key?('region')
+      region_check = @event['client']['ec2_region'] if @event['client'].key?('ec2_region')
+      region_check = @event['client']['ec2']['region'] if @event['client'].key?('ec2') && @event['client']['ec2'].key?('region')
+      if region_check.nil? || region_check.empty?
+        region_check = Net::HTTP.get(URI('http://169.254.169.254/latest/meta-data/placement/availability-zone'))
+        matches = /(\w+\-\w+\-\d+)/.match(region_check)
+        if !matches.nil? && !matches.captures.empty?
+          region_check = matches.captures[0]
+        end
+      end
+      region_check
+    end
+  end
+
+  def region_server
+    @region_server ||= begin
+      region_check = ENV['EC2_REGION']
+      region_check = settings['aws']['region'] if settings.key?('aws')
       if region_check.nil? || region_check.empty?
         region_check = Net::HTTP.get(URI('http://169.254.169.254/latest/meta-data/placement/availability-zone'))
         matches = /(\w+\-\w+\-\d+)/.match(region_check)

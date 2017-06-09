@@ -31,12 +31,12 @@ if node.key?('ec2')
 
   include_recipe 'monitor::_filters'
 
-  # cookbook_file '/opt/sensu/embedded/bin/handler-ec2_node-custom.rb' do
-  #  source 'handlers/ec2_node.rb'
-  #  owner 'root'
-  #  group 'root'
-  #  mode 00755
-  # end
+  cookbook_file '/opt/sensu/embedded/bin/handler-ec2_node-custom.rb' do
+    source 'handlers/ec2_node.rb'
+    owner 'root'
+    group 'root'
+    mode 00755
+  end
 
   sensu_snippet 'ec2_node' do
     content(
@@ -46,7 +46,7 @@ if node.key?('ec2')
 
   sensu_handler 'ec2_node' do
     type 'pipe'
-    command 'handler-ec2_node.rb'
+    command 'handler-ec2_node-custom.rb'
     filters %w(keepalives ec2 every_5_occurrences max_100_occurrences)
     severities %w(warning critical)
     timeout node['monitor']['default_handler_timeout']
