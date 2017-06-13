@@ -18,7 +18,7 @@
 #
 
 sensu_gem 'sensu-plugins-redis' do
-  version '1.2.1'
+  version '1.3.1'
 end
 
 sensu_check 'redis_process' do
