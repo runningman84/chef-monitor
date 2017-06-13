@@ -22,7 +22,7 @@ include_recipe 'build-essential::default'
 if File.exist?('/etc/chef/client.rb') && File.exist?('/etc/chef/client.pem')
 
   sensu_gem 'sensu-plugins-chef' do
-    version '1.0.0'
+    version '3.0.2'
   end
 
   handler_path = '/opt/sensu/embedded/bin/handler-chef-node.rb'
