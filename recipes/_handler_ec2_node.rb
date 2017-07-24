@@ -35,7 +35,7 @@ if node.key?('ec2')
     source 'handlers/ec2_node.rb'
     owner 'root'
     group 'root'
-    mode 00755
+    mode 0o0755
   end
 
   sensu_snippet 'ec2_node' do
