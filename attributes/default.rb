@@ -11,7 +11,7 @@ override['sensu']['apt_repo_url'] = 'https://sensu.global.ssl.fastly.net/apt'
 override['sensu']['yum_repo_url'] = 'https://sensu.global.ssl.fastly.net'
 # override['uchiwa']['yum_repo_url'] = 'https://sensu.global.ssl.fastly.net'
 override['sensu']['msi_repo_url'] = 'https://sensu.global.ssl.fastly.net/msi/'
-override['sensu']['version'] = '0.28.5-2'
+override['sensu']['version'] = '1.0.0-1'
 override['uchiwa']['version'] = '0.25.2-1'
 
 default['monitor']['redis_address'] = nil
@@ -87,10 +87,10 @@ normal['build-essential']['compile_time'] = true
 # rabbitmq
 default['rabbitmq']['use_distro_version'] = true
 if node['platform'].include?('ubuntu')
-  if node['lsb']['release'] == '14.04'
-    default['rabbitmq']['use_distro_version'] = false
-    # default['rabbitmq']['version'] = '3.5.7'
-  end
+  # if node['lsb']['release'] == '14.04'
+  default['rabbitmq']['use_distro_version'] = false
+  # default['rabbitmq']['version'] = '3.5.7'
+  # end
 elsif node['platform_family'].include?('rhel')
   default['rabbitmq']['use_distro_version'] = false
 end
