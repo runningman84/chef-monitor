@@ -1,13 +1,13 @@
 source 'https://rubygems.org'
 
-gem 'berkshelf' # , '~> 3.1'
+gem 'berkshelf'
 gem 'emeril'
 gem 'rake'
 
 group :test do
-  gem 'chefspec' # , '~> 4.0'
-  gem 'foodcritic' # , '~> 4.0.0'
-  gem 'rubocop' # , '= 0.25'
+  gem 'chefspec'
+  gem 'foodcritic'
+  gem 'rubocop'
   gem 'strainer'
 end
 
