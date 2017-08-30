@@ -19,6 +19,10 @@
 
 node.override['sensu']['use_ssl'] = false
 
+sensu_gem 'aws-sdk' do
+  version '2.10.35'
+end
+
 if node['platform_family'].include?('windows')
   gem_package 'sensu-transport-snssqs-ng' do
     gem_binary('C:\\opt\\sensu\\embedded\\bin\\gem.cmd')
