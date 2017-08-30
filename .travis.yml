@@ -1,11 +1,15 @@
 language: ruby
 bundler_args: --without integration
 rvm:
-  - 2.2.5
+  - 2.1.10
+  - 2.2.7
+  - 2.3.4
+  - 2.4.1
 before_install:
   - gem install bundler -v 1.10.6
-  - gem install kitchen
+  - wget https://packages.chef.io/files/stable/chefdk/2.1.11/ubuntu/16.04/chefdk_2.1.11-1_amd64.deb
+  - sudo dpkg -i chefdk_2.1.11-1_amd64.deb
 script:
   - foodcritic .
   - rubocop .
-  - kitchen converge server-redis-ubuntu-1404
+  - /opt/chefdk/bin/kitchen converge server-redis-ubuntu-1404
