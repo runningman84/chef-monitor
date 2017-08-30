@@ -1,8 +1,5 @@
 language: ruby
-os:
-  - os: linux
-    dist: xenial
-    sudo: required
+dist: xenial
 bundler_args: --without integration
 rvm:
   - 2.4.1
