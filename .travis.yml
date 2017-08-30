@@ -18,4 +18,4 @@ before_install:
 script:
   - foodcritic .
   - rubocop .
-  - /opt/chefdk/bin/kitchen converge server-redis-ubuntu-1404
+  - /opt/chefdk/bin/kitchen test
