@@ -6,9 +6,16 @@ rvm:
   - 2.3.4
   - 2.4.1
 before_install:
+  - sudo apt-get -qq update
   - gem install bundler -v 1.10.6
   - wget https://packages.chef.io/files/stable/chefdk/2.1.11/ubuntu/16.04/chefdk_2.1.11-1_amd64.deb
   - sudo dpkg -i chefdk_2.1.11-1_amd64.deb
+  - wget https://releases.hashicorp.com/vagrant/1.9.8/vagrant_1.9.8_x86_64.deb
+  - sudo dpkg -i vagrant_1.9.8_x86_64.deb
+  - sudo apt-get install -y lxc lxctl
+  - vagrant plugin install vagrant-lxc
+  - sudo vagrant lxc sudoers
+  - vagrant plugin install aws
 script:
   - foodcritic .
   - rubocop .
