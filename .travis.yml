@@ -1,5 +1,11 @@
 language: ruby
 dist: xenial
+sudo: required
+# matrix:
+#  include:
+#    - os: linux
+#      dist: xenial
+#      sudo: required
 bundler_args: --without integration
 rvm:
   - 2.4.1
