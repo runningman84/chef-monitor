@@ -12,6 +12,7 @@ group :test do
 end
 
 group :integration do
+  gem 'kitchen-ec2'
   gem 'kitchen-vagrant'
   gem 'test-kitchen'
 end
