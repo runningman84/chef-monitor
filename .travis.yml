@@ -29,6 +29,7 @@ before_install:
   - sudo vagrant lxc sudoers
   - vagrant plugin install aws
 script:
+  - cat /etc/os-release
   - foodcritic .
   - rubocop .
   - /opt/chefdk/bin/kitchen test $KITCHEN
