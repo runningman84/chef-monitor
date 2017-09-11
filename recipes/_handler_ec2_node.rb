@@ -26,7 +26,7 @@ if node.key?('ec2')
   end
 
   sensu_gem 'sensu-plugins-aws' do
-    version '6.3.0'
+    version '8.2.0'
   end
 
   include_recipe 'monitor::_filters'
