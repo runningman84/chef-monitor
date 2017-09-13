@@ -46,6 +46,7 @@ sensu_check 'disk_usage' do
     graphiteStat0090d: graphite_url([':::scheme_prefix::::::name:::.disk_usage.root.used_percentage', ':::scheme_prefix::::::name:::.disk_usage.*.*.used_percentage'], 'from' => '-90days'),
     refresh: node['monitor']['default_refresh']
   )
+  not_if { ENV.key?('TEST_KITCHEN') } # disable performance check in kitchen env
 end
 
 sensu_check 'memory' do
@@ -61,6 +62,7 @@ sensu_check 'memory' do
     graphiteStat0090d: graphite_url([':::scheme_prefix::::::name:::.memory.free'], 'from' => '-90days'),
     refresh: node['monitor']['default_refresh']
   )
+  not_if { ENV.key?('TEST_KITCHEN') } # disable performance check in kitchen env
 end
 
 sensu_check 'swap' do
@@ -76,7 +78,7 @@ sensu_check 'swap' do
     graphiteStat0090d: graphite_url([':::scheme_prefix::::::name:::.memory.{swapTotal,swapUsed}'], 'from' => '-90days'),
     refresh: node['monitor']['default_refresh']
   )
-  not_if { File.exist?('/tmp/kitchen/client.pem') } # disable performance check in kitchen env
+  not_if { ENV.key?('TEST_KITCHEN') } # disable performance check in kitchen env
 end
 
 sensu_check 'load' do
@@ -92,7 +94,7 @@ sensu_check 'load' do
     graphiteStat0090d: graphite_url([':::scheme_prefix::::::name:::.load.load_avg.*'], 'from' => '-90days'),
     refresh: node['monitor']['default_refresh']
   )
-  not_if { File.exist?('/tmp/kitchen/client.pem') } # disable performance check in kitchen env
+  not_if { ENV.key?('TEST_KITCHEN') } # disable performance check in kitchen env
 end
 
 sensu_check 'fs_writeable_tmp' do
