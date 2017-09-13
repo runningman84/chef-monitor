@@ -31,3 +31,11 @@ default['monitor']['smtp_enable_starttls_auto'] = true
 
 # ec2
 default['monitor']['ec2_states'] = ['terminated','stopping','shutting-down','stopped']
+
+# influxdb
+default['monitor']['influxdb_address'] = nil
+default['monitor']['influxdb_database'] = 'stats'
+default['monitor']['influxdb_host'] = 'localhost'
+default['monitor']['influxdb_port'] = 8086
+default['monitor']['influxdb_username'] = 'stats'
+default['monitor']['influxdb_password'] = 'stats'

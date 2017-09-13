@@ -40,6 +40,9 @@ client_attributes['safe_mode'] = node['monitor']['safe_mode']
 client_attributes['standalone_mode'] = node['monitor']['standalone_mode']
 client_attributes['transport'] = node['monitor']['transport']
 
+client_attributes['influxdb'] ||= {}
+client_attributes['influxdb']['tags'] ||= {}
+
 client_name = node.name
 
 if node.key?('ec2') && node['ec2'].is_a?(Hash)
@@ -82,21 +85,28 @@ if node.key?('ec2') && node['ec2'].is_a?(Hash)
 
   end
 
-end
+  if node.key?('stack') && node['stack'].is_a?(Hash)
+    %w(
+      name
+      id
+      account_id
+    ).each do |id|
+      key = "stack_#{id}"
+      key = 'account_id' if id == 'account_id'
 
-if node.key?('stack') && node['stack'].is_a?(Hash)
-  %w(
-    name
-    id
-    account_id
-  ).each do |id|
-    key = "stack_#{id}"
-    key = 'account_id' if id == 'account_id'
-
-    client_attributes['ec2'][key] = node['stack'][id].to_s if node['stack'].key?(id)
+      client_attributes['ec2'][key] = node['stack'][id].to_s if node['stack'].key?(id)
+    end
+    client_subscriptions << "stack_name:#{client_attributes['ec2']['stack_name']}" if client_attributes['ec2'].key?('stack_name')
+    client_subscriptions << "account_id:#{client_attributes['ec2']['account_id']}" if client_attributes['ec2'].key?('account_id')
   end
-  client_subscriptions << "stack_name:#{client_attributes['ec2']['stack_name']}" if client_attributes['ec2'].key?('stack_name')
-  client_subscriptions << "account_id:#{client_attributes['ec2']['account_id']}" if client_attributes['ec2'].key?('account_id')
+
+  client_attributes['influxdb']['tags']['aws_account_id'] = client_attributes['ec2']['account_id'] if client_attributes['ec2'].key?('account_id')
+  client_attributes['influxdb']['tags']['aws_region'] = client_attributes['ec2']['region'] if client_attributes['ec2'].key?('region')
+  client_attributes['influxdb']['tags']['aws_az'] = client_attributes['ec2']['az'] if client_attributes['ec2'].key?('az')
+  client_attributes['influxdb']['tags']['aws_ami_id'] = client_attributes['ec2']['ami_id'] if client_attributes['ec2'].key?('ami_id')
+  client_attributes['influxdb']['tags']['aws_instance_type'] = client_attributes['ec2']['instance_type'] if client_attributes['ec2'].key?('instance_type')
+  client_attributes['influxdb']['tags']['aws_stack_name'] = client_attributes['ec2']['stack_name'] if client_attributes['ec2'].key?('stack_name')
+
 end
 
 if node.key?('cloud_v2') && node['cloud_v2'].is_a?(Hash)
@@ -111,6 +121,7 @@ if node.key?('cloud_v2') && node['cloud_v2'].is_a?(Hash)
     client_attributes['cloud'][key] = node['cloud_v2'][key].to_s if node['cloud_v2'].key?(key)
   end
   client_subscriptions << "provider:#{client_attributes['cloud']['provider']}" if client_attributes['cloud'].key?('provider')
+  client_attributes['influxdb']['tags']['cloud_provider'] = client_attributes['cloud']['provider'] if client_attributes['cloud'].key?('provider')
 end
 
 %w(
@@ -120,6 +131,8 @@ end
 ).each do |key|
   client_attributes[key] = node[key].to_s if node.key?(key)
 end
+client_attributes['influxdb']['tags']['platform'] = client_attributes['platform'] if client_attributes.key?('platform')
+client_attributes['influxdb']['tags']['platform_version'] = client_attributes['platform_version'] if client_attributes.key?('platform_version')
 
 client_attributes['chef'] = {}
 client_attributes['chef']['endpoint'] = Chef::Config[:chef_server_url]
@@ -129,12 +142,11 @@ client_attributes['chef']['environment'] = node.chef_environment
 client_attributes['chef']['client'] = Chef::Config[:node_name]
 client_attributes['chef']['key'] = Chef::Config[:client_key]
 
-# deprecated
+client_attributes['influxdb']['tags']['chef_org'] = client_attributes['chef']['organisation'] if client_attributes['chef'].key?('organisation')
+client_attributes['influxdb']['tags']['chef_env'] = client_attributes['chef']['organisation'] if client_attributes['chef'].key?('environment')
+
 %w(
   scheme_prefix
-  remedy_app
-  remedy_group
-  remedy_component
 ).each do |key|
   next unless node['monitor'].key?(key)
   client_attributes[key] = node['monitor'][key] if node['monitor'][key]
@@ -149,6 +161,8 @@ end
 client_subscriptions << "env:#{node.chef_environment}"
 client_subscriptions << "os:#{node['os']}"
 client_subscriptions << 'all'
+
+client_attributes['influxdb']['tags']['os'] = node['os']
 
 sensu_client client_name do
   if node.key?('cloud') && node['cloud'].key?(ip_type)

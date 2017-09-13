@@ -76,6 +76,7 @@ sensu_check 'swap' do
     graphiteStat0090d: graphite_url([':::scheme_prefix::::::name:::.memory.{swapTotal,swapUsed}'], 'from' => '-90days'),
     refresh: node['monitor']['default_refresh']
   )
+  not_if { File.exist?('/tmp/kitchen/client.pem') } # disable performance check in kitchen env
 end
 
 sensu_check 'load' do
@@ -91,6 +92,7 @@ sensu_check 'load' do
     graphiteStat0090d: graphite_url([':::scheme_prefix::::::name:::.load.load_avg.*'], 'from' => '-90days'),
     refresh: node['monitor']['default_refresh']
   )
+  not_if { File.exist?('/tmp/kitchen/client.pem') } # disable performance check in kitchen env
 end
 
 sensu_check 'fs_writeable_tmp' do
