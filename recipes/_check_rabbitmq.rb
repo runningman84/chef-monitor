@@ -20,7 +20,7 @@
 include_recipe 'build-essential::default'
 
 sensu_gem 'sensu-plugins-rabbitmq' do
-  version '3.1.1'
+  version '3.5.0'
 end
 
 sensu_check 'rabbitmq_process' do

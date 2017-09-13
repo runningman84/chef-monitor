@@ -20,7 +20,7 @@
 unless node['monitor']['hipchat_apikey'].nil?
 
   sensu_gem 'sensu-plugins-hipchat' do
-    version '0.0.3'
+    version '2.0.0'
   end
 
   include_recipe 'monitor::_filters'
