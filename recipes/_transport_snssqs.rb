@@ -20,7 +20,7 @@
 node.override['sensu']['use_ssl'] = false
 
 sensu_gem 'aws-sdk' do
-  version '3.0.1'
+  version '2.10.35'
 end
 
 if node['platform_family'].include?('windows')
