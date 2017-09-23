@@ -1,6 +1,6 @@
 class Chef
   class Node
-    def has_recipe?(recipe_name)
+    def recipe?(recipe_name)
       loaded_recipes.include?(with_default(recipe_name))
     end
 
