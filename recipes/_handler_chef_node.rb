@@ -22,7 +22,7 @@ include_recipe 'build-essential::default'
 if File.exist?('/etc/chef/client.rb') && File.exist?('/etc/chef/client.pem')
 
   sensu_gem 'sensu-plugins-chef' do
-    version '3.0.2'
+    version '4.0.0'
   end
 
   handler_path = '/opt/sensu/embedded/bin/handler-chef-node.rb'
@@ -46,7 +46,7 @@ if File.exist?('/etc/chef/client.rb') && File.exist?('/etc/chef/client.pem')
   sensu_handler 'chef_node' do
     type 'pipe'
     command 'sudo handler-chef-node.rb'
-    filters %w(keepalives chef chef_same_endpoint every_3_occurrences max_300_occurrences)
+    filters %w(keepalives chef chef_server_mode chef_same_endpoint every_3_occurrences max_300_occurrences)
     severities %w(warning critical)
     timeout node['monitor']['default_handler_timeout']
   end

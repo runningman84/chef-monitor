@@ -12,18 +12,20 @@ override['sensu']['yum_repo_url'] = 'https://sensu.global.ssl.fastly.net'
 # override['uchiwa']['yum_repo_url'] = 'https://sensu.global.ssl.fastly.net'
 override['sensu']['msi_repo_url'] = 'https://sensu.global.ssl.fastly.net/msi/'
 override['sensu']['version'] = '0.28.5-2'
-override['uchiwa']['version'] = '0.25.2-1'
+override['uchiwa']['version'] = '0.25.3-1'
 
 default['monitor']['redis_address'] = nil
 default['monitor']['redis_db'] = nil
 default['monitor']['rabbitmq_address'] = nil
 default['monitor']['api_address'] = nil
 default['monitor']['graphite_address'] = nil
+default['monitor']['influxdb_address'] = nil
 
 default['monitor']['transport'] = 'rabbitmq'
 
 default['monitor']['master_search_query'] = 'recipes:monitor\\:\\:master'
 default['monitor']['graphite_search_query'] = 'recipes:graphite\\:\\:carbon'
+default['monitor']['influxdb_search_query'] = 'recipes:influxdb\\:\\:default'
 
 default['monitor']['environment_aware_search'] = false
 default['monitor']['use_local_ipv4'] = false

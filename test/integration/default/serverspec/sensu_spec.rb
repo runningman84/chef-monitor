@@ -148,7 +148,7 @@ end
 
 describe command('curl -s http://localhost:4567/clients') do
   # test version
-  its(:stdout) { should contain('0.28.5').after('version') }
+  its(:stdout) { should contain('1.0.2').after('version') }
 
   # test subscriptions
   its(:stdout) { should contain('linux').after('subscriptions') }
