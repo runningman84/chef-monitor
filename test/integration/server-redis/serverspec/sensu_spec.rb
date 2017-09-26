@@ -134,7 +134,7 @@ describe command('curl -s http://localhost:4567/info') do
   its(:stdout) { should contain('connected":true').after('redis') }
 end
 
-%w(disk_usage memory redis_metrics disk_metrics redis_process disk_usage_metrics ssh swap load fs_writeable_tmp).each do |check|
+%w(redis_metrics disk_metrics redis_process disk_usage_metrics ssh fs_writeable_tmp).each do |check|
   describe command("curl -s -i -X POST -H 'Content-Type: application/json' -d '{\"check\": \"#{check}\"}' http://127.0.0.1:4567/request") do
     # test check
     its(:stdout) { should contain('HTTP/1.1 202') }
