@@ -1,6 +1,6 @@
 source 'https://rubygems.org'
 
-gem 'berkshelf'
+gem 'berkshelf', '> 6.3'
 gem 'emeril'
 gem 'rake'
 
