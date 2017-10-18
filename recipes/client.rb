@@ -184,11 +184,11 @@ include_recipe 'monitor::_system_profile' if node['monitor']['use_system_profile
 
 include_recipe "monitor::_check_#{node['os']}" if node['monitor']['use_check_os']
 
-# zap_directory '/etc/sensu/conf.d/checks' do
-#   pattern '*.json'
-#   notifies :create, 'ruby_block[sensu_service_trigger]', :immediately
-#   not_if { node['platform_family'].include?('windows') }
-# end
+zap_directory '/etc/sensu/conf.d/checks' do
+  pattern '*.json'
+  notifies :create, 'ruby_block[sensu_service_trigger]', :immediately
+  not_if { node['platform_family'].include?('windows') }
+end
 
 include_recipe 'sensu::client_service' unless node['recipes'].include?('monitor::master')
 
