@@ -77,7 +77,7 @@ default['monitor']['active_handlers']['relay'] = false
 default['monitor']['signature_file'] = '/etc/ssh/ssh_host_rsa_key'
 
 # grpahite scheme
-default['monitor']['scheme_prefix'] = 'sensu.default.'
+default['monitor']['scheme_prefix'] = 'sensu.default.unknown.unknown.'
 # remedy defaults deprecated
 default['monitor']['remedy_app'] = nil
 default['monitor']['remedy_group'] = nil
