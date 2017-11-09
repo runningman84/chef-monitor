@@ -31,6 +31,7 @@ before_install:
   - vagrant plugin install aws
 script:
   - cat /etc/os-release
-  - foodcritic .
-  - rubocop .
+  - bundle install
+  - bundle exec foodcritic .
+  - bundle exec rubocop .
   - /opt/chefdk/bin/kitchen test $KITCHEN

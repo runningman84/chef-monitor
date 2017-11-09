@@ -6,6 +6,15 @@ provisioner:
   name: chef_zero
   #  require_chef_omnibus: 12
 
+verifier:
+  name: inspec
+  <% if ENV['CI'] == "jenkins" %>
+  format: junit
+  output: "kitchen-reports/kitchen_report_%{suite}_%{platform}_inspec.xml"
+  <% else %>
+  format: cli
+  <% end %>
+
 platforms:
   - name: ubuntu-14.04
     driver:
