@@ -19,11 +19,11 @@ env:
 #  - KITCHEN=client-redis-centos-7x
 before_install:
   - sudo apt-get -qq update
-  - gem install bundler -v 1.10.6
-  - wget https://packages.chef.io/files/stable/chefdk/2.2.1/ubuntu/16.04/chefdk_2.2.1-1_amd64.deb
-  - sudo dpkg -i chefdk_2.2.1-1_amd64.deb
-  - wget https://releases.hashicorp.com/vagrant/1.9.8/vagrant_1.9.8_x86_64.deb
-  - sudo dpkg -i vagrant_1.9.8_x86_64.deb
+  - gem install bundler
+  - travis_retry wget -c https://packages.chef.io/files/stable/chefdk/2.3.4/ubuntu/16.04/chefdk_2.3.4-1_amd64.deb
+  - sudo dpkg -i chefdk_2.3.4-1_amd64.deb
+  - travis_retry wget -c https://releases.hashicorp.com/vagrant/2.0.1/vagrant_2.0.1_x86_64.deb
+  - sudo dpkg -i vagrant_2.0.1_x86_64.deb
   - sudo apt-get install -y lxc
   - sudo apt-get install -y lxctl
   - vagrant plugin install vagrant-lxc
