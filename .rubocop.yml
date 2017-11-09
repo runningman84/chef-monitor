@@ -18,7 +18,10 @@ AlignParameters:
   Enabled: false
 
 Metrics/LineLength:
-  Max: 200
+  Max: 400
+
+Metrics/BlockLength:
+  Enabled: false
 
 Metrics/MethodLength:
   Enabled: false
@@ -26,13 +29,16 @@ Metrics/MethodLength:
 CyclomaticComplexity:
   Enabled: false
 
-Metrics/AbcSize:
-  Max: 60
-
 Style/AsciiComments:
   Enabled: false
 
+Lint/UnderscorePrefixedVariableName:
+  Enabled: false
+
 Style/Encoding:
+  Enabled: false
+
+Style/SpaceAroundOperators:
   Enabled: false
 
 Style/SpaceAroundEqualsInParameterDefault:
@@ -47,5 +53,21 @@ Style/SpaceAroundOperators:
 Style/Lambda:
   Enabled: false
 
+Style/FirstParameterIndentation:
+  Enabled: false
+
 Style/PercentLiteralDelimiters:
   Enabled: false
+
+Metrics/AbcSize:
+  Enabled: false
+
+Metrics/CyclomaticComplexity:
+  Enabled: false
+
+Metrics/PerceivedComplexity:
+  Enabled: false
+
+Metrics/BlockLength:
+  Max: 50
+
