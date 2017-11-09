@@ -1,8 +1,3 @@
-require 'serverspec'
-
-# Required by serverspec
-set :backend, :exec
-
 if os[:family] == 'redhat'
   redis_package = 'redis'
 else
