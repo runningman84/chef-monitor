@@ -75,7 +75,7 @@ end
 
 include_recipe 'build-essential::default'
 sensu_gem 'sensu-plugins-sensu' do
-  version node['monitor']['sensu_gem_versions']['sensu-transport-snssqs-ng']
+  version node['monitor']['sensu_gem_versions']['sensu-plugins-sensu']
 end
 sensu_gem 'sensu-plugins-uchiwa' do
   version node['monitor']['sensu_gem_versions']['sensu-plugins-uchiwa']
