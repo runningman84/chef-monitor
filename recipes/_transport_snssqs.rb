@@ -19,18 +19,22 @@
 
 node.override['sensu']['use_ssl'] = false
 
-sensu_gem 'aws-sdk' do
-  version '2.10.35'
-end
-
 if node['platform_family'].include?('windows')
   gem_package 'sensu-transport-snssqs-ng' do
     gem_binary('C:\\opt\\sensu\\embedded\\bin\\gem.cmd')
     options('--force')
     version '2.1.2'
   end
+  gem_package 'aws-sdk' do
+    gem_binary('C:\\opt\\sensu\\embedded\\bin\\gem.cmd')
+    options('--force')
+    version '2.10.35'
+  end
 
 else
+  sensu_gem 'aws-sdk' do
+    version '2.10.35'
+  end
   # https://github.com/SimpleFinance/sensu-transport-snssqs
   sensu_gem 'sensu-transport-snssqs' do
     version '2.0.4'
@@ -48,7 +52,7 @@ end
 if node.key?('ec2') && node['ec2'].key?('placement_availability_zone')
   region = node['ec2']['placement_availability_zone'].scan(/[a-z]+\-[a-z]+\-[0-9]+/)
   if region.count > 0 && node['monitor']['snssqs_region'].nil?
-    node.set['monitor']['snssqs_region'] = region.first
+    node.override['monitor']['snssqs_region'] = region.first
   end
 end
 
