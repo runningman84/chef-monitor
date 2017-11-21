@@ -1,8 +1,3 @@
-require 'serverspec'
-
-# Required by serverspec
-set :backend, :exec
-
 describe package('rabbitmq-server') do
   it { should be_installed }
 end
@@ -23,10 +18,10 @@ end
 
 describe command('rabbitmqctl list_connections') do
   # test uchiwa login page
-  its(:stdout) { should contain('running').after('sensu') }
+  its(:stdout) { should include('running')} # TODO: after sensu { should contain('running').after('sensu') }
 end
 
 describe command('rabbitmqctl list_users') do
   # test uchiwa login page
-  its(:stdout) { should contain('sensu').after('Listing users') }
+  its(:stdout) { should include('sensu') }
 end

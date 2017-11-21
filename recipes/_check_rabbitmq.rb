@@ -20,11 +20,11 @@
 include_recipe 'build-essential::default'
 
 sensu_gem 'sensu-plugins-rabbitmq' do
-  version '1.3.1'
+  version '3.5.0'
 end
 
 sensu_check 'rabbitmq_process' do
-  command 'check-process.rb -p erlang.*beam.*rabbitmq_server -C 1 -u rabbitmq'
+  command 'check-process.rb -p .*rabbitmq_server -C 1 -u rabbitmq'
   handlers ['default']
   standalone true
   interval node['monitor']['default_interval']
@@ -41,24 +41,25 @@ sensu_check 'rabbitmq_process' do
   only_if { node['recipes'].include?('monitor::_install_rabbitmq') }
 end
 
-sensu_check 'rabbitmq_alive' do
-  command 'check-rabbitmq-alive.rb'
-  handlers ['default']
-  standalone true
-  interval node['monitor']['default_interval']
-  additional(
-    dependencies: ['rabbitmq_process'],
-    occurrences: node['monitor']['default_occurrences'],
-    graphiteStat0012hRate: graphite_url(['perSecond(:::scheme_prefix::::::name:::.rabbitmq.*.*.rate)'], 'from' => '-12hours', 'height' => 300, 'width' => 600),
-    graphiteStat0012hCount: graphite_url([':::scheme_prefix::::::name:::.rabbitmq.queue_totals.*.count'], 'from' => '-12hours', 'height' => 200, 'width' => 600),
-    graphiteStat0072hRate: graphite_url(['perSecond(:::scheme_prefix::::::name:::.rabbitmq.*.*.rate)'], 'from' => '-72hours', 'height' => 300, 'width' => 600),
-    graphiteStat0072hCount: graphite_url([':::scheme_prefix::::::name:::.rabbitmq.queue_totals.*.count'], 'from' => '-72hours', 'height' => 200, 'width' => 600),
-    graphiteStat0090dRate: graphite_url(['perSecond(:::scheme_prefix::::::name:::.rabbitmq.*.*.rate)'], 'from' => '-90days', 'height' => 300, 'width' => 600),
-    graphiteStat0090dCount: graphite_url([':::scheme_prefix::::::name:::.rabbitmq.queue_totals.*.count'], 'from' => '-90days', 'height' => 200, 'width' => 600),
-    refresh: node['monitor']['default_refresh']
-  )
-  only_if { node['recipes'].include?('monitor::_install_rabbitmq') }
-end
+# FIX: check broken on newer rabbitmq versions
+# sensu_check 'rabbitmq_alive' do
+#   command 'check-rabbitmq-alive.rb'
+#   handlers ['default']
+#   standalone true
+#   interval node['monitor']['default_interval']
+#   additional(
+#     dependencies: ['rabbitmq_process'],
+#     occurrences: node['monitor']['default_occurrences'],
+#     graphiteStat0012hRate: graphite_url(['perSecond(:::scheme_prefix::::::name:::.rabbitmq.*.*.rate)'], 'from' => '-12hours', 'height' => 300, 'width' => 600),
+#     graphiteStat0012hCount: graphite_url([':::scheme_prefix::::::name:::.rabbitmq.queue_totals.*.count'], 'from' => '-12hours', 'height' => 200, 'width' => 600),
+#     graphiteStat0072hRate: graphite_url(['perSecond(:::scheme_prefix::::::name:::.rabbitmq.*.*.rate)'], 'from' => '-72hours', 'height' => 300, 'width' => 600),
+#     graphiteStat0072hCount: graphite_url([':::scheme_prefix::::::name:::.rabbitmq.queue_totals.*.count'], 'from' => '-72hours', 'height' => 200, 'width' => 600),
+#     graphiteStat0090dRate: graphite_url(['perSecond(:::scheme_prefix::::::name:::.rabbitmq.*.*.rate)'], 'from' => '-90days', 'height' => 300, 'width' => 600),
+#     graphiteStat0090dCount: graphite_url([':::scheme_prefix::::::name:::.rabbitmq.queue_totals.*.count'], 'from' => '-90days', 'height' => 200, 'width' => 600),
+#     refresh: node['monitor']['default_refresh']
+#   )
+#   only_if { node['recipes'].include?('monitor::_install_rabbitmq') }
+# end
 
 sensu_check 'rabbitmq_node-health' do
   command 'check-rabbitmq-node-health.rb'

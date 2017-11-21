@@ -1,17 +1,16 @@
 source 'https://rubygems.org'
 
-gem 'berkshelf', '~> 3.1'
-gem 'emeril'
-gem 'rake'
-
-group :test do
-  gem 'chefspec', '~> 4.0'
-  gem 'foodcritic', '~> 4.0.0'
-  gem 'rubocop', '= 0.25'
-  gem 'strainer'
-end
-
-group :integration do
-  gem 'kitchen-vagrant'
-  gem 'test-kitchen'
-end
+gem 'berkshelf'
+gem 'chef'
+gem 'chef-zero'
+gem 'foodcritic', '10.2.2'
+gem 'foodcritic-junit'
+gem 'inspec', '1.25.1'
+gem 'kitchen-inspec', '0.19.0'
+gem 'kitchen-vagrant'
+gem 'molinillo'
+gem 'rainbow'
+gem 'rubocop', '0.47.1'
+gem 'rubocop-checkstyle_formatter'
+gem 'rubocop-junit-formatter', '0.1.4', git: 'https://github.com/florian-asche/rubocop-junit-formatter'
+gem 'test-kitchen', '1.17.0'

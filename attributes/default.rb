@@ -2,18 +2,30 @@ include_attribute 'sensu'
 
 override['sensu']['use_embedded_ruby'] = true
 override['sensu']['client_deregister_on_stop'] = false
-override['sensu']['version'] = '0.28.4-1'
-override['uchiwa']['version'] = '0.22.0-1'
+override['uchiwa']['add_repo'] = false
+if node['platform'].include?('ubuntu')
+  override['sensu']['apt_repo_codename'] = node['lsb']['codename']
+end
+override['sensu']['apt_repo_url'] = 'https://sensu.global.ssl.fastly.net/apt'
+# override['uchiwa']['apt_repo_url'] = 'https://sensu.global.ssl.fastly.net/apt'
+override['sensu']['yum_repo_url'] = 'https://sensu.global.ssl.fastly.net'
+# override['uchiwa']['yum_repo_url'] = 'https://sensu.global.ssl.fastly.net'
+override['sensu']['msi_repo_url'] = 'https://sensu.global.ssl.fastly.net/msi/'
+override['sensu']['version'] = '0.28.5-2'
+override['uchiwa']['version'] = '0.25.3-1'
 
 default['monitor']['redis_address'] = nil
+default['monitor']['redis_db'] = nil
 default['monitor']['rabbitmq_address'] = nil
 default['monitor']['api_address'] = nil
 default['monitor']['graphite_address'] = nil
+default['monitor']['influxdb_address'] = nil
 
 default['monitor']['transport'] = 'rabbitmq'
 
 default['monitor']['master_search_query'] = 'recipes:monitor\\:\\:master'
 default['monitor']['graphite_search_query'] = 'recipes:graphite\\:\\:carbon'
+default['monitor']['influxdb_search_query'] = 'recipes:influxdb\\:\\:default'
 
 default['monitor']['environment_aware_search'] = false
 default['monitor']['use_local_ipv4'] = false
@@ -73,3 +85,14 @@ default['monitor']['remedy_component'] = nil
 
 # build-essential
 normal['build-essential']['compile_time'] = true
+
+# rabbitmq
+default['rabbitmq']['use_distro_version'] = true
+if node['platform'].include?('ubuntu')
+  # if node['lsb']['release'] == '14.04'
+  default['rabbitmq']['use_distro_version'] = false
+  # default['rabbitmq']['version'] = '3.5.7'
+  # end
+elsif node['platform_family'].include?('rhel')
+  default['rabbitmq']['use_distro_version'] = false
+end

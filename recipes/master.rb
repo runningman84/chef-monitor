@@ -26,6 +26,7 @@ if node['monitor']['redis_address'].nil?
 else
   node.override['sensu']['redis']['host'] = node['monitor']['redis_address']
 end
+node.override['sensu']['redis']['db'] = node['monitor']['redis_db'] unless node['monitor']['redis_db'].nil?
 
 node.override['sensu']['use_ssl'] = false unless node['monitor']['transport'] == 'rabbitmq'
 
@@ -54,7 +55,7 @@ include_recipe 'monitor::_handler_maintenance'
 active_metric_handlers = []
 
 node['monitor']['metric_handlers'].each do |handler_name|
-  if %w(relay).include? handler_name
+  if %w(relay influxdb).include? handler_name
     include_recipe "monitor::_handler_#{handler_name}"
     active_metric_handlers << handler_name if node['monitor']['active_handlers'][handler_name]
   else
@@ -74,10 +75,10 @@ end
 
 include_recipe 'build-essential::default'
 sensu_gem 'sensu-plugins-sensu' do
-  version '1.0.0'
+  version '2.1.1'
 end
 sensu_gem 'sensu-plugins-uchiwa' do
-  version '0.0.3'
+  version '1.0.0'
 end
 
 include_recipe 'monitor::client'

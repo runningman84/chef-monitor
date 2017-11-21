@@ -6,6 +6,15 @@ provisioner:
   name: chef_zero
   require_chef_omnibus: 12
 
+verifier:
+  name: inspec
+  <% if ENV['CI'] == "jenkins" %>
+  format: junit
+  output: "kitchen-reports/kitchen_report_%{suite}_%{platform}_inspec.xml"
+  <% else %>
+  format: cli
+  <% end %>
+
 platforms:
   - name: ubuntu-14.04
     driver:
@@ -19,12 +28,19 @@ platforms:
       provider: lxc
     run_list:
       - recipe[apt]
-  - name: centos-6.x
+  # - name: centos-6.x
+  #   driver:
+  #     box: asy/centos-6-64-lxc
+  #     provider: lxc
+  #   run_list:
+  #     - recipe[yum]
+  - name: centos-7.x
     driver:
-      box: asy/centos-6-64-lxc
+      box: asy/centos-7-64-lxc
       provider: lxc
     run_list:
       - recipe[yum]
+      - recipe[monitor::_kitchen_centos7]
 
 suites:
 - name: default
@@ -42,8 +58,8 @@ suites:
       use_nagios_plugins: false
       use_system_profile: true
       use_statsd_input: true
-    rabbitmq:
-      use_distro_version: true
+    # rabbitmq:
+    #   use_distro_version: true
 - name: server-redis
   run_list:
     - recipe[monitor::master]
@@ -60,8 +76,9 @@ suites:
       use_system_profile: true
       use_statsd_input: true
       transport: redis
-    rabbitmq:
-      use_distro_version: true
+      redis_db: 1
+    # rabbitmq:
+    #   use_distro_version: true
 - name: client
   run_list:
     - recipe[monitor::client]

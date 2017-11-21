@@ -62,6 +62,17 @@ sensu_filter 'chef_env_prod' do
   )
 end
 
+sensu_filter 'chef_server_mode' do
+  attributes(
+    client: {
+      chef: {
+        endpoint: 'eval: value.include? "chefzero://"'
+      }
+    }
+  )
+  negate true
+end
+
 sensu_filter 'chef_same_endpoint' do
   attributes(
     client: {

@@ -1,8 +1,8 @@
 #
 # Cookbook Name:: monitor
-# Recipe:: _handler_pagerduty
+# Recipe:: _kitchen_centos7
 #
-# Copyright 2013, Sean Porter Consulting
+# Copyright 2016, Patrick Robinson
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -17,24 +17,6 @@
 # limitations under the License.
 #
 
-unless node['monitor']['pagerduty_api_key'].nil?
-
-  sensu_gem 'sensu-plugins-pagerduty' do
-    version '3.0.0'
-  end
-
-  sensu_snippet 'pagerduty' do
-    content(api_key: node['monitor']['pagerduty_api_key'])
-  end
-
-  include_recipe 'monitor::_filters'
-
-  sensu_handler 'pagerduty' do
-    type 'pipe'
-    command 'handler-pagerduty.rb'
-    filters ['actions']
-  end
-
-  node.set['monitor']['active_handlers']['pagerduty'] = true
-
+package 'net-tools' do
+  action :install
 end
