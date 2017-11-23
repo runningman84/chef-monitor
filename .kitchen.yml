@@ -15,6 +15,9 @@ verifier:
   format: cli
   <% end %>
 
+transport:
+    name: speedy_ssh
+
 platforms:
   - name: ubuntu-14.04
     driver:

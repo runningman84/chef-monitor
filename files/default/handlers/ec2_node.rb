@@ -152,10 +152,22 @@ require 'sensu-handler'
 require 'net/http'
 require 'uri'
 require 'aws-sdk'
-require 'sensu-plugins-aws'
+# require 'sensu-plugins-aws'
 
 class Ec2Node < Sensu::Handler
-  include Common
+  # include Common
+  def initialize
+    super()
+    aws_config
+  end
+
+  def aws_config
+    Aws.config[:credentials] = Aws::Credentials.new(config[:aws_access_key], config[:aws_secret_access_key]) if config[:aws_access_key] && config[:aws_secret_access_key]
+
+    Aws.config.update(
+      region: config[:aws_region]
+    ) if config.key?(:aws_region)
+  end
 
   def filter; end
 
