@@ -19,7 +19,6 @@
 
 node.override['sensu']['use_ssl'] = false
 
-
 if node['platform_family'].include?('windows')
   gem_package 'sensu-transport-snssqs-ng' do
     gem_binary('C:\\opt\\sensu\\embedded\\bin\\gem.cmd')
