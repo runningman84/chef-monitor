@@ -112,7 +112,7 @@ if node['monitor']['metric_disabled'] != true
   sensu_check 'cpu_metrics' do
     type 'metric'
     command 'metric-windows-cpu-load.rb.bat --scheme :::scheme_prefix::::::name:::.cpu'
-	# command 'metric-windows-cpu-load.ps1'
+    # command 'metric-windows-cpu-load.ps1'
     handlers ['metrics']
     interval node['monitor']['metric_interval']
     subscribers ['os:windows'] unless node['monitor']['standalone_mode']
@@ -129,7 +129,7 @@ if node['monitor']['metric_disabled'] != true
   sensu_check 'memory_metrics' do
     type 'metric'
     command 'metric-windows-ram-usage.rb.bat --scheme :::scheme_prefix::::::name:::.memory'
-	# command 'metric-windows-ram-usage.ps1'
+    # command 'metric-windows-ram-usage.ps1'
     handlers ['metrics']
     interval node['monitor']['metric_interval']
     subscribers ['os:windows'] unless node['monitor']['standalone_mode']
@@ -146,7 +146,7 @@ if node['monitor']['metric_disabled'] != true
   sensu_check 'interface_metrics' do
     type 'metric'
     command 'metric-windows-network.rb.bat --scheme :::scheme_prefix::::::name:::.interface'
-	# command 'metric-windows-network.ps1'
+    # command 'metric-windows-network.ps1'
     handlers ['metrics']
     interval node['monitor']['metric_interval']
     subscribers ['os:windows'] unless node['monitor']['standalone_mode']
@@ -163,7 +163,7 @@ if node['monitor']['metric_disabled'] != true
   sensu_check 'disk_usage_metrics' do
     type 'metric'
     command 'metric-windows-disk-usage.rb.bat --scheme :::scheme_prefix::::::name:::.disk_usage'
-	# command 'metric-windows-disk-usage.ps1'
+    # command 'metric-windows-disk-usage.ps1'
     handlers ['metrics']
     interval node['monitor']['metric_interval']
     subscribers ['os:windows'] unless node['monitor']['standalone_mode']
