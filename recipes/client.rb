@@ -25,7 +25,11 @@ node.override['sensu']['use_ssl'] = false unless node['monitor']['transport'] ==
 
 include_recipe 'sensu::default'
 
-include_recipe 'monitor::_fix_service' unless node['platform_family'].include?('windows')
+if node['platform_family'].include?('windows')
+  include_recipe 'monitor::_fix_path'
+else
+  include_recipe 'monitor::_fix_service'
+end
 
 include_recipe "monitor::_transport_#{node['monitor']['transport']}"
 node.override['sensu']['transport']['name'] = node['monitor']['transport']
