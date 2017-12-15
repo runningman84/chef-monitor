@@ -11,8 +11,8 @@ override['sensu']['apt_repo_url'] = 'https://sensu.global.ssl.fastly.net/apt'
 override['sensu']['yum_repo_url'] = 'https://sensu.global.ssl.fastly.net'
 # override['uchiwa']['yum_repo_url'] = 'https://sensu.global.ssl.fastly.net'
 override['sensu']['msi_repo_url'] = 'https://sensu.global.ssl.fastly.net/msi/'
-override['sensu']['version'] = '1.1.1-1'
-override['uchiwa']['version'] = '0.26.0-1'
+override['sensu']['version'] = '1.2.0-1'
+override['uchiwa']['version'] = '1.0.0-1'
 
 default['monitor']['redis_address'] = nil
 default['monitor']['redis_db'] = nil
