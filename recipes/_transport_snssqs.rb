@@ -42,8 +42,7 @@ else
   end
 
   # https://github.com/troyready/sensu-transport-snssqs-ng
-  gem_package 'sensu-transport-snssqs-ng' do
-    gem_binary '/opt/sensu/embedded/bin/gem'
+  sensu_gem 'sensu-transport-snssqs-ng' do
     version node['monitor']['sensu_gem_versions']['sensu-transport-snssqs-ng']
     action :install
   end
