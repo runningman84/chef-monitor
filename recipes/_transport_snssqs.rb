@@ -28,12 +28,12 @@ if node['platform_family'].include?('windows')
   gem_package 'aws-sdk' do
     gem_binary('C:\\opt\\sensu\\embedded\\bin\\gem.cmd')
     options('--force')
-    version version node['monitor']['sensu_gem_versions']['aws-sdk']
+    version node['monitor']['sensu_gem_versions']['aws-sdk']
   end
 
 else
   sensu_gem 'aws-sdk' do
-    version version node['monitor']['sensu_gem_versions']['aws-sdk']
+    version node['monitor']['sensu_gem_versions']['aws-sdk']
   end
   # https://github.com/SimpleFinance/sensu-transport-snssqs
   sensu_gem 'sensu-transport-snssqs' do
