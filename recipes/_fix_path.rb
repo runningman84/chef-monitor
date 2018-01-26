@@ -1,6 +1,6 @@
 #
 # Cookbook Name:: monitor
-# Recipe:: _plugins
+# Recipe:: _handler_hipchat
 #
 # Copyright 2016, Philipp H
 #
@@ -17,10 +17,9 @@
 # limitations under the License.
 #
 
-include_recipe 'build-essential::default'
+# temporary fix for
+# https://github.com/sensu/sensu-chef/issues/562
 
-node['monitor']['sensu_plugins'].each do |name, version|
-  sensu_gem "sensu-plugins-#{name}" do
-    version version if version != 'latest'
-  end
+windows_path 'C:\opt\sensu\embedded\bin' do
+  action :add
 end
