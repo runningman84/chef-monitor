@@ -23,7 +23,7 @@ include_recipe 'monitor::_filters'
 
 sensu_handler 'deregistration' do
   type 'pipe'
-  command 'handler-sensu-deregister.rb'
+  command "handler-sensu-deregister.rb -i -d #{node['monitor']['deregistration_invalidation_duration']}"
   timeout node['monitor']['default_handler_timeout']
 end
 

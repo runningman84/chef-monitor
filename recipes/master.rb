@@ -75,10 +75,10 @@ end
 
 include_recipe 'build-essential::default'
 sensu_gem 'sensu-plugins-sensu' do
-  version '2.1.1'
+  version node['monitor']['sensu_gem_versions']['sensu-plugins-sensu']
 end
 sensu_gem 'sensu-plugins-uchiwa' do
-  version '1.0.0'
+  version node['monitor']['sensu_gem_versions']['sensu-plugins-uchiwa']
 end
 
 include_recipe 'monitor::client'
