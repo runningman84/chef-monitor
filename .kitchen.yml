@@ -1,6 +1,7 @@
 ---
 driver:
   name: vagrant
+  cachier: true
 
 provisioner:
   name: chef_zero

@@ -18,7 +18,7 @@
 #
 
 sensu_gem 'sensu-plugins-redis' do
-  version '2.2.0'
+  version node['monitor']['sensu_gem_versions']['sensu-plugins-redis']
 end
 
 sensu_check 'redis_process' do
