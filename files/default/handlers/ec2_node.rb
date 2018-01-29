@@ -212,7 +212,7 @@ class Ec2Node < Sensu::Handler
         },
         table_name: 'shared_monitoring_customer_accounts'
       })
-      if (dyn_resp.items[0].key?('fixed_access_key_id') && dyn_resp.items[0].key?('fixed_secret_access_key')) do
+      if (dyn_resp.items[0].key?('fixed_access_key_id') && dyn_resp.items[0].key?('fixed_secret_access_key')) then
         assumed_role = {
           access_key_id: dyn_resp.items[0].fixed_access_key_id,
           secret_access_key: dyn_resp.items[0].fixed_secret_access_key
@@ -221,7 +221,11 @@ class Ec2Node < Sensu::Handler
         api_request('POST', path) do |req|
           domain = api_settings['host'].start_with?('http') ? api_settings['host'] : 'http://' + api_settings['host']
           uri = URI("#{domain}:#{api_settings['port']}#{path}")
-          req.body(JSON.generate(assumed_role))
+          req.body(JSON.generate({
+            path: "/stash/aws/account/#{account_id}/service_role/assumed",
+            expire: 3000,
+            content: assumed_role
+          }))
           req.content_type('application/json')
           Net::HTTP.start(uri.hostname, uri.port, use_ssl: uri.scheme == 'https') do |http|
             http.request(req)
@@ -243,7 +247,11 @@ class Ec2Node < Sensu::Handler
         api_request('POST', path) do |req|
           domain = api_settings['host'].start_with?('http') ? api_settings['host'] : 'http://' + api_settings['host']
           uri = URI("#{domain}:#{api_settings['port']}#{path}")
-          req.body(JSON.generate(assumed_role))
+          req.body(JSON.generate({
+            path: "/stash/aws/account/#{account_id}/service_role/assumed",
+            expire: 3000,
+            content: assumed_role
+          }))
           req.content_type('application/json')
           Net::HTTP.start(uri.hostname, uri.port, use_ssl: uri.scheme == 'https') do |http|
             http.request(req)
