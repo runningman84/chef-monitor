@@ -47,6 +47,7 @@ default['monitor']['default_handler_timeout'] = 300
 default['monitor']['default_refresh'] = 1800
 default['monitor']['standalone_mode'] = true
 default['monitor']['safe_mode'] = true
+default['monitor']['deregistration_invalidation_duration'] = 1000
 
 default['monitor']['metric_handlers'] = ['debug']
 default['monitor']['metric_interval'] = 60

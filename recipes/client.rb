@@ -25,7 +25,11 @@ node.override['sensu']['use_ssl'] = false unless node['monitor']['transport'] ==
 
 include_recipe 'sensu::default'
 
-include_recipe 'monitor::_fix_service' unless node['platform_family'].include?('windows')
+if node['platform_family'].include?('windows')
+  include_recipe 'monitor::_fix_path'
+else
+  include_recipe 'monitor::_fix_service'
+end
 
 include_recipe "monitor::_transport_#{node['monitor']['transport']}"
 node.override['sensu']['transport']['name'] = node['monitor']['transport']
@@ -39,6 +43,11 @@ client_attributes['signature'] = (Digest::SHA256.hexdigest File.read node['monit
 client_attributes['safe_mode'] = node['monitor']['safe_mode']
 client_attributes['standalone_mode'] = node['monitor']['standalone_mode']
 client_attributes['transport'] = node['monitor']['transport']
+
+client_attributes['keepalive'] ||= {}
+client_attributes['keepalive']['thresholds'] ||= {}
+client_attributes['keepalive']['thresholds']['warning'] ||= 300
+client_attributes['keepalive']['thresholds']['critical'] ||= 900
 
 client_attributes['influxdb'] ||= {}
 client_attributes['influxdb']['tags'] ||= {}

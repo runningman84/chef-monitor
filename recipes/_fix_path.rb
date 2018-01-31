@@ -1,6 +1,6 @@
 #
 # Cookbook Name:: monitor
-# Recipe:: _handler_deregistration
+# Recipe:: _handler_hipchat
 #
 # Copyright 2016, Philipp H
 #
@@ -17,14 +17,9 @@
 # limitations under the License.
 #
 
-include_recipe 'build-essential::default'
+# temporary fix for
+# https://github.com/sensu/sensu-chef/issues/562
 
-include_recipe 'monitor::_filters'
-
-sensu_handler 'deregistration' do
-  type 'pipe'
-  command "handler-sensu-deregister.rb -i -d #{node['monitor']['deregistration_invalidation_duration']}"
-  timeout node['monitor']['default_handler_timeout']
+windows_path 'C:\opt\sensu\embedded\bin' do
+  action :add
 end
-
-node.set['monitor']['active_handlers']['deregister'] = true
