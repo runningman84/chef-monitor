@@ -169,6 +169,7 @@ node['roles'].each do |role|
 end
 client_subscriptions << "env:#{node.chef_environment}"
 client_subscriptions << "os:#{node['os']}"
+client_subscriptions << 'aws:ec2'
 client_subscriptions << 'all'
 
 client_attributes['influxdb']['tags']['os'] = node['os']
