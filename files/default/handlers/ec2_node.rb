@@ -153,6 +153,7 @@ require 'net/http'
 require 'uri'
 require 'aws-sdk'
 # require 'sensu-plugins-aws'
+require 'json'
 
 class Ec2Node < Sensu::Handler
   # include Common
@@ -196,29 +197,72 @@ class Ec2Node < Sensu::Handler
     @event.dig('client', 'ec2', 'account_id') || settings.dig('ec2_node', 'account_id') || settings.dig('ec2_node', 'ec2', 'account_id')
   end
 
-  def get_associated_role
-    dyn = Aws::DynamoDB::Client.new({region: region_server})
-    resp = dyn.get_item({
-      key: {
-        'account_id' => {
-          s: account_id
-        }
-      },
-      table_name: 'shared_monitoring_customer_accounts'
-    })
-    return resp.item.service_role_arn.s
-  end
-
   def assume_role
-    sts = Aws::STS::Client.new({region: region_server})
-    resp = sts.assume_role({
-      role_arn: get_associated_role
-    })
-    return {
-      access_key_id: resp.credentials.access_key_id,
-      secret_access_key: resp.secret_access_key,
-      session_token: resp.session_token
-    }
+    stash_req = api_request('GET', "/stash/aws/account/#{account_id}/service_role/assumed")
+    case stash_req.code
+    when '200'
+      return JSON.parse(stash_req.body)
+    when '404'
+      dyn = Aws::DynamoDB::Client.new({region: region_server})
+      # TODO: getItem, query or index?
+      dyn_resp = dyn.scan({
+        filter_expression: 'account_id = :account',
+        expression_attribute_values: {
+          ':account' => account_id
+        },
+        table_name: 'shared_monitoring_customer_accounts'
+      })
+      if (dyn_resp.items[0].key?('fixed_access_key_id') && dyn_resp.items[0].key?('fixed_secret_access_key')) then
+        assumed_role = {
+          access_key_id: dyn_resp.items[0].fixed_access_key_id,
+          secret_access_key: dyn_resp.items[0].fixed_secret_access_key
+        }
+        path = '/stashes'
+        api_request('POST', path) do |req|
+          domain = api_settings['host'].start_with?('http') ? api_settings['host'] : 'http://' + api_settings['host']
+          uri = URI("#{domain}:#{api_settings['port']}#{path}")
+          req.body(JSON.generate({
+            path: "/stash/aws/account/#{account_id}/service_role/assumed",
+            expire: 3000,
+            content: assumed_role
+          }))
+          req.content_type('application/json')
+          Net::HTTP.start(uri.hostname, uri.port, use_ssl: uri.scheme == 'https') do |http|
+            http.request(req)
+          end
+        end
+        return assumed_role
+      else
+        role_arn = dyn_resp.items[0].key?('service_role_arn') ? dyn_resp.items[0].service_role_arn : "arn:aws:iam::#{account_id}:role/AsyServiceRole"
+        sts = Aws::STS::Client.new({region: region_server})
+        sts_resp = sts.assume_role({
+          role_arn: dyn_resp.item.service_role_arn.s
+        })
+        assumed_role = {
+          access_key_id: sts_resp.credentials.access_key_id,
+          secret_access_key: sts_resp.secret_access_key,
+          session_token: sts_resp.session_token
+        }
+        path = '/stashes'
+        api_request('POST', path) do |req|
+          domain = api_settings['host'].start_with?('http') ? api_settings['host'] : 'http://' + api_settings['host']
+          uri = URI("#{domain}:#{api_settings['port']}#{path}")
+          req.body(JSON.generate({
+            path: "/stash/aws/account/#{account_id}/service_role/assumed",
+            expire: 3000,
+            content: assumed_role
+          }))
+          req.content_type('application/json')
+          Net::HTTP.start(uri.hostname, uri.port, use_ssl: uri.scheme == 'https') do |http|
+            http.request(req)
+          end
+        end
+        return assumed_role
+      end
+    else
+      puts "ERROR in sensu api /stashes access"
+      return {}
+    end
   end
 
   # Method to check if there is any instance and if instance is in a valid state that could be deleted
