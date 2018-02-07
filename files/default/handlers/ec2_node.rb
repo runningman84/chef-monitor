@@ -221,17 +221,17 @@ class Ec2Node < Sensu::Handler
         api_request('POST', path) do |req|
           domain = api_settings['host'].start_with?('http') ? api_settings['host'] : 'http://' + api_settings['host']
           uri = URI("#{domain}:#{api_settings['port']}#{path}")
-          req.body(JSON.generate({
+          req.body = JSON.generate({
             path: "/stash/aws/account/#{account_id}/service_role/assumed",
             expire: 3000,
             content: assumed_role
-          }))
-          req.content_type('application/json')
+          })
+          req.content_type = 'application/json'
           Net::HTTP.start(uri.hostname, uri.port, use_ssl: uri.scheme == 'https') do |http|
             http.request(req)
           end
         end
-        return assumed_role
+        return Aws::Credentials.new(assumed_role[:access_key_id], assumed_role[:secret_access_key])
       else
         role_arn = dyn_resp.items[0].key?('service_role_arn') ? dyn_resp.items[0].service_role_arn : "arn:aws:iam::#{account_id}:role/AsyServiceRole"
         sts = Aws::STS::Client.new({region: region_server})
@@ -241,24 +241,24 @@ class Ec2Node < Sensu::Handler
         })
         assumed_role = {
           access_key_id: sts_resp.credentials.access_key_id,
-          secret_access_key: sts_resp.secret_access_key,
-          session_token: sts_resp.session_token
+          secret_access_key: sts_resp.credentials.secret_access_key,
+          session_token: sts_resp.credentials.session_token
         }
         path = '/stashes'
         api_request('POST', path) do |req|
           domain = api_settings['host'].start_with?('http') ? api_settings['host'] : 'http://' + api_settings['host']
           uri = URI("#{domain}:#{api_settings['port']}#{path}")
-          req.body(JSON.generate({
+          req.body = JSON.generate({
             path: "/stash/aws/account/#{account_id}/service_role/assumed",
             expire: 3000,
             content: assumed_role
-          }))
-          req.content_type('application/json')
+          })
+          req.content_type = 'application/json'
           Net::HTTP.start(uri.hostname, uri.port, use_ssl: uri.scheme == 'https') do |http|
             http.request(req)
           end
         end
-        return assumed_role
+        return Aws::Credentials.new(assumed_role[:access_key_id], assumed_role[:secret_access_key], assumed_role[:session_token])
       end
     else
       puts "ERROR in sensu api /stashes access"
@@ -282,14 +282,14 @@ class Ec2Node < Sensu::Handler
         return false
       end
     end
-    ec2 = Aws::EC2::Client.new({region: region_client}.merge(credentials))
+    ec2 = Aws::EC2::Client.new({region: region_client, credentials: credentials})
     settings['ec2_node'] = {} unless settings['ec2_node']
     instance_states = @event['client']['ec2_states'] || settings['ec2_node']['ec2_states'] || ['shutting-down', 'terminated', 'stopping', 'stopped']
     instance_reasons = @event['client']['ec2_state_reasons'] || settings['ec2_node']['ec2_state_reasons'] || %w(Client.UserInitiatedShutdown Server.SpotInstanceTermination Client.InstanceInitiatedShutdown)
 
     begin
       # Finding the instance
-      instances = ec2.describe_instances({instance_ids: [instance_id]}.merge(credentials)).reservations[0]
+      instances = ec2.describe_instances({instance_ids: [instance_id]}).reservations[0]
       # If instance is empty/nil instance id is not valid so client can be deleted
       if instances.nil? || instances.empty?
         true

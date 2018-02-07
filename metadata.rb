@@ -4,7 +4,7 @@ maintainer_email 'phil@hellmi.de'
 license 'Apache-2.0'
 description 'A cookbook for monitoring services, using Sensu, a monitoring framework.'
 long_description IO.read(File.join(File.dirname(__FILE__), 'README.md'))
-version '0.8.14'
+version '0.8.15'
 chef_version '~> 12'
 
 issues_url 'https://github.com/runningman84/chef-monitor/issues'
