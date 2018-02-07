@@ -236,7 +236,7 @@ class Ec2Node < Sensu::Handler
         role_arn = dyn_resp.items[0].key?('service_role_arn') ? dyn_resp.items[0].service_role_arn : "arn:aws:iam::#{account_id}:role/AsyServiceRole"
         sts = Aws::STS::Client.new({region: region_server})
         sts_resp = sts.assume_role({
-          role_arn: dyn_resp.item.service_role_arn.s
+          role_arn: role_arn
         })
         assumed_role = {
           access_key_id: sts_resp.credentials.access_key_id,
