@@ -13,6 +13,9 @@ else
   default['monitor']['sensu_plugins']['vmstats'] = '1.0.0'
   default['monitor']['sensu_plugins']['io-checks'] = '1.0.1'
   default['monitor']['sensu_plugins']['logs'] = '1.3.1'
+  if %w(/bin/systemctl /sbin/systemctl /usr/bin/systemctl /usr/sbin/systemctl).any? { |e| File.exist?(e) }
+    default['monitor']['sensu_plugins']['systemd'] = '0.1.0'
+  end
 end
 
 default['monitor']['sensu_optional_plugins']['slack'] = '2.0.0'
