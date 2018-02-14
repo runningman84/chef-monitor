@@ -20,7 +20,7 @@
 unless node['monitor']['pagerduty_api_key'].nil?
 
   sensu_gem 'sensu-plugins-pagerduty' do
-    version '3.0.0'
+    version node['monitor']['sensu_gem_versions']['sensu-plugins-pagerduty']
   end
 
   sensu_snippet 'pagerduty' do

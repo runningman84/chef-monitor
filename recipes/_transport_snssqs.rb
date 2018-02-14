@@ -19,20 +19,34 @@
 
 node.override['sensu']['use_ssl'] = false
 
-sensu_gem 'aws-sdk' do
-  version '2.10.35'
-end
+if node['platform_family'].include?('windows')
+  gem_package 'sensu-transport-snssqs-ng' do
+    gem_binary('C:\\opt\\sensu\\embedded\\bin\\gem.cmd')
+    options('--force')
+    version node['monitor']['sensu_gem_versions']['sensu-transport-snssqs-ng']
+  end
+  gem_package 'aws-sdk' do
+    gem_binary('C:\\opt\\sensu\\embedded\\bin\\gem.cmd')
+    options('--force')
+    version node['monitor']['sensu_gem_versions']['aws-sdk']
+  end
 
-# https://github.com/SimpleFinance/sensu-transport-snssqs
-sensu_gem 'sensu-transport-snssqs' do
-  version '2.0.4'
-  action :remove
-end
+else
+  sensu_gem 'aws-sdk' do
+    version node['monitor']['sensu_gem_versions']['aws-sdk']
+  end
+  # https://github.com/SimpleFinance/sensu-transport-snssqs
+  sensu_gem 'sensu-transport-snssqs' do
+    version '2.0.4'
+    action :remove
+  end
 
-# https://github.com/troyready/sensu-transport-snssqs-ng
-sensu_gem 'sensu-transport-snssqs-ng' do
-  version '2.1.2'
-  action :install
+  # https://github.com/troyready/sensu-transport-snssqs-ng
+  sensu_gem 'sensu-transport-snssqs-ng' do
+    version node['monitor']['sensu_gem_versions']['sensu-transport-snssqs-ng']
+    action :install
+  end
+
 end
 
 if node.key?('ec2') && node['ec2'].key?('placement_availability_zone')
