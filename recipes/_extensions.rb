@@ -17,6 +17,7 @@
 # limitations under the License.
 #
 
+
 %w(
   client
   server
@@ -25,21 +26,23 @@
 
   directory extension_dir do
     recursive true
-    owner 'root'
-    group 'sensu'
+    owner 'root' unless node['os'] == 'windows'
+    group 'sensu' unless node['os'] == 'windows'
     mode 0o750
   end
 
   config_path = case node['platform_family']
-                when 'rhel', 'fedora'
-                  "/etc/sysconfig/sensu-#{service}"
-                else
-                  "/etc/default/sensu-#{service}"
+                  when 'rhel', 'fedora'
+                    "/etc/sysconfig/sensu-#{service}"
+                  when 'windows'
+                    "C:\\etc\\sensu\\conf.d\\sensu-#{service}"
+                  else
+                    "/etc/default/sensu-#{service}"
                 end
 
   file config_path do
-    owner 'root'
-    group 'root'
+    owner 'root' unless node['os'] == 'windows'
+    group 'root' unless node['os'] == 'windows'
     mode 0o744
     content "EXTENSION_DIR=#{extension_dir}"
     notifies :create, 'ruby_block[sensu_service_trigger]', :immediately

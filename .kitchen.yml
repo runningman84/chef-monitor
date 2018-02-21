@@ -42,6 +42,13 @@ platforms:
     run_list:
       - recipe[yum]
       - recipe[monitor::_kitchen_centos7]
+  - name: windows-2012r2
+    driver:
+      box: mwrock/Windows2012R2
+    communicator: winrm
+    customize:
+      usb: "off"  # USB is disabled on this box to make it more lightweight
+      vrde: "on"  # enable RDP
 
 suites:
 - name: default
