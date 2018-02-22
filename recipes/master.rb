@@ -73,7 +73,7 @@ sensu_handler 'metrics' do
   handlers active_metric_handlers.uniq
 end
 
-include_recipe 'build-essential::default'
+include_recipe 'build-essential::default' unless node['os'] == 'windows'
 sensu_gem 'sensu-plugins-sensu' do
   version node['monitor']['sensu_gem_versions']['sensu-plugins-sensu']
 end

@@ -42,6 +42,13 @@ platforms:
     run_list:
       - recipe[yum]
       - recipe[monitor::_kitchen_centos7]
+  - name: windows-2012r2
+    driver:
+      box: mwrock/Windows2012R2
+    communicator: winrm
+    customize:
+      usb: "off"  # USB is disabled on this box to make it more lightweight
+      vrde: "on"  # enable RDP
 
 suites:
 - name: default
@@ -61,6 +68,8 @@ suites:
       use_statsd_input: true
     # rabbitmq:
     #   use_distro_version: true
+  excludes:
+    - windows-2012r2
 - name: server-redis
   run_list:
     - recipe[monitor::master]
@@ -80,6 +89,8 @@ suites:
       redis_db: 1
     # rabbitmq:
     #   use_distro_version: true
+  excludes:
+    - windows-2012r2
 - name: client
   run_list:
     - recipe[monitor::client]
@@ -95,6 +106,25 @@ suites:
       use_nagios_plugins: false
       use_system_profile: true
       use_statsd_input: true
+  excludes:
+    - windows-2012r2
+- name: windows-client
+  run_list:
+    - recipe[monitor::client]
+  attributes:
+    apt:
+     compile_time_update: true
+    authorization:
+      sudo:
+        users: ["vagrant", "kitchen"]
+        passwordless: true
+        include_sudoers_d: true
+    monitor:
+      use_nagios_plugins: false
+      use_system_profile: true
+      use_statsd_input: true
+  includes:
+    - windows-2012r2
 - name: client-redis
   run_list:
     - recipe[monitor::client]
@@ -111,3 +141,5 @@ suites:
       use_system_profile: true
       use_statsd_input: true
       transport: redis
+  excludes:
+    - windows-2012r2

@@ -17,7 +17,7 @@
 # limitations under the License.
 #
 
-include_recipe 'build-essential::default'
+include_recipe 'build-essential::default' unless node['os'] == 'windows'
 
 node['monitor']['sensu_plugins'].each do |name, version|
   sensu_gem "sensu-plugins-#{name}" do
