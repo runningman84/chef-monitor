@@ -17,7 +17,7 @@
 # limitations under the License.
 #
 
-include_recipe 'build-essential::default'
+include_recipe 'build-essential::default' unless node['os'] == 'windows'
 
 if node.key?('ec2')
 

@@ -17,7 +17,7 @@
 # limitations under the License.
 #
 
-include_recipe 'build-essential::default'
+include_recipe 'build-essential::default' unless node['os'] == 'windows'
 
 if File.exist?('/etc/chef/client.rb') && File.exist?('/etc/chef/client.pem')
 
