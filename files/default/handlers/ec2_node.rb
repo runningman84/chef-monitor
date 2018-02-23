@@ -282,6 +282,7 @@ class Ec2Node < Sensu::Handler
         return false
       end
     end
+    puts "[EC2 Node] credentials #{credentials.to_s}"
     ec2 = Aws::EC2::Client.new({region: region_client, credentials: credentials})
     settings['ec2_node'] = {} unless settings['ec2_node']
     instance_states = @event['client']['ec2_states'] || settings['ec2_node']['ec2_states'] || ['shutting-down', 'terminated', 'stopping', 'stopped']
