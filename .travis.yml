@@ -18,21 +18,21 @@ env:
 #  - KITCHEN=client-redis-ubuntu-1604
 #  - KITCHEN=client-redis-centos-7x
 before_install:
-  - sudo apt-get -qq update
-  - gem install bundler
+  - travis_retry sudo apt-get -qq update
+  - travis_retry gem install bundler
   - travis_retry wget -c https://packages.chef.io/files/stable/chefdk/2.3.4/ubuntu/16.04/chefdk_2.3.4-1_amd64.deb
-  - sudo dpkg -i chefdk_2.3.4-1_amd64.deb
+  - travis_retry sudo dpkg -i chefdk_2.3.4-1_amd64.deb
   - travis_retry wget -c https://releases.hashicorp.com/vagrant/2.0.1/vagrant_2.0.1_x86_64.deb
-  - sudo dpkg -i vagrant_2.0.1_x86_64.deb
-  - sudo apt-get install -y lxc
-  - sudo apt-get install -y lxctl
-  - vagrant plugin install vagrant-lxc
-  - sudo vagrant lxc sudoers
-  - vagrant plugin install aws
-  - vagrant plugin install vagrant-winrm
+  - travis_retry sudo dpkg -i vagrant_2.0.1_x86_64.deb
+  - travis_retry sudo apt-get install -y lxc
+  - travis_retry sudo apt-get install -y lxctl
+  - travis_retry vagrant plugin install vagrant-lxc
+  - travis_retry sudo vagrant lxc sudoers
+  - travis_retry vagrant plugin install aws
+  - travis_retry vagrant plugin install vagrant-winrm
 script:
   - cat /etc/os-release
-  - bundle install
+  - travis_retry bundle install
   - bundle exec foodcritic .
   - bundle exec rubocop .
   - /opt/chefdk/bin/kitchen test $KITCHEN
