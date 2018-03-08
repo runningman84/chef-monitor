@@ -6,16 +6,16 @@ rvm:
   - 2.4.1
 env:
   - KITCHEN=default-ubuntu-1404
-#  - KITCHEN=default-ubuntu-1604
+  - KITCHEN=default-ubuntu-1604
 #  - KITCHEN=default-centos-7x
   - KITCHEN=server-redis-ubuntu-1404
-#  - KITCHEN=server-redis-ubuntu-1604
+  - KITCHEN=server-redis-ubuntu-1604
 #  - KITCHEN=server-redis-centos-7x
   - KITCHEN=client-ubuntu-1404
-#  - KITCHEN=client-ubuntu-1604
+  - KITCHEN=client-ubuntu-1604
 #  - KITCHEN=client-centos-7x
   - KITCHEN=client-redis-ubuntu-1404
-#  - KITCHEN=client-redis-ubuntu-1604
+  - KITCHEN=client-redis-ubuntu-1604
 #  - KITCHEN=client-redis-centos-7x
 before_install:
   - travis_retry sudo apt-get -qq update
