@@ -29,6 +29,7 @@ before_install:
   - vagrant plugin install vagrant-lxc
   - sudo vagrant lxc sudoers
   - vagrant plugin install aws
+  - vagrant plugin install vagrant-winrm
 script:
   - cat /etc/os-release
   - bundle install
