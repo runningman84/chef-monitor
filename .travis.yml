@@ -35,4 +35,4 @@ script:
   - travis_retry bundle install
   - bundle exec foodcritic .
   - bundle exec rubocop .
-  - /opt/chefdk/bin/kitchen test $KITCHEN
+  - travis_wait /opt/chefdk/bin/kitchen test $KITCHEN
