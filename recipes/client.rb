@@ -175,7 +175,7 @@ client_subscriptions << 'all'
 client_attributes['influxdb']['tags']['os'] = node['os']
 
 sensu_client client_name do
-  if node.key?('cloud') && node['cloud'].key?(ip_type)
+  if !node['cloud'].nil? && node['cloud'].key?(ip_type)
     if node['cloud'][ip_type] =~ Resolv::IPv4::Regex
       address node['cloud'][ip_type]
     else
