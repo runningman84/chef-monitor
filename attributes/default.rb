@@ -54,8 +54,14 @@ default['monitor']['metric_interval'] = 60
 default['monitor']['metric_occurrences'] = 2
 default['monitor']['metric_disabled'] = false
 
-default['monitor']['client_extension_dir'] = '/etc/sensu/extensions/client'
-default['monitor']['server_extension_dir'] = '/etc/sensu/extensions/server'
+# platform
+if platform_family?("windows")
+  default['monitor']['client_extension_dir'] = 'C:\etc\sensu\extensions\client'
+  default['monitor']['server_extension_dir'] = 'C:\etc\sensu\extensions\server'
+else
+  default['monitor']['client_extension_dir'] = '/etc/sensu/extensions/client'
+  default['monitor']['server_extension_dir'] = '/etc/sensu/extensions/server'
+end
 
 default['monitor']['snssqs_max_number_of_messages'] = 10
 default['monitor']['snssqs_wait_time_seconds'] = 2
