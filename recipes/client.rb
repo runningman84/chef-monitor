@@ -55,6 +55,7 @@ client_attributes['influxdb']['tags'] ||= {}
 client_name = node.name
 
 if node.key?('ec2') && node['ec2'].is_a?(Hash)
+  client_subscriptions << 'aws:ec2'
   client_attributes['ec2'] = {}
   %w(
     ami_id

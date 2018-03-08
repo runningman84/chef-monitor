@@ -12,7 +12,7 @@ override['sensu']['yum_repo_url'] = 'https://sensu.global.ssl.fastly.net'
 # override['uchiwa']['yum_repo_url'] = 'https://sensu.global.ssl.fastly.net'
 override['sensu']['msi_repo_url'] = 'https://sensu.global.ssl.fastly.net/msi/'
 override['sensu']['version'] = '1.2.0-1'
-override['uchiwa']['version'] = '1.1.1-1'
+override['uchiwa']['version'] = '1.1.3-1'
 
 default['monitor']['redis_address'] = nil
 default['monitor']['redis_db'] = nil
@@ -78,7 +78,7 @@ default['monitor']['active_handlers']['relay'] = false
 default['monitor']['signature_file'] = '/etc/ssh/ssh_host_rsa_key'
 
 # grpahite scheme
-default['monitor']['scheme_prefix'] = 'sensu.default.'
+default['monitor']['scheme_prefix'] = 'sensu.default.unknown.unknown.'
 # remedy defaults deprecated
 default['monitor']['remedy_app'] = nil
 default['monitor']['remedy_group'] = nil
