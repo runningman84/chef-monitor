@@ -269,7 +269,6 @@ class Ec2Node < Sensu::Handler
   # Method to check if there is any instance and if instance is in a valid state that could be deleted
   def ec2_node_should_be_deleted?
     # Defining region for aws SDK object
-    credentials = {}
     unless region_client == region_server
       puts "[EC2 Node] #{instance_id} is in region #{region_client} server is in region #{region_server}"
     end
@@ -282,7 +281,12 @@ class Ec2Node < Sensu::Handler
         return false
       end
     end
-    ec2 = Aws::EC2::Client.new({region: region_client, credentials: credentials})
+    puts "[EC2 Node] credentials #{credentials.to_s}"
+    if credentials.nil?
+      ec2 = Aws::EC2::Client.new({region: region_client})
+    else
+      ec2 = Aws::EC2::Client.new({region: region_client, credentials: credentials})
+    end
     settings['ec2_node'] = {} unless settings['ec2_node']
     instance_states = @event['client']['ec2_states'] || settings['ec2_node']['ec2_states'] || ['shutting-down', 'terminated', 'stopping', 'stopped']
     instance_reasons = @event['client']['ec2_state_reasons'] || settings['ec2_node']['ec2_state_reasons'] || %w(Client.UserInitiatedShutdown Server.SpotInstanceTermination Client.InstanceInitiatedShutdown)
