@@ -55,7 +55,7 @@ default['monitor']['metric_occurrences'] = 2
 default['monitor']['metric_disabled'] = false
 
 # platform
-if platform_family?("windows")
+if platform_family?('windows')
   default['monitor']['client_extension_dir'] = 'C:\etc\sensu\extensions\client'
   default['monitor']['server_extension_dir'] = 'C:\etc\sensu\extensions\server'
 else
