@@ -34,7 +34,7 @@ sensu_check 'ssh' do
 end
 
 sensu_check 'disk_usage' do
-  command 'check-disk-usage.rb -w 80 -c 90 -x nfs,tmpfs,fuse,cgroup,overlay,nsfs,debugfs,tracefs'
+  command 'sudo check-disk-usage.rb -w 80 -c 90 -x nfs,tmpfs,fuse,cgroup,overlay,nsfs,debugfs,tracefs'
   handlers ['default']
   interval node['monitor']['default_interval']
   subscribers ['os:linux'] unless node['monitor']['standalone_mode']
