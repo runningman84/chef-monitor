@@ -38,7 +38,7 @@ default['monitor']['use_system_profile'] = false
 default['monitor']['use_check_os'] = true
 default['monitor']['use_statsd_input'] = false
 
-default['monitor']['sudo_commands'] = []
+default['monitor']['sudo_commands'] = ['/opt/sensu/embedded/bin/check-disk-usage.rb']
 
 default['monitor']['default_handlers'] = ['debug']
 default['monitor']['default_interval'] = 60
