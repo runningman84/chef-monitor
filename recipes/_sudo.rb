@@ -19,7 +19,7 @@
 
 include_recipe 'sudo'
 
-sudo 'sensu' do
+sudo 'sensu-check-disk-usage' do
   user 'sensu'
   runas 'root'
   commands ['/opt/sensu/embedded/bin/check-disk-usage.rb']
