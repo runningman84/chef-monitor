@@ -20,8 +20,8 @@ env:
 before_install:
   - travis_retry sudo apt-get -qq update
   - travis_retry gem install bundler
-  - travis_retry wget -c https://packages.chef.io/files/stable/chefdk/2.3.4/ubuntu/16.04/chefdk_2.3.4-1_amd64.deb
-  - travis_retry sudo dpkg -i chefdk_2.3.4-1_amd64.deb
+  - travis_retry wget -c https://packages.chef.io/files/stable/chefdk/2.3.4/ubuntu/16.04/chefdk_2.5.3-1_amd64.deb
+  - travis_retry sudo dpkg -i chefdk_2.5.3-1_amd64.deb
   - travis_retry wget -c https://releases.hashicorp.com/vagrant/2.0.1/vagrant_2.0.1_x86_64.deb
   - travis_retry sudo dpkg -i vagrant_2.0.1_x86_64.deb
   - travis_retry sudo apt-get install -y lxc
