@@ -5,7 +5,7 @@ driver:
 
 provisioner:
   name: chef_zero
-  #  require_chef_omnibus: 12
+  require_chef_omnibus: 14
 
 verifier:
   name: inspec
