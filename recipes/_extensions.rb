@@ -17,7 +17,6 @@
 # limitations under the License.
 #
 
-
 %w(
   client
   server
@@ -32,12 +31,12 @@
   end
 
   config_path = case node['platform_family']
-                  when 'rhel', 'fedora'
-                    "/etc/sysconfig/sensu-#{service}"
-                  when 'windows'
-                    "C:\\etc\\sensu\\conf.d\\sensu-#{service}"
-                  else
-                    "/etc/default/sensu-#{service}"
+                when 'rhel', 'fedora'
+                  "/etc/sysconfig/sensu-#{service}"
+                when 'windows'
+                  "C:\\etc\\sensu\\conf.d\\sensu-#{service}"
+                else
+                  "/etc/default/sensu-#{service}"
                 end
 
   file config_path do

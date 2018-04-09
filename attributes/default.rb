@@ -11,8 +11,8 @@ override['sensu']['apt_repo_url'] = 'https://sensu.global.ssl.fastly.net/apt'
 override['sensu']['yum_repo_url'] = 'https://sensu.global.ssl.fastly.net'
 # override['uchiwa']['yum_repo_url'] = 'https://sensu.global.ssl.fastly.net'
 override['sensu']['msi_repo_url'] = 'https://sensu.global.ssl.fastly.net/msi/'
-override['sensu']['version'] = '1.2.0-1'
-override['uchiwa']['version'] = '1.1.3-1'
+override['sensu']['version'] = '1.2.1-2'
+override['uchiwa']['version'] = '1.1.3-2'
 
 default['monitor']['redis_address'] = nil
 default['monitor']['redis_db'] = nil
@@ -38,8 +38,6 @@ default['monitor']['use_system_profile'] = false
 default['monitor']['use_check_os'] = true
 default['monitor']['use_statsd_input'] = false
 
-default['monitor']['sudo_commands'] = []
-
 default['monitor']['default_handlers'] = ['debug']
 default['monitor']['default_interval'] = 60
 default['monitor']['default_occurrences'] = 5
@@ -55,7 +53,7 @@ default['monitor']['metric_occurrences'] = 2
 default['monitor']['metric_disabled'] = false
 
 # platform
-if platform_family?("windows")
+if platform_family?('windows')
   default['monitor']['client_extension_dir'] = 'C:\etc\sensu\extensions\client'
   default['monitor']['server_extension_dir'] = 'C:\etc\sensu\extensions\server'
 else
