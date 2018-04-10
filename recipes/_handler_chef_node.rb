@@ -27,10 +27,15 @@ if File.exist?('/etc/chef/client.rb') && File.exist?('/etc/chef/client.pem')
 
   handler_path = '/opt/sensu/embedded/bin/handler-chef-node.rb'
 
-  node.override['monitor']['sudo_commands'] =
-    node['monitor']['sudo_commands'] + [handler_path]
-
   include_recipe 'monitor::_sudo'
+
+  sudo 'sensu-handler-chef-node' do
+    user 'sensu'
+    runas 'root'
+    commands [handler_path]
+    host 'ALL'
+    nopasswd true
+  end
 
   sensu_snippet 'chef' do
     content(
