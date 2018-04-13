@@ -50,6 +50,9 @@ if node.key?('ec2')
     filters %w(keepalives ec2 every_5_occurrences)
     severities %w(warning critical)
     timeout node['monitor']['default_handler_timeout']
+    additional(
+      handled_silenced: true
+    )
   end
 
   node.set['monitor']['active_handlers']['ec2_node'] = true
